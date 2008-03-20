@@ -1,0 +1,34 @@
+<?php
+  /**
+   * Configuration file for the application
+   *
+   * Provides a {@link DbConnection}, start a session, and establish basic
+   * configuration.
+   * @package ThaFrame
+   * @author Argel Arias <levhita@gmail.com>
+   * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
+   * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+   * @filesource
+   */
+   
+  ini_set('session.use_only_cookies', 1);
+  //ini_set('session.cookie_domain', 'localhost');
+  
+  session_start();
+  
+  include TO_ROOT ."/includes/functions.inc.php";
+  include TO_ROOT . "/includes/DbConnection.inc.php";
+  
+  $db_host     = 'localhost';
+  $db_user     = 'root';
+  $db_password = '';
+  $db_name     = 'example_project';
+  
+  $DbConnection = new DbConnection($db_host, $db_user, $db_password, $db_name);
+  $DbConnection->connect();
+  $DbConnection->executeQuery("SET CHARACTER SET 'utf8'");
+  
+  header('Content-Type: text/html; charset=UTF-8');
+  
+  $web_root           = 'http://localhost/example_project';
+?>
