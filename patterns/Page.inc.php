@@ -30,10 +30,21 @@ class Page
    */
   protected $template = '';
   
+  /**
+   * Script to run on page load
+   *
+   * @var string
+   */
+  public $on_load   = '';
+  
   public function __construct($page_name='', $template='')
   {
+    if ( empty($template) ) {
+      $template = $this->getScriptName();
+    }
+    
     $this->setTemplate($template);
-    $this->assign('page_name', $page_name);
+  	$this->assign('page_name', $page_name);
   }
   
   /**
@@ -69,7 +80,6 @@ class Page
     $this->javascripts[] = $javascript;
   }
   
-  
   /**
    * Sets the template file to be used.
    *
@@ -99,6 +109,14 @@ class Page
     }
     header("location: $url");
     die();
+  }
+  
+  public function getScriptName(){
+    return basename($_SERVER['SCRIPT_FILENAME'], '.php');
+  }
+  
+  public function setOnLoad($code=''){
+    $this->on_load=$code;
   }
 }
 ?>
