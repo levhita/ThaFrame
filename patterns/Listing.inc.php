@@ -7,7 +7,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once TO_ROOT . "/includes/Page.inc.php";
+require_once THAFRAME . "/patterns/Page.inc.php";
 
 /**
  * Provides a {@link Page} that shows an item's list.
@@ -63,13 +63,6 @@ class Listing extends Page
   private $general_actions   = array();
   
   /**
-   * Variables that belongs only to this pattern, used to customize the text and
-   * appareance of the page
-   * @var array
-   */
-  private $pattern_variables = array();
-  
-  /**
    * Construct a {@link Listing} page
    * @param string $page_name the page name to be shown
    * @param string $template by default it uses Listing.tpl.php 
@@ -78,7 +71,7 @@ class Listing extends Page
   public function __construct($page_name, $template='')
   {
     if ( empty($template) ) {
-      $this->setTemplate(TO_ROOT . '/subtemplates/Listing.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/Listing.tpl.php', true);
     } else {
       $this->setTemplate( $template);
     }
@@ -209,24 +202,12 @@ class Listing extends Page
     $this->general_actions[] = $aux;
   } 
   
-  /**
-   * Sets a pattern specific variable, variables set by this function aren't
-   * mandatory, and are only to provide customization to the default template
-   *
-   * @param string $variable the variable to be set
-   * @param string $value the content that will override the default value
-   * @return void
-   */
-  public function setPatternVariable($variable, $value)  {
-    $this->pattern_variables[$variable] = $value;
-  }
-  
+ 
   /**
    * Display the selected template with the given data and customization
    * @return void
    */
   public function display() {
-    $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('rows'    , $this->rows);
     $this->assign('fields'  , $this->fields);
     $this->assign('links'   , $this->links);

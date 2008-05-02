@@ -7,7 +7,8 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once TO_ROOT . "/includes/Page.inc.php";
+require_once THAFRAME . "/patterns/Page.inc.php";
+require_once THAFRAME . "/models/Row.inc.php";
 
 /**
 * Provides a {@link Page} that shows a form to edit a {@link Row}
@@ -65,13 +66,6 @@ class Edit extends Page
   private $conditions = array();
   
   /**
-   * Variables that belongs only to this pattern, used to customize the text and
-   * appareance of the page
-   * @var array
-   */
-  private $pattern_variables = array();
-  
-  /**
    * Construct a {@link Edit} page
    * @param string $page_name the page name to be shown
    * @param string $template by default it uses Edit.tpl.php 
@@ -80,7 +74,7 @@ class Edit extends Page
   public function __construct($page_name, $template='')
   {
     if ( empty($template) ) {
-      $this->setTemplate(TO_ROOT . '/subtemplates/Edit.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/Edit.tpl.php', true);
     } else {
       $this->setTemplate( $template);
     }
@@ -96,9 +90,7 @@ class Edit extends Page
    * @return void
    */
   public function setRow(Row $Row) {
-    $Row->assertLoaded();
     $this->Row = $Row;
-    
     $this->no_fields = 0;
     
     /** Parse table structure into template friendly data **/
@@ -156,7 +148,7 @@ class Edit extends Page
           break;
         case 'enum':
         case 'set'://Testing
-          if ($match[2] == "'1','0'") {
+          if ($match[2] == "'0','1'") {
             $options = array('0'=>'No', '1'=>'Sí');
           } else {
             /** Retrive and parse Options **/
@@ -436,11 +428,11 @@ class Edit extends Page
    *
    * @param string $field The field that will be set as dependent
    * @return bool true on success false otherwise
-   */
+   *
   public function setAsDependent($field)
   {
     return $this->setFieldProperty($field, 'dependent', true);
-  }
+  }*/
   
   /**
    * Deletes a field from the form
@@ -489,7 +481,7 @@ class Edit extends Page
    * @param string $icon  The optional icon that could go with the text
    * @return void
    */
-  public function addGeneralAction($action, $title, $icon='', $ajax=false)
+  public function AddGeneralAction($action, $title, $icon='', $ajax=false)
   {
     $aux = array (
         'action'  => $action ,
@@ -498,18 +490,6 @@ class Edit extends Page
         'ajax'    => $ajax,
       );
     $this->general_actions[] = $aux;
-  } 
-  
-  /**
-   * Sets a pattern specific variable, variables set by this function aren't
-   * mandatory, and are only to provide customization to the default template
-   *
-   * @param string $variable the variable to be set
-   * @param string $value the content that will override the default value
-   * @return void
-   */
-  public function setPatternVariable($variable, $value)  {
-    $this->pattern_variables[$variable] = $value;
   }
   
   /**
@@ -527,8 +507,7 @@ class Edit extends Page
     $this->assign('fields'    , $this->fields);
     $this->assign('links'     , $this->links);
     $this->assign('general_actions', $this->general_actions);
-    $this->assign('PatternVariables', (object)$this->pattern_variables);
-    
+   
     parent::display();
   }
   

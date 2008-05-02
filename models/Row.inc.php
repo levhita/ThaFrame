@@ -16,7 +16,7 @@ class Row {
   
   protected $table_name   = '';
   protected $id           = 0;
-  public $data         = array();
+  public    $data         = array();
   protected $loaded       = false;
   protected $DbConnection   = null;
   protected $assert_message = "Class instance isn't loaded";
@@ -157,7 +157,7 @@ class Row {
   	return $this->id;
   }
 
-  protected function assertLoaded()
+  public function assertLoaded()
   {
     if ( !$this->loaded ) {
       throw new RunTimeException($this->assert_message);

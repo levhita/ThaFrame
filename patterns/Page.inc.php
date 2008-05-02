@@ -36,6 +36,13 @@ class Page
    * @var string
    */
   public $on_load   = '';
+
+  /**
+   * Variables that belongs only to this pattern, used to customize the text and
+   * appareance of the page
+   * @var array
+   */
+  protected $pattern_variables = array();
   
   public function __construct($page_name='', $template='')
   {
@@ -63,10 +70,11 @@ class Page
       $this->assign('__message', $_SESSION['__message']);
       unset($_SESSION['__message']);
     }
-    
+    $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('javascripts', $this->javascripts);
     
     $Data = (object)$this->variables;
+    
     include $this->template;
   }
   
@@ -118,5 +126,16 @@ class Page
   public function setOnLoad($code=''){
     $this->on_load=$code;
   }
+
+  /**
+   * Sets a pattern specific variable, variables set by this function aren't
+   * mandatory, and are only to provide customization to the default template
+   *
+   * @param string $variable the variable to be set
+   * @param string $value the content that will override the default value
+   * @return void
+   */
+  public function setPatternVariable($variable, $value)  {
+    $this->pattern_variables[$variable] = $value;
+  }
 }
-?>
