@@ -575,4 +575,3 @@ class Edit extends Page
     return $code;
   }
 }
-?>

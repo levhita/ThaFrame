@@ -95,4 +95,3 @@
       echo "<p>$Vars->after_text</p>";
     }
   include TO_ROOT . "/subtemplates/footer.tpl.php";
-?>
