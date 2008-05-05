@@ -450,11 +450,16 @@ class Edit extends Page
     return false;
   }
   
-  public function setAsLinked($field, $table_name, $DbConnection, $table_id, $name_field)
+  public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='')
   {
     if ($table_id=='') {
-      $table_id="id_$table_name";
+      $table_id = "{$table_name}_id";
     }
+    
+    if ($name_field=='') {
+      $name_field = NAME_FIELD;
+    }
+    
     $sql = "SELECT $table_id, $name_field
             FROM $table_name
             ORDER BY $name_field";
