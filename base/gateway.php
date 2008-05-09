@@ -1,4 +1,15 @@
 <?php
+/**
+ * Provides a gateway between files that are menat to be served directly by
+ * the webserver, without having to make thaframe publicy accesible.
+ *
+ * @package ThaFrame
+ * @author Argel Arias <levhita@gmail.com>
+ * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @filesource
+ */
+
 define('TO_ROOT', '.');
 include TO_ROOT . "/includes/main.inc.php";
 
