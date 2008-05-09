@@ -132,19 +132,16 @@
     return  $day_combo . $month_combo . $year_combo ;
   }
   
-  /**
-   * Loads default or customized NoDatabase page and then exits.
-   */
-  function loadNoDatabasePage(){
+  function loadErrorPage($page){
   	global $web_root;
-  	if(file_exists(TO_ROOT ."/pages/nodb.html")){
-  		$page_content = file_get_contents(TO_ROOT . "/pages/nodb.html");
+  	if(file_exists(TO_ROOT ."/pages/$page.html")){
+  		$filename = TO_ROOT . "/pages/$page.html";
   	} else {
-  		$page_content = file_get_contents(THAFRAME . "/pages/nodb.html");
+  		$filename = THAFRAME . "/pages/$page.html";
   	}
   	header('Content-Type: text/html; charset=UTF-8');
-  	echo $page_content;
-  	exit();
+  	readfile($filename);
+  	die();
   }
   
   function formatAsDate($date, $mode='long')
