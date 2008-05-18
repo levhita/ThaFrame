@@ -1,0 +1,4 @@
+RewriteEngine on
+#Use in case of mod_alias
+#RewriteBase /eclipse/agentmanager 
+RewriteRule ^f/(.+) gateway.php?file=$1 [NC]
