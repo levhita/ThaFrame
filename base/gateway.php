@@ -7,16 +7,28 @@
  * @author Argel Arias <levhita@gmail.com>
  * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 19
+ * @version 20
  * @filesource
  */
 
 define('TO_ROOT', '.');
 include TO_ROOT . "/includes/main.inc.php";
 
-$file     = $_GET['file'];
+$file = $_GET['file'];
 
-/** Sanitize access to folder up in the hierarchy **/
+$match=FALSE;
+$allowed_extensions = array('png','jpg','gif','js','txt','html');
+foreach($allowed_extensions AS $extension){
+  if ( preg_match("/\.$extension$/i", $file) > 0) {
+    $match=TRUE;
+  }
+}
+if ( !$match ) {
+  header("HTTP/1.0 403 Forbidden");
+  loadErrorPage('403');
+}
+
+/** Sanitize access to folders up in the hierarchy **/
 if(strpos($file,"../")!==FALSE){
   header("HTTP/1.0 403 Forbidden");
   loadErrorPage('403');
