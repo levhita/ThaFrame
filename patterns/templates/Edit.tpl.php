@@ -1,5 +1,5 @@
 <?php
-include TO_ROOT . "/subtemplates/header.tpl.php";
+include THAFRAME . "/subtemplates/header.tpl.php";
 
   echo "<form action=\"$Data->target\" id=\"main_form\">\n";
   echo "<p>\n";
@@ -95,4 +95,4 @@ include TO_ROOT . "/subtemplates/header.tpl.php";
   </script>
 <?php } ?>
 
-<?php include TO_ROOT . "/subtemplates/footer.tpl.php"; ?>
+<?php include THAFRAME . "/subtemplates/footer.tpl.php"; ?>
