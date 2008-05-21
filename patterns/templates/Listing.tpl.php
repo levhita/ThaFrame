@@ -1,5 +1,6 @@
 <?php
-  include TO_ROOT . "/subtemplates/header.tpl.php";
+  $Helper->loadSubTemplate('header');
+
     $Vars = $Data->PatternVariables;
     if ($Vars->before_text) {
       echo "<p>$Vars->before_text</p>";
@@ -9,7 +10,11 @@
       foreach ( $Data->general_actions as $action)
       {
         $action = (object)$action;
-        echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
+        if ( strpos($action->action,'?') === FALSE) {
+          echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
+        } else {
+          echo "<a href=\"$action->action&$action->field={$action->value}\" title=\"$action->title\">";
+        }
         if ( !$action->icon ) {
           echo "{$action->title}";
         } else {
@@ -49,8 +54,11 @@
           
           if( isset($Data->links[$field]) ) {
             $link = (object)$Data->links[$field];
-            
-            echo "<td><a href=\"$link->action?$link->value={$row[$link->value]}\" title=\"$link->title\">{$row[$field]}</a></td>";
+            if(strpos($link->action,'?') === FALSE) {
+              echo "<td><a href=\"$link->action?$link->value={$row[$link->value]}\" title=\"$link->title\">{$row[$field]}</a></td>";
+            } else {
+              echo "<td><a href=\"$link->action&$link->value={$row[$link->value]}\" title=\"$link->title\">{$row[$field]}</a></td>";
+            }
           } else {
             echo "<td>{$row[$field]}</td>";
           }
@@ -62,7 +70,11 @@
           {
             $action = (object)$action;
             if ( !$action->ajax) {
-              echo "<a href=\"$action->action?$action->value={$row[$action->value]}\" title=\"$action->title\">";
+              if ( strpos($action->action,'?') === FALSE) {
+                echo "<a href=\"$action->action?$action->value={$row[$action->value]}\" title=\"$action->title\">";
+              } else {
+                echo "<a href=\"$action->action&$action->value={$row[$action->value]}\" title=\"$action->title\">";
+              }
               if ( !$action->icon ) {
                 echo "{$action->title}";
               } else {
@@ -94,4 +106,4 @@
     if ($Vars->after_text) {
       echo "<p>$Vars->after_text</p>";
     }
-  include TO_ROOT . "/subtemplates/footer.tpl.php";
+  $Helper->loadSubTemplate('footer');

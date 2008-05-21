@@ -1,9 +1,11 @@
 .hide_on_screen {
    display:none;
 }
+
 #print_header{
   display:none;
 }
+
 body{
   font-family: arial, "lucida console", sans-serif;
   background:  darkgray;
@@ -16,6 +18,7 @@ body{
   border:  1px solid black;
   padding: 0px;
 }
+
 #message {
   position: absolute;
   width:  300px;
@@ -26,6 +29,7 @@ body{
   padding:10px;
   text-align:center;
 }
+
 #message .cancel_button {
   float:right;
   width:16px;
@@ -128,7 +132,7 @@ body{
   text-align:right;
   width:100%
 }
-/** Formato **/
+/** Format **/
 input, select,textarea {
   border:  1px solid black;
   margin:  2px;
@@ -177,37 +181,17 @@ border:1px solid gray;
 background: #f3ffe5;
 }
 
-.report_header table, .report_body table{
+table{
   width:100%;
   border-spacing:0px;
   border-collapse:collapse;
   border-spacing:0px;
-}
-.report_body {
   clear:both;
 }
-.report_body{
-  padding:0 0 0 2em;
-}
-.report_body td{
-  border-bottom:1px solid gray;
-  padding-top:.1em;
-}
-.report_footer{
-  text-align:right;
-  margin-top:.5em;
-}
-.report_header td{
+
+th, td{
   border:1px solid gray;
   padding-top:.1em;
-}
-.report_header .subdetails{
-  width:auto;
-  float:right;
-  margin-top:5px;
-}
-.report_header .subdetails td, .report_header .subdetails th{
-  padding:0 5px 0 5px;
 }
 
 .right {
@@ -215,8 +199,4 @@ background: #f3ffe5;
 }
 .center {
   text-align:center;
-}
-
-.printed{
-  color:gray;
 }

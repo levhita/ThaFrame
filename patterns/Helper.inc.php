@@ -20,6 +20,10 @@ class Helper {
     $this->Data = $Data;
   }
   
+  /*
+   * Load a subtemplate, selectiong between a custom template or a standar
+   * framework subtemplate
+   */
   public function loadSubTemplate($template)
   {
     $Data   = $this->Data;
@@ -28,7 +32,7 @@ class Helper {
     if ( file_exists(TO_ROOT . "/subtemplates/$template.tpl.php") ) {
       include TO_ROOT . "/subtemplates/$template.tpl.php";
     } else {
-      if ( file_exists(THAFRAME . "/subtemplates/$template.tpl.php") ) {
+      if ( file_exists( THAFRAME . "/subtemplates/$template.tpl.php") ) {
         include THAFRAME . "/subtemplates/$template.tpl.php";
       } else {
         throw new Exception("Couldn't find template '$template'");

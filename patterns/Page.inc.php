@@ -1,4 +1,6 @@
 <?php
+require_once THAFRAME . '/patterns/Helper.inc.php';
+
 /**
  * Holds {@link Page} class
  * @package ThaFrame
@@ -73,7 +75,7 @@ class Page
     $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('javascripts', $this->javascripts);
     
-    require_once THAFRAME . '/patterns/Helper.inc.php';
+    
     $Data = (object)$this->variables;
     $Helper = new Helper($Data);
     

@@ -15,6 +15,7 @@
 class Row {
   
   protected $table_name   = '';
+  protected $id_field     = '';
   protected $id           = 0;
   public    $data         = array();
   protected $loaded       = false;
@@ -37,20 +38,32 @@ class Row {
     
     $this->table_name   = $table_name;
     $this->id           = $id;
+    $this->id_field     = "id_$table_name";
     $this->DbConnection = $DbConnection;
   }
 
+  
   public function getStructure() {
     $structure = $this->DbConnection->getAllRows("DESCRIBE $this->table_name;");
     return $structure;
+  }
+  
+  public function getIdField()
+  {
+   return $this->id_field;
+  }
+  
+  public function setIdField($field)
+  {
+    $this->id_field = $field;
   }
   
   public function load()
   {
     if ( $this->id != 0 ) {
       $sql = "SELECT *
-              FROM {$this->table_name}
-              WHERE {$this->table_name}_id={$this->id};";
+              FROM $this->table_name
+              WHERE $this->id_field=$this->id;";
       if ( !$this->data = $this->DbConnection->getOneRow($sql) ) {
         return false;
       }
@@ -81,7 +94,7 @@ class Row {
         return false;
       }
       $this->id = $this->DbConnection->getLastId();
-      $this->data[$this->table_name . '_id'] = $this->id;
+      $this->data[$this->id_field] = $this->id;
     } else {
       $fields_strings = array();
       foreach($this->data as $field => $value)
@@ -90,9 +103,9 @@ class Row {
       }
       $field_string = implode(', ', $fields_strings);
       
-      $sql = "UPDATE {$this->table_name}
+      $sql = "UPDATE $this->table_name
               SET $field_string
-              WHERE {$this->table_name}_id={$this->id}
+              WHERE $this->id_field=$this->id
               LIMIT 1;";
       if ( !$this->DbConnection->executeQuery($sql) ) {
         return false;
@@ -115,8 +128,8 @@ class Row {
   
   public function delete()
   {
-    $sql = "DELETE FROM {$this->table_name}
-            WHERE {$this->table_name}_id={$this->id}
+    $sql = "DELETE FROM $this->table_name
+            WHERE $this->id_field=$this->id
             LIMIT 1;";
     if ( !$this->DbConnection->executeQuery($sql) ) {
       return false;
