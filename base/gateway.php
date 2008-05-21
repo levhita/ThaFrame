@@ -7,7 +7,7 @@
  * @author Argel Arias <levhita@gmail.com>
  * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 20
+ * @version 22
  * @filesource
  */
 
@@ -17,7 +17,7 @@ include TO_ROOT . "/includes/main.inc.php";
 $file = $_GET['file'];
 
 $match=FALSE;
-$allowed_extensions = array('png','jpg','gif','js','txt','html');
+$allowed_extensions = array('png','jpg','gif','js','txt','html','css');
 foreach($allowed_extensions AS $extension){
   if ( preg_match("/\.$extension$/i", $file) > 0) {
     $match=TRUE;
