@@ -49,7 +49,7 @@ class Page
     if ( empty($template) ) {
       $template = $this->getScriptName();
     }
-    
+
     $this->setTemplate($template);
   	$this->assign('page_name', $page_name);
   }
@@ -73,7 +73,9 @@ class Page
     $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('javascripts', $this->javascripts);
     
+    require_once THAFRAME . '/patterns/Helper.inc.php';
     $Data = (object)$this->variables;
+    $Helper = new Helper($Data);
     
     include $this->template;
   }

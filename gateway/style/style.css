@@ -1,0 +1,222 @@
+.hide_on_screen {
+   display:none;
+}
+#print_header{
+  display:none;
+}
+body{
+  font-family: arial, "lucida console", sans-serif;
+  background:  darkgray;
+}
+#page{
+  position: relative;
+  background: #FFF;
+  width:   900px;
+  margin:  auto;
+  border:  1px solid black;
+  padding: 0px;
+}
+#message {
+  position: absolute;
+  width:  300px;
+  left:   225px;
+  top:    60px;
+  border: 1px solid black;
+  background: #EEE;
+  padding:10px;
+  text-align:center;
+}
+#message .cancel_button {
+  float:right;
+  width:16px;
+  height:16px;
+}
+
+#header {
+  margin: 0px 0px 5px 0px;
+  padding:          5px;
+  background-color: #333;
+  color:            white;
+}
+
+  #header h1{
+    margin: 0px;
+  }
+  
+  #header a{
+    color:white;
+    font-weight: bold;
+    text-decoration:none;
+  }
+  #header a:visited {
+    color: #AAA;
+  }
+  #header a:hover {
+    color: #c1ff7f;
+  }
+  #top_menu {
+    font-size:small;
+  }
+  #auction {
+    float:right;
+    text-align:right;
+  }
+
+#sidebar {
+  float:left;
+  width:200px;
+  border:1px solid gray;
+  padding:5px;
+  margin:0px 0px 0px 5px;
+  background: white;
+  font-size:0.8em;
+}
+#sidebar ul {
+  margin: 0px;
+  padding-left: 10px;
+}
+#sidebar input, #sidebar textarea {
+  width: 190px;
+}
+#sidebar ul li {
+  clear: both;
+}
+
+#sidebar h3{
+  margin: 0px;
+}
+
+#content {
+ background: white;
+ /*margin-left: 223px;*/
+ margin-left: 5px;
+ margin-right: 5px;
+ padding:5px;
+ border: 1px solid gray;
+}
+  #content h2{
+    margin: -5px -5px 10px 10px;
+    
+    float:       right;
+    line-height: 1em;
+    background-color: #333;
+    color:white;
+    padding:2px;
+    border-left:1px solid gray;
+    border-bottom:1px solid gray;
+  }
+
+  #content form{
+    margin:     5px;
+    padding:    5px;
+    border: 1px solid gray;
+    background: white;
+  }
+  #content form:hover{
+    background: #f3ffe5;
+  }
+  #content form p{
+    margin:0px;
+  }
+#footer {
+  clear: both;
+  text-align: center;
+  font-size: x-small;
+  margin:5px;
+}
+.big_bottom{
+  text-align:right;
+  width:100%
+}
+/** Formato **/
+input, select,textarea {
+  border:  1px solid black;
+  margin:  2px;
+  padding: 0px 0px 0px 2px;
+}
+img {
+  border: none;
+}
+a{
+  color:#18548c;
+  text-decoration:underline;
+}
+a:visited{
+  color: #8c1854;
+}
+a:hover{
+  color:#548c18;
+  text-decoration:underline;
+}
+.smalltext{
+  font-size:x-small;
+}
+
+.form_overview{
+  margin:5px;
+  border:1px solid gray;
+}
+
+
+.item,.formulario, .reduced_text {
+  clear:right;
+  font-size:60%;
+  /*border:1px solid gray;*/
+  margin-bottom:2em;
+  padding:0px 5px 0px 5px;
+}
+
+.reduced_text{
+  border-collapse:collapse;
+}
+.reduced_text td{
+border:1px solid gray;
+}
+
+.reduced_text tr:hover {
+background: #f3ffe5;
+}
+
+.report_header table, .report_body table{
+  width:100%;
+  border-spacing:0px;
+  border-collapse:collapse;
+  border-spacing:0px;
+}
+.report_body {
+  clear:both;
+}
+.report_body{
+  padding:0 0 0 2em;
+}
+.report_body td{
+  border-bottom:1px solid gray;
+  padding-top:.1em;
+}
+.report_footer{
+  text-align:right;
+  margin-top:.5em;
+}
+.report_header td{
+  border:1px solid gray;
+  padding-top:.1em;
+}
+.report_header .subdetails{
+  width:auto;
+  float:right;
+  margin-top:5px;
+}
+.report_header .subdetails td, .report_header .subdetails th{
+  padding:0 5px 0 5px;
+}
+
+.right {
+  text-align:right;
+}
+.center {
+  text-align:center;
+}
+
+.printed{
+  color:gray;
+}

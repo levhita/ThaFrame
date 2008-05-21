@@ -5,8 +5,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
     <title><?php echo SYSTEM_NAME." - $Data->page_name"; ?></title>
-    <link rel="stylesheet" href="style/style.css" type="text/css" media="screen"/>
-    <link rel="stylesheet" href="style/print.css" type="text/css" media="print"/>
+    <link rel="stylesheet" href="<?php $Helper->createFrameLink('style/style.css');?>" type="text/css" media="screen"/>
+    <!-- <link rel="stylesheet" href="style/print.css" type="text/css" media="print"/> -->
     <script type="text/javascript" src="includes/functions.js"></script>
     <script type="text/javascript" src="f/includes/functions.js"></script>
     <script type="text/javascript" src="f/vendors/overlib/overlib.js"></script>
@@ -34,15 +34,8 @@
           <?php echo $Data->__message; ?>
         </div>
       <?php } ?>
-      <div id="print_header">
-        <img id="logo_jalisco" src="style/images/logo_gobierno_jalisco.jpg" alt="logo JAL"/>
-        <img id="logo_ijas"  src="style/images/logo_ijas.jpg" alt="Logo IJAS"/>
-        <h1>OptiForm</h1>
-        <h2>Sistema de Administración de Notas</h2>
-      </div>
-      
       <div id="header">
-        <h1>AgentManager</h1>
+        <h1><?php echo SYSTEM_NAME; ?></h1>
         <div id="top_menu">
           <?php if (isset($_SESSION['usuario_id']) ) { ?>
             <a href="index.php" title="Inicio">Inicio</a> ||
