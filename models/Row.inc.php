@@ -1,5 +1,3 @@
-
-
 <?php
 /**
  * Holds the {@link Row} model
@@ -19,6 +17,11 @@ class Row {
   protected $id           = 0;
   public    $data         = array();
   protected $loaded       = false;
+  /**
+   * Holds the DbConnection
+   *
+   * @var DbConnection
+   */
   protected $DbConnection   = null;
   protected $assert_message = "Class instance isn't loaded";
   protected $full_string    = "<div class=\"{%table_name}\" id=\"{%table_name}{%id}\">\n{%content}\n</div>\n\n";
@@ -89,7 +92,7 @@ class Row {
       
       $sql = "INSERT INTO
               {$this->table_name}($fields_string)
-              VALUES($valpublicues);"; 
+              VALUES($valpublicues);";
       if ( !$this->DbConnection->executeQuery($sql) ) {
         return false;
       }
@@ -99,7 +102,7 @@ class Row {
       $fields_strings = array();
       foreach($this->data as $field => $value)
       {
-        $fields_strings[] = "$field='" . mysql_escape_string($value) . "'"; 
+        $fields_strings[] = "$field='" . mysql_escape_string($value) . "'";
       }
       $field_string = implode(', ', $fields_strings);
       
@@ -160,7 +163,7 @@ class Row {
       /** That are going to be replaced by this **/
       $replace   = array($this->id, $this->table_name, $string);
       $new_string = str_replace($search, $replace, $this->full_string);
-      $string = $new_string; 
+      $string = $new_string;
     }
     
     return $string;
