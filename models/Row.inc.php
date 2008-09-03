@@ -41,7 +41,7 @@ class Row {
     
     $this->table_name   = $table_name;
     $this->id           = $id;
-    $this->id_field     = "id_$table_name";
+    $this->id_field     = "{$table_name}_id";
     $this->DbConnection = $DbConnection;
   }
 

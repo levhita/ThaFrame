@@ -38,14 +38,15 @@
         <h1><a href="<?php echo SYSTEM_WEB_ROOT?>" title="Inicio"><?php echo SYSTEM_NAME; ?></a></h1>
         <div id="top_menu">
           <?php if (isset($_SESSION['usuario_id']) ) { ?>
-            <a href="index.php" title="Inicio">Inicio</a> ||
+            <a href="<?php echo TO_ROOT ?>/ocra/index.php" title="Inicio">Inicio</a> ||
             <a href="new_bid.php" title="Crea una nueva postura">Nueva Postura</a> ||
             <a href="list_bids.php" title="Lista todas las posturas">Posturas</a> ||
             <a href="list_bids_multiple.php" title="Lista todas las posturas multiples">Multiples</a> ||
             <a href="reports.php" title="Muestra la página de reportes">Reportes</a> ||
             <a href="list_items.php" title="Muestra todo los items a rematar">Items</a> ||
-            <a href="logout.php">Terminar Sesión</a>
+            <a href="<?php echo TO_ROOT ?>/account/logout.php">Terminar Sesión</a>
           <?php } else { ?>
+            <a href="<?php echo SYSTEM_WEB_ROOT ?>" title="Inicio">Inicio</a> ||
             <a href="<?php echo TO_ROOT ?>/account/login.php" title="Inicio de sesion">Iniciar sesion</a>
           <?php } ?>
         </div>

@@ -7,7 +7,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once TO_ROOT . "/models/Row.inc.php";
+require_once THAFRAME . "/models/Row.inc.php";
 
 /**
  * Provides an user abstraction, basic authentication logic is here too
@@ -15,10 +15,10 @@ require_once TO_ROOT . "/models/Row.inc.php";
  */
 class User extends Row
 {
-  public function __construct($id, $DbConnection)
+  public function __construct($table_name, $id, $DbConnection)
   {
     $this->assert_message ="User instance isn't loaded";
-    parent::__construct('user', $id, $DbConnection);
+    parent::__construct($table_name, $id, $DbConnection);
   }
   
   public function validatePassword($password)
