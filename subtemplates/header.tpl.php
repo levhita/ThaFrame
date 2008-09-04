@@ -28,10 +28,13 @@
     <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
     
     <div id="page">
-      <?php if ( isset($Data->__message) ) { ?>
+      <?php if ( isset($Data->__message) ) {
+        $Message=(object)$Data->__message;
+        ?>
         <div id="message">
-        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button"><img src="<?php echo TO_ROOT ?>/f/images/delete.png" alt="delete"/></a>
-          <?php echo $Data->__message; ?>
+        <img class="level_image" src="<?php echo TO_ROOT ?>/f/images/<? echo $Message->level ?>.png" alt="<? echo $Message->level ?>"/>
+        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php echo TO_ROOT ?>/f/images/delete.png" alt="delete"/></a>
+          <?php echo $Message->text; ?>
         </div>
       <?php } ?>
       <div id="header">

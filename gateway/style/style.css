@@ -25,7 +25,7 @@ body{
   left:   225px;
   top:    60px;
   border: 1px solid black;
-  background: #EEE;
+  background: #FFF;
   padding:10px;
   text-align:center;
 }
@@ -34,6 +34,12 @@ body{
   float:right;
   width:16px;
   height:16px;
+}
+
+#message .level_image {
+  float:left;
+  width:32px;
+  height:32px;
 }
 
 #header {

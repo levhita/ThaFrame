@@ -58,19 +58,25 @@ class Page
   
   /**
    * Shows the given template
-   * 
+   *
    * Converts the $variables array into $Data object and sets any message that may
    * be in the $_SESSION and finally calls the given template
-   * @return void 
+   * @return void
    */
   public function display()
   {
     if ( !file_exists($this->template) ) {
       throw new InvalidArgumentException("'$this->template' doesn't exists");
     }
-    if( isset($_SESSION['__message']) ) {
-      $this->assign('__message', $_SESSION['__message']);
-      unset($_SESSION['__message']);
+    if( isset($_SESSION['__message_text']) ) {
+      $message = array(
+        'level' => $_SESSION['__message_level'] ,
+        'text' => $_SESSION['__message_text']
+      );
+      
+      $this->assign('__message', $message);
+      unset($_SESSION['__message_text']);
+      unset($_SESSION['__message_level']);
     }
     $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('javascripts', $this->javascripts);
@@ -115,9 +121,10 @@ class Page
     $this->variables[$variable] = $value;
   }
   
-  public function goToPage($url, $message = '') {
+  public function goToPage($url, $message = '', $level='info') {
     if ( $message ) {
-      $_SESSION['__message'] = $message;
+      $_SESSION['__message_text'] = $message;
+      $_SESSION['__message_level'] = $level;
     }
     header("location: $url");
     die();
