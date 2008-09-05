@@ -92,7 +92,7 @@ class Row {
       
       $sql = "INSERT INTO
               {$this->table_name}($fields_string)
-              VALUES($valpublicues);";
+              VALUES($values);";
       if ( !$this->DbConnection->executeQuery($sql) ) {
         return false;
       }
