@@ -27,7 +27,7 @@ class Edit extends Page
    * Holds the field's configuration structure
    *
    * fields['name'] {
-   *   + label: The label. 
+   *   + label: The label.
    *   + value: The default value.
    *   + help:  Little text to be show next to the field.
    *   + error_message: If set this message will be show in red below the field.
@@ -68,7 +68,7 @@ class Edit extends Page
   /**
    * Construct a {@link Edit} page
    * @param string $page_name the page name to be shown
-   * @param string $template by default it uses Edit.tpl.php 
+   * @param string $template by default it uses Edit.tpl.php
    * @return Edit
    */
   public function __construct($page_name, $template='')
@@ -86,7 +86,7 @@ class Edit extends Page
    *
    * Field names to be used as labels are extracted and formatted in this
    * phase, they can of course be overrride using {@link setName}
-   * @param  array $rows the raw data 
+   * @param  array $rows the raw data
    * @return void
    */
   public function setRow(Row $Row) {
@@ -104,13 +104,13 @@ class Edit extends Page
       
       $this->no_fields++;
       /**
-       * Extract type information. 
+       * Extract type information.
        * $match[0] The whole string. ie: int(11) unsigned
        * $match[1] The type. ie: int
        * $match[2] The type parameters ie: 11
        * $match[3] Extra. ie: unsigned
        */
-      preg_match('/^([a-z]*)(?:\((.*)\))?\s?(.*)$/', $field['Type'], $match);      
+      preg_match('/^([a-z]*)(?:\((.*)\))?\s?(.*)$/', $field['Type'], $match);
       switch($match[1]){
         case 'varchar':
           if ( $match[2] <= 100 ) {
@@ -149,7 +149,7 @@ class Edit extends Page
         case 'enum':
         case 'set'://Testing
           if ($match[2] == "'0','1'") {
-            $options = array('0'=>'No', '1'=>'Sí');
+            $options = array('0'=>NO, '1'=>YES);
           } else {
             /** Retrive and parse Options **/
             $options = array();
@@ -248,7 +248,7 @@ class Edit extends Page
     $aux['condition'] = $condition;
     $aux['value']     = $value;
     
-    /** Transverse comma separated values into an Array **/ 
+    /** Transverse comma separated values into an Array **/
     $aux['dependents'] = array_reverse( array_map('trim', explode(',', $dependents) ) );
     
     /** Locate the dependents after their parent field **/
@@ -318,7 +318,7 @@ class Edit extends Page
       if ( !isset($this->fields[$field]) ) {
         throw new LogicException("The given field '$field' doesn't exist");
       }
-      $new_fields[$field] =$this->fields[$field]; 
+      $new_fields[$field] =$this->fields[$field];
     }
     $this->fields = $new_fields;
   }
@@ -340,8 +340,8 @@ class Edit extends Page
    * Sets the given field's property
    * @param string $field
    * @param string $property
-   * @param mixed $value 
-   * @return bool true on success false otherwise 
+   * @param mixed $value
+   * @return bool true on success false otherwise
    */
   public function setFieldProperty($field, $property, $value)
   {
@@ -356,8 +356,8 @@ class Edit extends Page
    * Sets the given field's parameter
    * @param string $field
    * @param string $parameter
-   * @param mixed $value 
-   * @return bool true on success false otherwise 
+   * @param mixed $value
+   * @return bool true on success false otherwise
    */
   public function setFieldParameter($field, $parameter, $value)
   {
@@ -372,8 +372,8 @@ class Edit extends Page
    * Sets the given field's input parameter
    * @param string $field
    * @param string $input_parameter
-   * @param mixed $value 
-   * @return bool true on success false otherwise 
+   * @param mixed $value
+   * @return bool true on success false otherwise
    */
   public function setFieldInputParameter($field, $input_parameter, $value)
   {
@@ -389,7 +389,7 @@ class Edit extends Page
    * Unsets the given field's input parameter
    * @param string $field
    * @param string $input_parameter
-   * @return void 
+   * @return void
    */
   public function unsetFieldInputParameter($field, $input_parameter)
   {
@@ -518,7 +518,7 @@ class Edit extends Page
   
   /**
    * Creates the javascript that powers the depedent engine
-   * @return string the code that should be added to the template using {@link addJavascript()} 
+   * @return string the code that should be added to the template using {@link addJavascript()}
    */
   private function createDependentJavascript()
   {
@@ -555,12 +555,12 @@ class Edit extends Page
           $hide_fields = array_diff($parameters['all_fields'], $Condition->dependents);
           foreach ( $hide_fields AS $hide)
           {
-             $code .= "      dependent = document.getElementById('{$hide}_dependent');\n"; 
+             $code .= "      dependent = document.getElementById('{$hide}_dependent');\n";
              $code .= "      dependent.style.display = 'none';\n";
           }
           foreach ( $Condition->dependents AS $show)
           {
-             $code .= "      dependent = document.getElementById('{$show}_dependent');\n"; 
+             $code .= "      dependent = document.getElementById('{$show}_dependent');\n";
              $code .= "      dependent.style.display = 'block';\n";
           }
           $code .= "    } ";
@@ -570,7 +570,7 @@ class Edit extends Page
         $code .= "else {\n";
         foreach ( $parameters['all_fields'] AS $all)
         {
-          $code .= "      dependent = document.getElementById('{$all}_dependent');\n"; 
+          $code .= "      dependent = document.getElementById('{$all}_dependent');\n";
           $code .= "      dependent.style.display = 'none';\n";
         }
         $code .= "    }\n";

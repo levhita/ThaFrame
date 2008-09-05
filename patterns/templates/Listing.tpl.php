@@ -3,7 +3,7 @@
 
     $Vars = $Data->PatternVariables;
     if ($Vars->before_text) {
-      echo "<p>$Vars->before_text</p>";
+      echo "<p>$Vars->before_text</p>\n";
     }
     if ( !empty($Data->general_actions) ) {
       echo "<p>";
@@ -22,11 +22,11 @@
         }
         echo "</a> ";
        }
-      echo "</p>";
+      echo "</p>\n";
     }
     
     if ( $Data->rows ) {
-      echo "<table>\n";
+      echo "\n<table>\n";
       echo "<tr>";
       foreach($Data->fields as $field_title)
       {
@@ -36,7 +36,7 @@
         echo "<th>Acciones</th>";
       }
       echo "</tr>\n";
-      $count=0;  
+      $count=0;
       foreach($Data->rows AS $row)
       {
         if ( ($count % 2) == 1 ){
@@ -98,12 +98,12 @@
       echo "</table>\n";
     } else {
       if ($Vars->no_items_message) {
-        echo "<p><strong>$Vars->no_items_message</strong></p>";
+        echo "\n<p><strong>$Vars->no_items_message</strong></p>\n";
       } else {
-        echo "<p><strong>There are no items</strong></p>";
+        echo "\n<p><strong>There are no items</strong\n</p>";
       }
     }
     if ($Vars->after_text) {
-      echo "<p>$Vars->after_text</p>";
+      echo "\n<p>$Vars->after_text</p>\n";
     }
   $Helper->loadSubTemplate('footer');

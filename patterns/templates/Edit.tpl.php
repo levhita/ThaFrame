@@ -10,7 +10,7 @@ include THAFRAME . "/subtemplates/header.tpl.php";
     if ( count($Properties->input_parameters) ) {
       foreach($Properties->input_parameters AS $property => $value)
       {
-        $input_parameters .= " $property=\"$value\""; 
+        $input_parameters .= " $property=\"$value\"";
       }
     }
     if ( $Properties->dependent ) {
@@ -44,9 +44,16 @@ include THAFRAME . "/subtemplates/header.tpl.php";
           break;
         case "date":
           echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
-          break;          
+          break;
         case "textarea":
           echo "<br/>\n<textarea name=\"$field\" id=\"$field\" $input_parameters>$Properties->value</textarea>";
+          break;
+        case "password":
+          echo "<input type=\"password\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+          if ( $Properties->repeat ) {
+            echo "<br/>\n<label for=\"{$field}_repeat\">Repeat $Properties->label:</label> ";
+            echo "<input type=\"password\" name=\"{$field}_repeat\" id=\"{$field}_repeat\" value=\"$Properties->value\" $input_parameters/>";
+          }
           break;
         default:
           echo "<input type=\"text\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
