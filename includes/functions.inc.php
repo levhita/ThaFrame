@@ -26,7 +26,7 @@
   
   function assertLoggedInAjax() {
     
-    if ( isset($_SESSION['usuario_id']) ) {
+    if ( isset($_SESSION['user_id']) ) {
       if ( $_SESSION['ip'] != $_SERVER['REMOTE_ADDR'] ) {
         return false;
       }
