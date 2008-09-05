@@ -12,7 +12,7 @@
     <script type="text/javascript" src="<?php echo TO_ROOT ?>/f/vendors/overlib/overlib.js"></script>
     <?php
       if ( isset($xajax) ) {
-        $xajax->printJavascript('f/vendors/xajax/');
+        $xajax->printJavascript(TO_ROOT.'/f/vendors/xajax/');
       }
       foreach($Data->javascripts as $javascript)
       {
@@ -40,7 +40,7 @@
       <div id="header">
         <h1><a href="<?php echo SYSTEM_WEB_ROOT?>" title="Inicio"><?php echo SYSTEM_NAME; ?></a></h1>
         <div id="top_menu">
-          <?php if (isset($_SESSION['usuario_id']) ) { ?>
+          <?php if (isset($_SESSION['user_id']) ) { ?>
             <a href="<?php echo TO_ROOT ?>/ocra/index.php" title="Inicio">Inicio</a> ||
             <a href="new_bid.php" title="Crea una nueva postura">Nueva Postura</a> ||
             <a href="list_bids.php" title="Lista todas las posturas">Posturas</a> ||
