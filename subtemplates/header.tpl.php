@@ -6,8 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo SYSTEM_NAME." - $Data->page_name"; ?></title>
     <link rel="stylesheet" href="<?php $Helper->createFrameLink('style/style.css');?>" type="text/css" media="screen"/>
-    <!-- <link rel="stylesheet" href="style/print.css" type="text/css" media="print"/> -->
-    <script type="text/javascript" src="includes/functions.js"></script>
+    <!-- <link rel="stylesheet" href="<?php echo TO_ROOT ?>/style/print.css" type="text/css" media="print"/> -->
+    <script type="text/javascript" src="<?php echo TO_ROOT ?>/includes/functions.js"></script>
     <script type="text/javascript" src="<?php echo TO_ROOT ?>/f/includes/functions.js"></script>
     <script type="text/javascript" src="<?php echo TO_ROOT ?>/f/vendors/overlib/overlib.js"></script>
     <?php
@@ -32,8 +32,8 @@
         $Message=(object)$Data->__message;
         ?>
         <div id="message">
-        <img class="level_image" src="<?php echo TO_ROOT ?>/f/images/<? echo $Message->level ?>.png" alt="<? echo $Message->level ?>"/>
-        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php echo TO_ROOT ?>/f/images/delete.png" alt="delete"/></a>
+        <img class="level_image" src="<?php $Helper->createFrameLink("images/$Message->level.png");?>" alt="<? echo $Message->level ?>"/>
+        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php $Helper->createFrameLink("images/delete.png");?>" alt="delete"/></a>
           <?php echo $Message->text; ?>
         </div>
       <?php } ?>

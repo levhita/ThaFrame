@@ -21,7 +21,7 @@ class Helper {
   }
   
   /*
-   * Load a subtemplate, selectiong between a custom template or a standar
+   * Load a subtemplate, selectiong between a custom template or a standard
    * framework subtemplate
    */
   public function loadSubTemplate($template)
@@ -40,12 +40,36 @@ class Helper {
     }
   }
   
-  public function createFrameLink($filename)
+  public function createFrameLink($filename, $return_string=FALSE)
   {
+    $string = '';
     if( file_exists(TO_ROOT . "/$filename") ){
-      echo TO_ROOT . "/$filename";
+      $string .= TO_ROOT . "/$filename";
     } else {
-      echo TO_ROOT . "/f/$filename";
+      $string .= TO_ROOT . "/f/$filename";
     }
+    if ($return_string){
+      return $string;
+    }
+    echo $string;
+  }
+  
+  public function createActionCall($action, $title, $field, $value, $icon='',$is_ajax=FALSE ,$return_string=FALSE)
+  {
+    $string = "";
+    if( !$is_ajax ) {
+      $string .= "<a href=\"javascript:void(xajax_$action($value))\"
+      title=\"$title\"><img src=\"". $this->createFrameLink($icon, TRUE) . "\"
+      alt=\"$title\"/> $title</a>";
+    } else {
+      $string .= "<a href=\"$action?$field=$value\"
+      title=\"$title\"><img src=\"". $this->createFrameLink($icon, TRUE) . "\"
+      alt=\"$title\"/> $title</a>";
+    }
+    
+    if ($return_string){
+      return $string;
+    }
+    echo $string;
   }
 }
