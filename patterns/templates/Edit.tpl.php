@@ -70,9 +70,10 @@ include THAFRAME . "/subtemplates/header.tpl.php";
   echo "</p>\n</form>\n";
   
   if ( !empty($Data->general_actions) ) {
-    echo "<p>";
+    echo "<ul class=\"action\">";
     foreach ( $Data->general_actions as $action)
     {
+      echo "<li>";
       $action = (object)$action;
       if ( !$action->ajax) {
         echo "<a href=\"$action->action\" title=\"$action->title\">";
@@ -83,7 +84,7 @@ include THAFRAME . "/subtemplates/header.tpl.php";
         }
         echo "</a> ";
       } else {
-        echo "<a href=\"javascript:void(xajax_{$action->action}(xajax.getFormValues('main_form')))\" title=\"$action->title\">";
+        echo "<a href=\"javascript:void(xajax_{$action->action}(xajax.getFormValues('main_form')));\" title=\"$action->title\">";
         if ( !$action->icon ) {
           echo "{$action->title}";
         } else {
@@ -91,8 +92,9 @@ include THAFRAME . "/subtemplates/header.tpl.php";
         }
         echo "</a> ";
       }
+      echo "</li>";
     }
-    echo "</p>";
+    echo "</ul>";
   }
   ?>
 

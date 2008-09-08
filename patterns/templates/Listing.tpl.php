@@ -6,10 +6,11 @@
       echo "<p>$Vars->before_text</p>\n";
     }
     if ( !empty($Data->general_actions) ) {
-      echo "<p>";
+      echo "<ul class=\"action\">";
       foreach ( $Data->general_actions as $action)
       {
         $action = (object)$action;
+        echo "<li>";
         if ( strpos($action->action,'?') === FALSE) {
           echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
         } else {
@@ -20,9 +21,9 @@
         } else {
           echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/> {$action->title}";
         }
-        echo "</a> ";
+        echo "</a></li> ";
        }
-      echo "</p>\n";
+      echo "</ul>\n";
     }
     
     if ( $Data->rows ) {
@@ -33,7 +34,7 @@
         echo "<th>$field_title</th>";
       }
       if ( count($Data->actions) ) {
-        echo "<th>Acciones</th>";
+        echo "<th>Actions</th>";
       }
       echo "</tr>\n";
       $count=0;
@@ -82,7 +83,7 @@
               }
               echo "</a> ";
             } else {
-              echo "<a href=\"javascript:void(xajax_{$action->action}({$row[$action->value]}))\" title=\"$action->title\">";
+              echo "<a href=\"javascript:void(xajax_{$action->action}({$row[$action->value]}));\" title=\"$action->title\">";
               if ( !$action->icon ) {
                 echo "{$action->title}";
               } else {

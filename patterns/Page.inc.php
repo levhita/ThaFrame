@@ -38,6 +38,13 @@ class Page
    * @var string
    */
   public $on_load   = '';
+  
+  /**
+   * Holds the header to be sent on_display
+   *
+   * @var array
+   */
+  public $headers = array();
 
   /**
    * Variables that belongs only to this pattern, used to customize the text and
@@ -84,7 +91,9 @@ class Page
     
     $Data = (object)$this->variables;
     $Helper = new Helper($Data);
-    
+    foreach($this->headers AS $header => $value){
+      header("$header: $value");
+    }
     include $this->template;
   }
   
@@ -148,5 +157,9 @@ class Page
    */
   public function setPatternVariable($variable, $value)  {
     $this->pattern_variables[$variable] = $value;
+  }
+  
+  public function addHeader($header,$value){
+    $this->headers[$header]=$value;
   }
 }
