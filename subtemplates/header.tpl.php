@@ -32,8 +32,8 @@
         $Message=(object)$Data->__message;
         ?>
         <div id="message">
-        <img class="level_image" src="<?php $Helper->createFrameLink("images/$Message->level.png");?>" alt="<? echo $Message->level ?>"/>
-        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php $Helper->createFrameLink("images/delete.png");?>" alt="delete"/></a>
+        <img class="level_image" src="<?php $Helper->createFrameLink("images/dialogs/$Message->level.png");?>" alt="<? echo $Message->level ?>"/>
+        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php $Helper->createFrameLink("images/toolbars/delete.png");?>" alt="delete"/></a>
           <?php echo $Message->text; ?>
         </div>
       <?php } ?>
