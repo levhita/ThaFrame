@@ -52,6 +52,16 @@ class Page
    * @var array
    */
   protected $pattern_variables = array();
+  /**
+   * Holds the main menu template
+   * @var string
+   */
+  public $main_menu_template = '';
+  /**
+   * Holds the secondary menu template
+   * @var string
+   */
+  public $secondary_menu_template = '';
   
   public function __construct($page_name='', $template='')
   {
@@ -84,16 +94,50 @@ class Page
       $this->assign('__message', $message);
       unset($_SESSION['__message_text']);
       unset($_SESSION['__message_level']);
+      unset($message);
     }
+    $script_name = $this->getScriptName();
+    if ( empty($this->main_menu_template) ) {
+      if ( file_exists("templates/" . $this->getScriptName() . "_menu.tpl.php") ) {
+        $this->setMainMenu($this->getScriptName()."_menu");
+      } else if (file_exists('templates/default_main_menu.tpl.php') ) {
+        $this->setMainMenu('default_main_menu');
+      } else if (file_exists(TO_ROOT. "/subtemplates/default_main_menu.tpl.php") ) {
+        $this->setMainMenu(TO_ROOT. '/subtemplates/default_main_menu.tpl.php', TRUE);
+      } else {
+        $this->setMainMenu(THAFRAME. '/subtemplates/default_main_menu.tpl.php', TRUE);
+      }
+    }
+    
+    if ( empty($this->secondary_menu_template) ) {
+      if ( file_exists("templates/" . $this->getScriptName() . "_menu.tpl.php") ) {
+        $this->setSecondaryMenu($this->getScriptName()."_menu");
+      } else if (file_exists('subtemplates/default_secondary_menu.tpl.php') ) {
+        $this->setSecondaryMenu('default_secondary_menu');
+      } else if (file_exists(TO_ROOT. "/subtemplates/default_secondary_menu.tpl.php") ) {
+        $this->setSecondaryMenu(TO_ROOT. '/subtemplates/default_secondary_menu_tpl.php', TRUE);
+      } else {
+        $this->setSecondaryMenu(THAFRAME. '/subtemplates/default_secondary_menu_tpl.php', TRUE);
+      }
+    }
+    
     $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('javascripts', $this->javascripts);
+    $this->assign('main_menu_template', $this->main_menu_template);
+    $this->assign('secondary_menu_template', $this->secondary_menu_template);
     
-    
+    /** Convert all variables into an object **/
     $Data = (object)$this->variables;
+    
+    /** This object actually helps to do a variety of thisn inside templates **/
     $Helper = new Helper($Data);
-    foreach($this->headers AS $header => $value){
+    
+    /** Sends the headers **/
+    foreach($this->headers AS $header => $value)
+    {
       header("$header: $value");
     }
+    
     include $this->template;
   }
   
@@ -159,7 +203,31 @@ class Page
     $this->pattern_variables[$variable] = $value;
   }
   
-  public function addHeader($header,$value){
+  /**
+   * Adds a header to be sent just before display();
+   *
+   * @param string $header
+   * @param string $value
+   */
+  public function addHeader($header, $value){
     $this->headers[$header]=$value;
+  }
+  
+  public function setMainMenu($template, $fullpath = false)
+  {
+    if ( !$fullpath) {
+      $this->main_menu_template = "templates/$template.tpl.php";
+    } else {
+      $this->main_menu_template = $template;
+    }
+  }
+    
+  public function setSecondaryMenu($template, $fullpath = false)
+  {
+    if ( !$fullpath) {
+      $this->secondary_menu_template = "templates/$template.tpl.php";
+    } else {
+      $this->secondary_menu_template = $template;
+    }
   }
 }

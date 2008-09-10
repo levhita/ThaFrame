@@ -24,16 +24,23 @@ class Helper {
    * Load a subtemplate, selectiong between a custom template or a standard
    * framework subtemplate
    */
-  public function loadSubTemplate($template)
+  public function loadSubTemplate($template, $fullpath=FALSE)
   {
     $Data   = $this->Data;
     $Helper = $this;
-    
-    if ( file_exists(TO_ROOT . "/subtemplates/$template.tpl.php") ) {
-      include TO_ROOT . "/subtemplates/$template.tpl.php";
+    if (!$fullpath) {
+      if ( file_exists(TO_ROOT . "/subtemplates/$template.tpl.php") ) {
+        include TO_ROOT . "/subtemplates/$template.tpl.php";
+      } else {
+        if ( file_exists( THAFRAME . "/subtemplates/$template.tpl.php") ) {
+          include THAFRAME . "/subtemplates/$template.tpl.php";
+        } else {
+          throw new Exception("Couldn't find template '$template'");
+        }
+      }
     } else {
-      if ( file_exists( THAFRAME . "/subtemplates/$template.tpl.php") ) {
-        include THAFRAME . "/subtemplates/$template.tpl.php";
+      if ( file_exists( $template) ) {
+        include $template;
       } else {
         throw new Exception("Couldn't find template '$template'");
       }
