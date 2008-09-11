@@ -8,15 +8,13 @@
 
 body{
   font-family: arial, "lucida console", sans-serif;
-  background:  darkgray;
+  padding:0px;
+  margin:0px;
 }
+
 #page{
   position: relative;
   background: #FFF;
-  width:   900px;
-  margin:  auto;
-  border:  1px solid black;
-  padding: 0px;
 }
 
 #message {
@@ -67,14 +65,10 @@ body{
   #top_menu {
     font-size:small;
   }
-  #auction {
-    float:right;
-    text-align:right;
-  }
 
 #sidebar {
   float:left;
-  width:200px;
+  width:150px;
   border:1px solid gray;
   padding:5px;
   margin:0px 0px 0px 5px;
@@ -98,8 +92,7 @@ body{
 
 #content {
  background: white;
- /*margin-left: 223px;*/
- margin-left: 5px;
+ margin-left: 173px;
  margin-right: 5px;
  padding:5px;
  border: 1px solid gray;
@@ -167,6 +160,9 @@ input, select,textarea {
   margin:  2px;
   padding: 0px 0px 0px 2px;
 }
+#sidebar input, #sidebar select,#sidebar textarea {
+  width: 140px;
+}
 img {
   border: none;
 }
@@ -223,6 +219,14 @@ th, td{
   padding-top:.1em;
 }
 
+.float_left{
+    float:left;
+    margin-right:10px;
+	}
+.float_right{
+	 float:right;
+   margin-left:10px;
+	}
 .right {
   text-align:right;
 }

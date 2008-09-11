@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><?php echo SYSTEM_NAME." - $Data->page_name"; ?></title>
     <link rel="stylesheet" href="<?php $Helper->createFrameLink('style/style.css');?>" type="text/css" media="screen"/>
-    <!-- <link rel="stylesheet" href="<?php echo TO_ROOT ?>/style/print.css" type="text/css" media="print"/> -->
+    <link rel="stylesheet" href="<?php $Helper->createFrameLink('style/print.css');?>" type="text/css" media="print"/>
     <script type="text/javascript" src="<?php echo TO_ROOT ?>/includes/functions.js"></script>
     <script type="text/javascript" src="<?php echo TO_ROOT ?>/f/includes/functions.js"></script>
     <script type="text/javascript" src="<?php echo TO_ROOT ?>/f/vendors/overlib/overlib.js"></script>
@@ -32,29 +32,22 @@
         $Message=(object)$Data->__message;
         ?>
         <div id="message">
-        <img class="level_image" src="<?php $Helper->createFrameLink("images/dialogs/$Message->level.png");?>" alt="<? echo $Message->level ?>"/>
-        <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php $Helper->createFrameLink("images/toolbars/delete.png");?>" alt="delete"/></a>
+          <img class="level_image" src="<?php $Helper->createFrameLink("images/dialogs/$Message->level.png");?>" alt="<? echo $Message->level ?>"/>
+          <a href="javascript:void(0);" onclick="javascript:hideMessage();" class="cancel_button" title="Cerrar Mensaje"><img src="<?php $Helper->createFrameLink("images/toolbars/delete.png");?>" alt="delete"/></a>
           <?php echo $Message->text; ?>
         </div>
       <?php } ?>
+      
       <div id="header">
         <h1><a href="<?php echo SYSTEM_WEB_ROOT?>" title="Inicio"><?php echo SYSTEM_NAME; ?></a></h1>
         <div id="top_menu">
           <?php $Helper->loadSubTemplate($Data->main_menu_template, TRUE); ?>
         </div>
-      
       </div>
       
-      <!--<div id="sidebar">
-      <h3>Menu Lateral</h3>
-      <?php
-        if( isset($_SESSION['user_id']) ) {
-          echo "session iniciada";
-        } else {
-          echo "Inicio sesión";
-        }
-        ?>
-     </div>
-     -->
+      <div id="sidebar">
+        <?php $Helper->loadSubTemplate($Data->secondary_menu_template, TRUE); ?>
+      </div>
+      
       <div id="content">
         <h2 id="page_title"><?php echo $Data->page_name; ?></h2>

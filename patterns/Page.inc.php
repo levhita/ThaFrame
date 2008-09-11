@@ -112,12 +112,12 @@ class Page
     if ( empty($this->secondary_menu_template) ) {
       if ( file_exists("templates/" . $this->getScriptName() . "_menu.tpl.php") ) {
         $this->setSecondaryMenu($this->getScriptName()."_menu");
-      } else if (file_exists('subtemplates/default_secondary_menu.tpl.php') ) {
+      } else if (file_exists('templates/default_secondary_menu.tpl.php') ) {
         $this->setSecondaryMenu('default_secondary_menu');
       } else if (file_exists(TO_ROOT. "/subtemplates/default_secondary_menu.tpl.php") ) {
-        $this->setSecondaryMenu(TO_ROOT. '/subtemplates/default_secondary_menu_tpl.php', TRUE);
+        $this->setSecondaryMenu(TO_ROOT. '/subtemplates/default_secondary_menu.tpl.php', TRUE);
       } else {
-        $this->setSecondaryMenu(THAFRAME. '/subtemplates/default_secondary_menu_tpl.php', TRUE);
+        $this->setSecondaryMenu(THAFRAME. '/subtemplates/default_secondary_menu.tpl.php', TRUE);
       }
     }
     
