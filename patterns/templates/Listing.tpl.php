@@ -11,10 +11,14 @@
       {
         $action = (object)$action;
         echo "<li>";
-        if ( strpos($action->action,'?') === FALSE) {
-          echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
+        if( !empty($action->field) ) {
+          if ( strpos($action->action,'?') === FALSE) {
+            echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
+          } else {
+            echo "<a href=\"$action->action&$action->field={$action->value}\" title=\"$action->title\">";
+          }
         } else {
-          echo "<a href=\"$action->action&$action->field={$action->value}\" title=\"$action->title\">";
+          echo "<a href=\"$action->action\" title=\"$action->title\">";
         }
         if ( !$action->icon ) {
           echo "{$action->title}";
