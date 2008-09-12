@@ -163,6 +163,10 @@ input, select,textarea {
 #sidebar input, #sidebar select,#sidebar textarea {
   width: 140px;
 }
+.input_help {
+	font-size: small;
+	color:gray;
+}
 img {
   border: none;
 }

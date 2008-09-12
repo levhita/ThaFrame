@@ -35,10 +35,10 @@
       echo "<tr>";
       foreach($Data->fields as $field_title)
       {
-        echo "<th>$field_title</th>";
+        echo "<th>" . t($field_title) . "</th>";
       }
       if ( count($Data->actions) ) {
-        echo "<th>Actions</th>";
+        echo "<th>".t('Actions')."</th>";
       }
       echo "</tr>\n";
       $count=0;

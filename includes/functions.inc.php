@@ -385,4 +385,25 @@ function formatAsText($num, $fem = false, $dec = false) {
    }
    return $tex;
 }
+
+function t(){
+  global $_translation;
+  if ( func_num_args()<= 0 ) {
+    throw new LengthException('Translation function expects at least one parameter.');
+  }
+  
+  $original = func_get_arg(0);
+  $search = array();
+  $replace = array();
+  
+  for ($i = 1;$i < func_num_args();$i++) {
+    $search[]   = "%$i%";
+    $replace[]  = func_get_arg($i);
+  }
+  
+  if ( array_key_exists($original,$_translation) ){
+    $original = $_translation[$original];
+  }
+  return str_replace($search, $replace, $original);
+}
 ?>

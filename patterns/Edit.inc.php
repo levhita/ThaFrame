@@ -411,6 +411,18 @@ class Edit extends Page
   }
   
   /**
+   * Sets a help text that will be put besides the field
+   *
+   * @param string $field the field where the help text will be added
+   * @param string $help_text the text
+   * @return bool true on success false otherwise
+   */
+  public function setHelpText($field, $help_text)
+  {
+    return $this->setFieldProperty($field, 'help_text', $help_text);
+  }
+  
+  /**
    * Sets the field as hidden
    *
    * Commonly used with the row id.

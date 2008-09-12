@@ -25,15 +25,22 @@ include THAFRAME . "/subtemplates/header.tpl.php";
      echo ($Properties->content=='')?"\n":"<div class=\"separator\">$Properties->content</div>";
      echo "<p>\n";
     } elseif ($Properties->type != 'hidden') {
-      switch($Properties->type){
+      switch($Properties->type){//For PreLabels
         case "date":
-          echo "<label for=\"{$field}_year\">$Properties->label:</label> ";
+          echo "<label for=\"{$field}_year\">".t($Properties->label).":</label> ";
           break;
         case "radio":
-          echo "<label>$Properties->label:</label> ";
+          echo "<label>".t($Properties->label).":</label> ";
           break;
         default:
-          echo "<label for=\"$field\">$Properties->label:</label> ";
+          echo "<label for=\"$field\">".t($Properties->label).":</label> ";
+      }
+      if ($Properties->help_text){
+        switch($Properties->type){//For help text following the label
+          case "textarea":
+            echo "<span class=\"input_help\">".t($Properties->help_text)."</span>";
+            break;
+        }
       }
       switch ($Properties->type) {
         case "select":
@@ -51,13 +58,21 @@ include THAFRAME . "/subtemplates/header.tpl.php";
         case "password":
           echo "<input type=\"password\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
           if ( $Properties->repeat ) {
-            echo "<br/>\n<label for=\"{$field}_repeat\">Repeat $Properties->label:</label> ";
+            echo "<br/>\n<label for=\"{$field}_repeat\">" . t('Repeat the %1%', t($Properties->label) ) . ":</label> ";
             echo "<input type=\"password\" name=\"{$field}_repeat\" id=\"{$field}_repeat\" value=\"$Properties->value\" $input_parameters/>";
           }
           break;
         default:
           echo "<input type=\"text\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
           break;
+      }
+      if ($Properties->help_text){
+        switch($Properties->type){//For help text following the field
+          case "textarea":
+            break;
+          default:
+            echo "<span class=\"input_help\">".t($Properties->help_text)."</span>";
+        }
       }
       echo "<br/>\n";
     } else {
