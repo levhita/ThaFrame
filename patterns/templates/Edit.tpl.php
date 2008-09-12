@@ -90,6 +90,8 @@ include THAFRAME . "/subtemplates/header.tpl.php";
     {
       echo "<li>";
       $action = (object)$action;
+      $action->title = t($action->title);
+      $action->icon = $Helper->createFrameLink($action->icon, 1);
       if ( !$action->ajax) {
         echo "<a href=\"$action->action\" title=\"$action->title\">";
         if ( !$action->icon ) {

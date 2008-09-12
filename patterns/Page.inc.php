@@ -129,7 +129,9 @@ class Page
     /** Convert all variables into an object **/
     $Data = (object)$this->variables;
     
-    /** This object actually helps to do a variety of thisn inside templates **/
+    /** This object actually helps to do a variety of thisn inside templates
+     * @var Helper
+     */
     $Helper = new Helper($Data);
     
     /** Sends the headers **/

@@ -10,6 +10,7 @@
       foreach ( $Data->general_actions as $action)
       {
         $action = (object)$action;
+        $action->title = t($action->title);
         echo "<li>";
         if( !empty($action->field) ) {
           if ( strpos($action->action,'?') === FALSE) {
@@ -23,6 +24,7 @@
         if ( !$action->icon ) {
           echo "{$action->title}";
         } else {
+          $action->icon = $Helper->createFrameLink($action->icon, TRUE);
           echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/> {$action->title}";
         }
         echo "</a></li> ";
@@ -74,6 +76,7 @@
           foreach ( $Data->actions as $action)
           {
             $action = (object)$action;
+            $action->title = t($action->title);
             if ( !$action->ajax) {
               if ( strpos($action->action,'?') === FALSE) {
                 echo "<a href=\"$action->action?$action->value={$row[$action->value]}\" title=\"$action->title\">";
@@ -83,6 +86,7 @@
               if ( !$action->icon ) {
                 echo "{$action->title}";
               } else {
+                $action->icon = $Helper->createFrameLink($action->icon, TRUE);
                 echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
               }
               echo "</a> ";
@@ -91,6 +95,7 @@
               if ( !$action->icon ) {
                 echo "{$action->title}";
               } else {
+                $action->icon = $Helper->createFrameLink($action->icon, TRUE);
                 echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
               }
               echo "</a> ";
