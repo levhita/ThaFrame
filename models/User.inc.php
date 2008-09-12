@@ -59,9 +59,9 @@ class User extends Row
             AND active='1'";
     
     if(!$permissions = $this->DbConnection->getArrayPair($sql)){
-      return FALSE;
+      $permissions = array();
     }
-    
+     
     $processed_permissions=array();
     foreach($permissions AS $object => $actions_string)
     {
