@@ -8,19 +8,6 @@
    */
   
   /**
-   * Returns the string 'Si' or 'No' depending if $text is equal to '1' or not
-   * @param  string $text the text to be matched
-   * @return string
-   */
-  function siNo($text)
-  {
-    if ( $text=='1' ) {
-      return 'Sí';
-    }
-    return 'No';
-  }
-  
-  /**
    * Returns the given number in money format
    * @param string $number The number
    * @return string

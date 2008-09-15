@@ -406,4 +406,12 @@ function t(){
   }
   return str_replace($search, $replace, $original);
 }
+
+  function yesNo($text)
+  {
+    if ( $text=='1' ) {
+      return t('Yes');
+    }
+    return t('No');
+  }
 ?>
