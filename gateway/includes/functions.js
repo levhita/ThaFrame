@@ -1,5 +1,5 @@
 function hideMessage() {
-  message = document.getElementById('message');
+  var message = document.getElementById('message');
   message.style.visibility = "hidden";
 }
 function valRadioButton(radio_button)
