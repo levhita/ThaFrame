@@ -1,5 +1,5 @@
 <?php
-include THAFRAME . "/subtemplates/header.tpl.php";
+  $Helper->loadSubTemplate('header');
 
   echo "<form action=\"$Data->target\" id=\"main_form\">\n";
   echo "<p>\n";
@@ -71,7 +71,7 @@ include THAFRAME . "/subtemplates/header.tpl.php";
           case "textarea":
             break;
           default:
-            echo "<span class=\"input_help\">".t($Properties->help_text)."</span>";
+            echo " <span class=\"input_help\">".t($Properties->help_text)."</span>";
         }
       }
       echo "<br/>\n";
@@ -121,4 +121,4 @@ include THAFRAME . "/subtemplates/header.tpl.php";
   </script>
 <?php } ?>
 
-<?php include THAFRAME . "/subtemplates/footer.tpl.php"; ?>
+<?php $Helper->loadSubTemplate('footer'); ?>
