@@ -33,14 +33,17 @@
     }
     if ($Vars->paginate) {
       echo "\n\n<div id=\"pagination\">\n";
-      $string = "";
+      $string = '';
+      //$string .= t('Page Number').": ";
       if($Vars->page_number != 0) {
         $parameters = array(
             '__page_number' => $Vars->page_number-1,
             '__page_size' => $Vars->page_size,
           );
         $url = $Helper->createSelfUrl($parameters, TRUE);
-        $string .="<a href=\"".htmlspecialchars($url)."\">&lt;&lt; ".t('Anterior')."</a>\n";
+        $string .="<a  class=\"previous\" href=\"".htmlspecialchars($url)."\" title=\"".t('Previous')."\"><span>&lt;&lt; ".t('Previous')."</span></a>\n";
+      }else {
+        $string .="<a  class=\"previous disabled\" href=\"javascript:void();\" title=\"".t('Previous')."\"><span>&lt;&lt; ".t('Previous')."</span></a>\n";
       }
       
       $parameters = array(
@@ -56,8 +59,24 @@
             '__page_size' => $Vars->page_size,
           );
         $url = $Helper->createSelfUrl($parameters, TRUE);
-        $string .="<a href=\"".htmlspecialchars($url)."\">".t('Siguiente')." &gt;&gt;</a>\n";
+        $string .="<a class=\"next\" href=\"".htmlspecialchars($url)."\" title=\"".t('Next')."\"><span>".t('Next')." &gt;&gt;</span></a>\n";
+      } else {
+        $string .="<a class=\"next disabled\" href=\"javascript:void();\" title=\"".t('Next')."\"><span>".t('Next')." &gt;&gt;</span></a>\n";
       }
+      
+      $parameters = array(
+          '__page_number' => $Vars->page_number,
+          '__page_size' => 'replace_with_page_size',
+        );
+      $url = $Helper->createSelfUrl($parameters, TRUE);
+      //$string .= t('Items per Page').": ";
+      $page_sizes = array(
+          '20' => '20',
+          '50' => '50',
+          '100' => '100',
+          '200' => '200'
+        );
+      $string .= createComboBox($page_sizes, 'page_size', $Vars->page_size,"onchange=\"javascript:change_page_size(this, '".htmlspecialchars($url)."');\"");
       
       echo $string;
       echo "</div>\n";

@@ -74,7 +74,7 @@ class Listing extends Page
    *
    * @var integer
    */
-  private $page_size = 25;
+  private $page_size = 20;
   
   /**
    * Which page to show
@@ -258,6 +258,10 @@ class Listing extends Page
       $this->page_number = (empty($_GET['__page_number']))?'0':$_GET['__page_number'];
       $this->page_size = (empty($_GET['__page_size']))?25:$_GET['__page_size'];
       $this->pages = ceil($total_rows/$this->page_size);
+      
+      if($this->page_number >= $this->pages){
+        $this->page_number = $this->pages-1;
+      }
       
       //Reformat the query to use MySQL Limit clause
       $page_start = $this->page_number * $this->page_size;

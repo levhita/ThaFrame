@@ -22,3 +22,9 @@ function change_page(element, url){
   url = url.replace('replace_with_page_number', page_number);
   window.location = url;
 }
+
+function change_page_size(element, url){
+  var page_size = valSelect(element);
+  url = url.replace('replace_with_page_size', page_size);
+  window.location = url;
+}
