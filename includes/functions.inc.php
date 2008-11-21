@@ -414,4 +414,10 @@ function t(){
     }
     return t('No');
   }
+  
+  function microtime_float()
+  {
+    list($useg, $seg) = explode(" ", microtime());
+    return ((float)$useg + (float)$seg);
+  }
 ?>

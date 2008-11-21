@@ -61,6 +61,25 @@ class Helper {
     echo $string;
   }
   
+  public function createSelfUrl($parameters, $return_string=FALSE) {
+    global $web_root;
+    $string .= $web_root. $_SERVER['PHP_SELF'];
+    $original_parameters = $_GET;
+    $parameters = array_merge($original_parameters, $parameters);
+    if ( count($parameters) ) {
+      $first=TRUE;
+      foreach($parameters as $variable=>$value) {
+        $string .=($first)?'?':'&';
+        $string .= urlencode($variable) . "=" . urlencode($value);
+        $first = FALSE;
+      }
+    }
+    if ($return_string) {
+      return $string;
+    }
+    echo $string;
+  }
+  
   public function createActionCall($action, $title, $field, $value, $icon='',$is_ajax=FALSE ,$return_string=FALSE)
   {
     $string = "";

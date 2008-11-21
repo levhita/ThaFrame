@@ -38,7 +38,7 @@
       if ($Properties->help_text){
         switch($Properties->type){//For help text following the label
           case "textarea":
-            echo "<span class=\"input_help\">".t($Properties->help_text)."</span>";
+            echo "<span class=\"input_help\">".t($Properties->help_text).".</span>";
             break;
         }
       }
@@ -71,7 +71,7 @@
           case "textarea":
             break;
           default:
-            echo " <span class=\"input_help\">".t($Properties->help_text)."</span>";
+            echo " <span class=\"input_help\">".t($Properties->help_text).".</span>";
         }
       }
       echo "<br/>\n";

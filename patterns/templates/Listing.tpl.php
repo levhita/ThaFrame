@@ -1,7 +1,7 @@
 <?php
   $Helper->loadSubTemplate('header');
-
-    $Vars = $Data->PatternVariables;
+  $Vars = $Data->PatternVariables;
+  
     if ($Vars->before_text) {
       echo "<p>$Vars->before_text</p>\n";
     }
@@ -31,7 +31,37 @@
        }
       echo "</ul>\n";
     }
-    
+    if ($Vars->paginate) {
+      echo "\n\n<div id=\"pagination\">\n";
+      $string = "";
+      if($Vars->page_number != 0) {
+        $parameters = array(
+            '__page_number' => $Vars->page_number-1,
+            '__page_size' => $Vars->page_size,
+          );
+        $url = $Helper->createSelfUrl($parameters, TRUE);
+        $string .="<a href=\"".htmlspecialchars($url)."\">&lt;&lt; ".t('Anterior')."</a>\n";
+      }
+      
+      $parameters = array(
+          '__page_number' => "replace_with_page_number",
+          '__page_size' => $Vars->page_size,
+        );
+      $url = $Helper->createSelfUrl($parameters, TRUE);
+      $string .= createComboBox(range(1,$Vars->pages), 'page_number', $Vars->page_number,"onchange=\"javascript:change_page(this, '".htmlspecialchars($url)."');\"");
+      
+      if($Vars->page_number != $Vars->pages - 1) {
+        $parameters = array(
+            '__page_number' => $Vars->page_number+1,
+            '__page_size' => $Vars->page_size,
+          );
+        $url = $Helper->createSelfUrl($parameters, TRUE);
+        $string .="<a href=\"".htmlspecialchars($url)."\">".t('Siguiente')." &gt;&gt;</a>\n";
+      }
+      
+      echo $string;
+      echo "</div>\n";
+    }
     if ( $Data->rows ) {
       echo "\n<table>\n";
       echo "<tr>";

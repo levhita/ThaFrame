@@ -63,9 +63,36 @@ class Listing extends Page
   private $general_actions   = array();
   
   /**
+   * Stores if the page should be paginated
+   *
+   * @var boolean
+   */
+  private $paginate = false;
+  
+  /**
+   * Holds the number of elements for each page
+   *
+   * @var integer
+   */
+  private $page_size = 25;
+  
+  /**
+   * Which page to show
+   *
+   * @var integer
+   */
+  private $page_number = 0;
+  /**
+   * Number of pages
+   *
+   * @var integer
+   */
+  private $pages = 0;
+  
+  /**
    * Construct a {@link Listing} page
    * @param string $page_name the page name to be shown
-   * @param string $template by default it uses Listing.tpl.php 
+   * @param string $template by default it uses Listing.tpl.php
    * @return Listing
    */
   public function __construct($page_name, $template='')
@@ -83,7 +110,7 @@ class Listing extends Page
    *
    * Field names to be used as table headers are extracted and formatted in this
    * phase, they can of course be overrride using {@link setName}
-   * @param  array $rows the raw data 
+   * @param  array $rows the raw data
    * @return void
    */
   public function setRows($rows) {
@@ -200,7 +227,7 @@ class Listing extends Page
         'icon'    => $icon,
       );
     $this->general_actions[] = $aux;
-  } 
+  }
   
  
   /**
@@ -215,8 +242,35 @@ class Listing extends Page
     $this->assign('prefix'  , $this->prefix);
     $this->assign('row_id'  , $this->row_id);
     $this->assign('general_actions' , $this->general_actions);
-    
+
     parent::display();
+  }
+  
+  public function setQuery($sql, DbConnection $DbConnection, $paginate = false) {
+    if ($paginate) {
+      $this->paginate = true;
+      
+      //Get a Grip of the whole thing
+      $count_sql = "SELECT count(*) FROM ($sql) AS count_table;";
+      $total_rows = $DbConnection->getOneValue($count_sql);
+      
+      //Create some basic pattern variables
+      $this->page_number = (empty($_GET['__page_number']))?'0':$_GET['__page_number'];
+      $this->page_size = (empty($_GET['__page_size']))?25:$_GET['__page_size'];
+      $this->pages = ceil($total_rows/$this->page_size);
+      
+      //Reformat the query to use MySQL Limit clause
+      $page_start = $this->page_number * $this->page_size;
+      $sql = "$sql
+            LIMIT $page_start, $this->page_size";
+      
+      $this->setPatternVariable('paginate', $this->paginate);
+      $this->setPatternVariable('page_number', $this->page_number);
+      $this->setPatternVariable('page_size',$this->page_size);
+      $this->setPatternVariable('pages', $this->pages);
+    }
+    $rows = $DbConnection->getAllRows($sql);
+    $this->setRows($rows);
   }
 }
 ?>
