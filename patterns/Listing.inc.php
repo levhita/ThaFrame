@@ -276,5 +276,15 @@ class Listing extends Page
     $rows = $DbConnection->getAllRows($sql);
     $this->setRows($rows);
   }
+  
+  public function setFormat($field, $function)
+  {
+    if( function_exists($function) ) {
+      for($i=0; $i<count($this->rows); $i++)
+      {
+        $this->rows[$i][$field]=$function($this->rows[$i][$field]);
+      }
+    }
+  }
 }
 ?>
