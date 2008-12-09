@@ -138,13 +138,13 @@
    * @todo make it posible to load a php file with the original url as parameter.
    */
   function loadErrorPage($page){
-  	if(file_exists(TO_ROOT ."/pages/$page.html")){
-  		header("Location: ". SYSTEM_WEB_ROOT . "/pages/$page.html");
-  	} else {
-  		header('Content-Type: text/html; charset=UTF-8');
+    if(file_exists(TO_ROOT ."/pages/$page.html")){
+      header("Location: ". SYSTEM_WEB_ROOT . "/pages/$page.html");
+    } else {
+      header('Content-Type: text/html; charset=UTF-8');
       readfile(THAFRAME . "/pages/$page.html");
-  	  die();
-  	}
+    }
+    die();
   }
   
   function formatAsDate($date, $mode='long')
