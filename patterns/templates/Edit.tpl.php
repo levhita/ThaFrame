@@ -42,43 +42,40 @@
             break;
         }
       }
-      if ( $Properties->disabled != 'true' ) {
-        switch ($Properties->type) {
-           case "select":
+      $readonly = ($Properties->disabled == 'true')?'readonly="readonly"':'';
+      switch ($Properties->type) {
+        case "select":
+          if ( !empty($readonly)) {
+            echo $Properties->parameters['options'][$Properties->value];
+            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+          } else {
             echo createComboBox($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
-            break;
-          case "radio":
+          }
+          break;
+        case "radio":
+          if ( !empty($readonly) ) {
+            echo $Properties->parameters['options'][$Properties->value];
+            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+          } else {
             echo createRadioButton($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
-            break;
-          case "date":
-            echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
-            break;
-          case "textarea":
-            echo "<br/>\n<textarea name=\"$field\" id=\"$field\" $input_parameters>$Properties->value</textarea>";
-            break;
-          case "password":
-            echo "<input type=\"password\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
-            if ( $Properties->repeat ) {
-              echo "<br/>\n<label for=\"{$field}_repeat\">" . t('Repeat the %1%', t($Properties->label) ) . ":</label> ";
-              echo "<input type=\"password\" name=\"{$field}_repeat\" id=\"{$field}_repeat\" value=\"$Properties->value\" $input_parameters/>";
-            }
-            break;
-          default:
-            echo "<input type=\"text\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
-            break;
-        }
-      } else {
-        switch ($Properties->type) {
-          case "select":
-            echo $Properties->parameters['options'][$Properties->value];
-            break;
-          case "radio":
-            echo $Properties->parameters['options'][$Properties->value];
-            break;
-          default:
-            echo $Properties->value;
-        }
-        echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+          }
+          break;
+        case "date":
+          echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
+          break;
+        case "textarea":
+          echo "<br/>\n<textarea name=\"$field\" id=\"$field\" $input_parameters $readonly>$Properties->value</textarea>";
+          break;
+        case "password":
+          echo "<input type=\"password\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters $readonly/>";
+          if ( $Properties->repeat && empty($readonly)) {
+            echo "<br/>\n<label for=\"{$field}_repeat\">" . t('Repeat the %1%', t($Properties->label) ) . ":</label> ";
+            echo "<input type=\"password\" name=\"{$field}_repeat\" id=\"{$field}_repeat\" value=\"$Properties->value\" $input_parameters/>";
+          }
+          break;
+        default:
+          echo "<input type=\"text\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters $readonly/>";
+          break;
       }
       if ($Properties->help_text){
         switch($Properties->type){//For help text following the field
