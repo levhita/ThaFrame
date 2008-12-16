@@ -476,7 +476,6 @@ class Edit extends Page
             FROM $table_name
             ORDER BY $name_field";
     $options = $DbConnection->getArrayPair($sql);
-    
     $this->setFieldProperty($field, 'type', 'select');
     
     $this->unsetFieldInputParameter($field, 'maxlength');
@@ -590,5 +589,10 @@ class Edit extends Page
       $code .="  }\n";
     }
     return $code;
+  }
+  
+  public function disableField($field)
+  {
+    return $this->setFieldProperty($field, 'disabled', 'true');
   }
 }

@@ -31,7 +31,7 @@
        }
       echo "</ul>\n";
     }
-    if ($Vars->paginate) {
+    if ($Vars->paginate && $Data->rows) {
       echo "\n\n<div id=\"pagination\">\n";
       $string = '';
       //$string .= t('Page Number').": ";

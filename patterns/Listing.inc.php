@@ -259,7 +259,7 @@ class Listing extends Page
       $this->page_size = (empty($_GET['__page_size']))?25:$_GET['__page_size'];
       $this->pages = ceil($total_rows/$this->page_size);
       
-      if($this->page_number >= $this->pages){
+      if($this->page_number > $this->pages){
         $this->page_number = $this->pages-1;
       }
       
@@ -279,7 +279,7 @@ class Listing extends Page
   
   public function setFormat($field, $function)
   {
-    if( function_exists($function) ) {
+    if( function_exists($function) && is_array($this->rows) ) {
       for($i=0; $i<count($this->rows); $i++)
       {
         $this->rows[$i][$field]=$function($this->rows[$i][$field]);
