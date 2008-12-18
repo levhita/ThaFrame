@@ -100,8 +100,8 @@ class Edit extends Page
       $aux=array();
       $name = $field['Field'];
       $aux['label'] = ucwords(str_replace('_', ' ', $name));
-      $aux['value'] = $Row->data[$name];
-      
+      $aux['value'] = (isset($Row->data[$name]))?$Row->data[$name]:$field['Default'];
+         
       $this->no_fields++;
       /**
        * Extract type information.
