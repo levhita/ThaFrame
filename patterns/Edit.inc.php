@@ -149,7 +149,7 @@ class Edit extends Page
         case 'enum':
         case 'set'://Testing
           if ($match[2] == "'0','1'") {
-            $options = array('0'=>NO, '1'=>YES);
+            $options = array('1'=> t('Yes'), '0'=> t('No') );
           } else {
             /** Retrive and parse Options **/
             $options = array();
