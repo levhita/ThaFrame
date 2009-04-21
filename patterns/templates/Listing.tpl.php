@@ -3,7 +3,7 @@
   $Vars = $Data->PatternVariables;
   
     if ($Vars->before_text) {
-      echo "<p>$Vars->before_text</p>\n";
+      echo "<p>".t($Vars->before_text)."</p>\n";
     }
     if ( !empty($Data->general_actions) ) {
       echo "<ul class=\"action\">";
@@ -157,9 +157,9 @@
       echo "</table>\n";
     } else {
       if ($Vars->no_items_message) {
-        echo "\n<p><strong>$Vars->no_items_message</strong></p>\n";
+        echo "\n<p><strong>".t($Vars->no_items_message)."</strong></p>\n";
       } else {
-        echo "\n<p><strong>There are no items</strong\n</p>";
+        echo "\n<p><strong>".t("There are no items")."</strong\n</p>";
       }
     }
     if ($Vars->after_text) {
