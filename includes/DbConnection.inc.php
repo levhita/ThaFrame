@@ -124,6 +124,13 @@ class DbConnection {
   {
     return $this->errors;
   }
+  public function getErrorsString(){
+    $string="";
+    foreach($this->errors AS $error){
+      $string .= "$error\n";
+    }
+    return $string;
+  }
   public function getLastId()
   {
     return mysql_insert_id($this->db_connection);

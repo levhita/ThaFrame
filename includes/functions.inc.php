@@ -74,7 +74,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
       if ( $key==$selected ) {
         $output .=" selected=\"selected\" ";
       }
-      $output.=">$value</option>\n";
+      $output.=">".t(ucwords($value))."</option>\n";
     }
     $output.="</select>\n";
     return $output;
@@ -88,7 +88,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
       if ( $key==$selected ) {
         $output .=" checked=\"checked\" ";
       }
-      $output.=" $extra_parameters/>$value ";
+      $output.=" $extra_parameters/>".t(ucwords($value))." ";
     }
     return $output;
   }
@@ -172,7 +172,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
       throw new LengthException('Translation function expects at least one parameter.');
     }
     
-    $original = func_get_arg(0);
+    $original = (string)func_get_arg(0);
     $search = array();
     $replace = array();
     
@@ -180,8 +180,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
       $search[]   = "%$i%";
       $replace[]  = func_get_arg($i);
     }
-    
-    if ( array_key_exists($original,$_translation) ){
+    if ( array_key_exists($original, $_translation) ){
       $original = $_translation[$original];
     }
     return str_replace($search, $replace, $original);
