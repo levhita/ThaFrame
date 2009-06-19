@@ -140,4 +140,3 @@ class DbConnection {
     return $this->db_connection;
   }
 }
-?>
