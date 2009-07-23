@@ -80,14 +80,18 @@ class Helper {
     echo $string;
   }
   
-  public function createActionCall($action, $title, $field, $value, $icon='',$is_ajax=FALSE ,$return_string=FALSE)
+  public function createActionCall($action, $title, $field='', $value='', $icon='', $is_ajax=FALSE , $return_string=FALSE)
   {
     $string = "";
     $title = t($title);
-    if( !$is_ajax ) {
+    if( $is_ajax ) {
       $string .= "<a href=\"javascript:void(xajax_$action($value))\" title=\"$title\">";
     } else {
-      $string .= "<a href=\"$action?$field=$value\" title=\"$title\">";
+      if ( !empty($field) ) {
+        $string .= "<a href=\"$action?$field=$value\" title=\"$title\">";
+      } else {
+        $string .= "<a href=\"$action\" title=\"$title\">";
+      }
     }
     if ( !empty($icon) ) {
       $icon =  $this->createFrameLink($icon, TRUE);

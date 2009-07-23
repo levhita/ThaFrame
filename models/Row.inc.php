@@ -123,6 +123,7 @@ class Row {
   public function inactive()
   {
     $this->data['active'] = '0';
+    return TRUE;
   }
   
   public function isLoaded(){

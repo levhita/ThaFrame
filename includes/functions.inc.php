@@ -193,4 +193,19 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
     list($useg, $seg) = explode(" ", microtime());
     return ((float)$useg + (float)$seg);
   }
+  
+  /**
+   * Takes the $data from a form with a date on it, creates a date by compositing
+   * the year,month and day fields, into one string, and then cleans the extra
+   * fields
+   * @param $data Array An Array of fields
+   * @param $field String Field name to be cleaned
+   * @return bool True on success FALSE in case of an error
+   */
+  function cleanDateFromData(&$data, $field){
+    $date = $data["{$field}_year"] . "-" . $data["{$field}_month"] . "-" .$data["{$field}_day"];
+    unset($data["{$field}_year"], $data["{$field}_month"], $data["{$field}_day"]);
+    $data[$field] = $date;
+    return TRUE;
+  }
 ?>
