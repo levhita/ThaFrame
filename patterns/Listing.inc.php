@@ -275,11 +275,13 @@ class Listing extends Page
   }
   
   public function addFilterOptions($field, $values, $condition){
-    foreach($values as $value=>$label) {
-      $search  = array('{value}', '{label}');
-      $replace = array( $value,    $label);
-      $replaced_condition = str_replace($search, $replace, $condition);
-      $this->addFilterOption($field, $value, $label, FALSE, $replaced_condition);
+    if (is_array($values) ) {
+      foreach($values as $value=>$label) {
+        $search  = array('{value}', '{label}');
+        $replace = array( $value,    $label);
+        $replaced_condition = str_replace($search, $replace, $condition);
+        $this->addFilterOption($field, $value, $label, FALSE, $replaced_condition);
+      }
     }
   }
   
