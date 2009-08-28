@@ -339,20 +339,22 @@ class Listing extends Page
         //echo "Checking for filter on '$field'\n";
         if( isset($_GET[$field]) ) {
           $selected = stripslashes($_GET[$field]);
-          //echo "Selected:$selected\n";
-          foreach($Filter->options AS $option){
-            //echo "Comparing value: {$option['value']}\n";
-            if ( $option['value'] == $selected) {
+        } else {
+          $selected = $this->filters[$field]['default'];
+        }
+        //echo "Selected:$selected\n";
+        foreach($Filter->options AS $option){
+          //echo "Comparing value: {$option['value']}\n";
+          if ( $option['value'] == $selected) {
               //echo "Match!, condition added '{$option['condition']}'\n\n";
               $conditions .= "\nAND ";
               $conditions .= $option['condition'];
               $this->filters[$field]['selected']= $selected;
-            }
           }
         }
       }
-
     }
+
     if ( empty($conditions) ) {
       $sql = str_replace('{conditions}','',$sql);
     } else {
