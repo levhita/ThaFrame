@@ -278,7 +278,7 @@ class Listing extends Page
     if (is_array($values) ) {
       foreach($values as $value=>$label) {
         $search  = array('{value}', '{label}');
-        $replace = array( $value,    $label);
+        $replace = array(mysql_escape_string($value), mysql_escape_string($label));
         $replaced_condition = str_replace($search, $replace, $condition);
         $this->addFilterOption($field, $value, $label, FALSE, $replaced_condition);
       }
@@ -338,12 +338,12 @@ class Listing extends Page
         $Filter = (object)$filter;
         //echo "Checking for filter on '$field'\n";
         if( isset($_GET[$field]) ) {
-          $selected = $_GET[$field];
+          $selected = stripslashes($_GET[$field]);
           //echo "Selected:$selected\n";
           foreach($Filter->options AS $option){
             //echo "Comparing value: {$option['value']}\n";
-            if ( $option['value'] == $selected ) {
-              //echo "Match!, condition added '{$option['condition']}'";
+            if ( $option['value'] == $selected) {
+              //echo "Match!, condition added '{$option['condition']}'\n\n";
               $conditions .= "\nAND ";
               $conditions .= $option['condition'];
               $this->filters[$field]['selected']= $selected;

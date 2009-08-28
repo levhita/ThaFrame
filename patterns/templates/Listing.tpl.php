@@ -84,7 +84,7 @@
     if ( !empty($Data->filters)) {
       //echo "<pre>".htmlentities(print_r($Data->filters,1))."</pre>";
       
-      echo "<form name='filters' method='get' action='' class='list_filters'><div>\n<strong>Filtrar &gt;&gt;</strong>\n";
+      echo "<form name='filters' method='get' action='' class='list_filters'><div>\n<strong>".t('Filter'). "&gt;&gt;</strong>\n";
       
       foreach($Data->filters AS $field => $filter){
         $Filter = (object)$filter;
@@ -99,7 +99,7 @@
         }
         echo "\n";
       }
-      echo "<input type=\"submit\" value=\"".t("Aplicar")."\"/>";
+      echo "<input type=\"submit\" value=\"".t("Apply")."\"/>";
       echo "</div></form>";
       
    }
