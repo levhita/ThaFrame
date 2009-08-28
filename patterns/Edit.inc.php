@@ -330,10 +330,10 @@ class Edit extends Page
    * @param string $position 'after' or 'before', Default: 'after'
    * @return bool true on success false otherwise
    */
-  public function insertSeparator($target, $content='', $position='after')
+  public function insertSeparator($target, $content='', $position='after', $name='')
   {
     $aux= array('type' => 'separator', 'content' => $content);
-    return $this->insertField('', $aux, $target, $position);
+    return $this->insertField("{$name}_splitter", $aux, $target, $position);
   }
   
   /**

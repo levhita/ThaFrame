@@ -14,16 +14,18 @@
       }
     }
     if ( $Properties->dependent ) {
-      echo "</p>\n\n<div class=\"dependent\" id=\"{$field}_dependent\" style=\"display:none\">\n  ";
+      echo "</p>\n\n<div class=\"dependent\" id=\"{$field}_dependent\" style=\"display:none\">\n";
     }
     if ($Properties->parent) {
       $input_parameters .= " onchange=\"updateDependents();\"";
     }
     
     if ($Properties->type == 'separator') {
-     echo "</p>\n";
-     echo ($Properties->content=='')?"\n":"<div class=\"separator\">$Properties->content</div>";
-     echo "<p>\n";
+      if ( $Properties->dependent ) {
+        echo ($Properties->content=='')?"\n":"  <div class=\"separator\">$Properties->content</div>\n";
+      } else {
+        echo ($Properties->content=='')?"\n":"</p>\n\n<div class=\"separator\">$Properties->content</div>\n\n<p>\n";
+      }
     } elseif ($Properties->type != 'hidden') {
       switch($Properties->type){//For PreLabels
         case "date":

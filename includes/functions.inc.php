@@ -65,6 +65,14 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
   }
   
   
+  /**
+   * Creates a ComboBox
+   * @param $items Array in $key=>$value format
+   * @param $name String field name
+   * @param $selected string telling which value is the one selected
+   * @param $extra_parameters string any other extra string to be attached at the end
+   * @return string the combobox in a single string
+   */
   function createComboBox($items, $name, $selected, $extra_parameters='')
   {
     $output= "<select name=\"$name\" id=\"$name\" $extra_parameters>\n";

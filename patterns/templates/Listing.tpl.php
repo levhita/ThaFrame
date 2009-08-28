@@ -81,6 +81,28 @@
       echo $string;
       echo "</div>\n";
     }
+    if ( !empty($Data->filters)) {
+      //echo "<pre>".htmlentities(print_r($Data->filters,1))."</pre>";
+      
+      echo "<form name='filters' method='get' action='' class='list_filters'><div>\n<strong>Filtrar &gt;&gt;</strong>\n";
+      
+      foreach($Data->filters AS $field => $filter){
+        $Filter = (object)$filter;
+        if($Filter->type=='custom'){
+          echo $Filter->label.": ";
+          $options = array();
+          foreach($Filter->options AS $option) {
+            $options[$option['value']] = $option['label'];
+          }
+          $selected = (empty($Filter->selected))? $Filter->default:$Filter->selected;
+          echo createComboBox($options, $field, $selected);
+        }
+        echo "\n";
+      }
+      echo "<input type=\"submit\" value=\"".t("Aplicar")."\"/>";
+      echo "</div></form>";
+      
+   }
     if ( $Data->rows ) {
       echo "\n<table>\n";
       echo "<tr>";

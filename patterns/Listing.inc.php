@@ -63,6 +63,12 @@ class Listing extends Page
   private $general_actions   = array();
   
   /**
+   * Holds filter options and configuration
+   * @var array
+   */
+  private $filters   = array();
+  
+  /**
    * Stores if the page should be paginated
    *
    * @var boolean
@@ -229,6 +235,54 @@ class Listing extends Page
     $this->general_actions[] = $aux;
   }
   
+  /**
+   * Adds a filter form to the list
+   * @param $field
+   * @param $label
+   * @param $type
+   * @return bool
+   */
+  public function addFilter($field, $label, $type='custom')
+  {
+    $aux = array (
+        'label' => $label,
+        'type'  => $type,
+        'empty' => $empty,
+        'options' => array()
+    );
+    $this->filters[$field] = $aux;
+  }
+  /**
+   * Adds a filter option
+   * @param $field
+   * @param $value
+   * @param $label
+   * @param $default
+   * @param $condition
+   * @return bool
+   */
+  public function addFilterOption($field, $value, $label, $default=FALSE, $condition='')
+  {
+    $aux = array (
+        'label' => $label,
+        'value' => $value,
+        'condition' => $condition,
+    );
+    if($default) {
+      $this->filters[$field]['default']= $value;
+    }
+    $this->filters[$field]['options'][] = $aux;
+  }
+  
+  public function addFilterOptions($field, $values, $condition){
+    foreach($values as $value=>$label) {
+      $search  = array('{value}', '{label}');
+      $replace = array( $value,    $label);
+      $replaced_condition = str_replace($search, $replace, $condition);
+      $this->addFilterOption($field, $value, $label, FALSE, $replaced_condition);
+    }
+  }
+  
  
   /**
    * Display the selected template with the given data and customization
@@ -241,6 +295,7 @@ class Listing extends Page
     $this->assign('actions' , $this->actions);
     $this->assign('prefix'  , $this->prefix);
     $this->assign('row_id'  , $this->row_id);
+    $this->assign('filters' , $this->filters);
     $this->assign('general_actions' , $this->general_actions);
 
     parent::display();
@@ -273,6 +328,35 @@ class Listing extends Page
       $this->setPatternVariable('page_size',$this->page_size);
       $this->setPatternVariable('pages', $this->pages);
     }
+    
+    $conditions = '';
+    if ( count($this->filters) ) {
+      
+      foreach($this->filters AS $field => $filter) {
+        $Filter = (object)$filter;
+        //echo "Checking for filter on '$field'\n";
+        if( isset($_GET[$field]) ) {
+          $selected = $_GET[$field];
+          //echo "Selected:$selected\n";
+          foreach($Filter->options AS $option){
+            //echo "Comparing value: {$option['value']}\n";
+            if ( $option['value'] == $selected ) {
+              //echo "Match!, condition added '{$option['condition']}'";
+              $conditions .= "\nAND ";
+              $conditions .= $option['condition'];
+              $this->filters[$field]['selected']= $selected;
+            }
+          }
+        }
+      }
+
+    }
+    if ( empty($conditions) ) {
+      $sql = str_replace('{conditions}','',$sql);
+    } else {
+      $sql = str_replace('{conditions}', $conditions, $sql);
+    }
+    
     $rows = $DbConnection->getAllRows($sql);
     $this->setRows($rows);
   }
