@@ -30,7 +30,7 @@
       return date('F j, Y, g:i a', strtotime($date));
     }
     if ($format == "medium") {
-      return date('d/m/y H:m:s', strtotime($date));
+      return date('d/m/Y', strtotime($date));
     }
     if ($format == "short") {
       return date('d/m', strtotime($date));
@@ -260,5 +260,10 @@ function formatAsText($num, $fem = false, $dec = false) {
   function formatYesNo($text)
   {
     return yesNo($text);
+  }
+  
+  function formatTranslate($string)
+  {
+    return t(ucwords($string));
   }
 ?>
