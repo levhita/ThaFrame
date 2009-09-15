@@ -1,6 +1,10 @@
 <?php
   $Helper->loadSubTemplate('header');
-
+  $Vars = $Data->PatternVariables;
+  
+  if ($Vars->before_text) {
+    echo "<p>".t($Vars->before_text)."</p>\n";
+  }
   echo "<form action=\"$Data->target\" id=\"main_form\">\n";
   echo "<p>\n";
   
