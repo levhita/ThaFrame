@@ -277,7 +277,7 @@ class Edit extends Page
    * @param string $position 'after' or 'before', Default: 'after'
    * @return bool true on success false otherwise
    */
-  private function insertField($field_name, $field_data, $target, $position='after')
+  public function insertField($field_name, $field_data, $target, $position='after')
   {
     $success = false;
     /** there is no easy way to insert an element into an array, so we need to
