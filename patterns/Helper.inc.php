@@ -104,4 +104,12 @@ class Helper {
     }
     echo $string;
   }
+  
+  public function objetizeArray($array){
+    $clean_array = array();
+    foreach($array AS $key => $value){
+      $clean_array[$key] = htmlspecialchars($value);
+    }
+    return (object)$clean_array;
+  }
 }
