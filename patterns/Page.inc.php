@@ -125,6 +125,7 @@ class Page
     $this->assign('javascripts', $this->javascripts);
     $this->assign('main_menu_template', $this->main_menu_template);
     $this->assign('secondary_menu_template', $this->secondary_menu_template);
+    $this->assign('__on_load', $this->on_load);
     
     /** Convert all variables into an object **/
     $Data = (object)$this->variables;
