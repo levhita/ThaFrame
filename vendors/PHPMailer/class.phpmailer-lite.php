@@ -370,7 +370,7 @@ class PHPMailerLite {
    */
   private function AddAnAddress($kind, $address, $name = '') {
     if (!preg_match('/^(to|cc|bcc|ReplyTo)$/', $kind)) {
-      //echo 'Invalid recipient array: ' . kind;
+      echo 'Invalid recipient array: ' . kind;
       return false;
     }
     $address = trim($address);
@@ -380,7 +380,7 @@ class PHPMailerLite {
       if ($this->exceptions) {
         throw new phpmailerException($this->Lang('invalid_address').': '.$address);
       }
-      //echo $this->Lang('invalid_address').': '.$address;
+      echo $this->Lang('invalid_address').': '.$address;
       return false;
     }
   if ($kind != 'ReplyTo') {
@@ -412,7 +412,7 @@ class PHPMailerLite {
       if ($this->exceptions) {
         throw new phpmailerException($this->Lang('invalid_address').': '.$address);
       }
-      echo $this->Lang('invalid_address').': '.$address;
+      //echo $this->Lang('invalid_address').': '.$address;
       return false;
     }
     $this->From = $address;
