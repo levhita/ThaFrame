@@ -53,15 +53,15 @@
         case "select":
           if ( !empty($readonly)) {
             echo $Properties->parameters['options'][$Properties->value];
-            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlentities($Properties->value)."\" $input_parameters/>";
           } else {
             echo createComboBox($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
           }
           break;
         case "radio":
           if ( !empty($readonly) ) {
-            echo $Properties->parameters['options'][$Properties->value];
-            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+            echo htmlspecialchars($Properties->parameters['options'][$Properties->value]);
+            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlentities($Properties->value)."\" $input_parameters/>";
           } else {
             echo createRadioButton($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
           }
@@ -70,17 +70,17 @@
           echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
           break;
         case "textarea":
-          echo "<br/>\n<textarea name=\"$field\" id=\"$field\" $input_parameters $readonly>$Properties->value</textarea>";
+          echo "<br/>\n<textarea name=\"$field\" id=\"$field\" $input_parameters $readonly>".htmlspecialchars($Properties->value)."</textarea>";
           break;
         case "password":
-          echo "<input type=\"password\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters $readonly/>";
+          echo "<input type=\"password\" name=\"$field\" id=\"$field\" value=\"".htmlentities($Properties->value)."\" $input_parameters $readonly/>";
           if ( $Properties->repeat && empty($readonly)) {
             echo "<br/>\n<label for=\"{$field}_repeat\">" . t('Repeat the %1%', t($Properties->label) ) . ":</label> ";
-            echo "<input type=\"password\" name=\"{$field}_repeat\" id=\"{$field}_repeat\" value=\"$Properties->value\" $input_parameters/>";
+            echo "<input type=\"password\" name=\"{$field}_repeat\" id=\"{$field}_repeat\" value=\"".htmlentities($Properties->value)."\" $input_parameters/>";
           }
           break;
         default:
-          echo "<input type=\"text\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters $readonly/>";
+          echo "<input type=\"text\" name=\"$field\" id=\"$field\" value=\"".htmlentities($Properties->value)."\" $input_parameters $readonly/>";
           break;
       }
       if ($Properties->help_text){
@@ -93,7 +93,7 @@
       }
       echo "<br/>\n";
     } else {
-      echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"$Properties->value\" $input_parameters/>";
+      echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlentities($Properties->value)."\" $input_parameters/>";
     }
     if ( $Properties->dependent ) {
       echo "</div>\n\n<p>\n";

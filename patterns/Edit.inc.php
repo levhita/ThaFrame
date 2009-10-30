@@ -329,8 +329,21 @@ class Edit extends Page
    * @param string $content The content that will be inside the separator
    * @param string $position 'after' or 'before', Default: 'after'
    * @return bool true on success false otherwise
+   * @deprectated in favor of insertSplitter.
    */
   public function insertSeparator($target, $content='', $position='after', $name='')
+  {
+    return $this->insertSplitter($target, $content, $position, $name);
+  }
+  
+  /**
+   * Inserts an splitter (with optional content) at the given position.
+   * @param string $target The field after the separator will be created
+   * @param string $content The content that will be inside the splitter
+   * @param string $position 'after' or 'before', Default: 'after'
+   * @return bool true on success false otherwise
+   */
+  public function insertSplitter($target, $content='', $position='after', $name='')
   {
     $aux= array('type' => 'separator', 'content' => $content);
     return $this->insertField("{$name}_splitter", $aux, $target, $position);

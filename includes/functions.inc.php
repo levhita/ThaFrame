@@ -78,7 +78,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
     $output= "<select name=\"$name\" id=\"$name\" $extra_parameters>\n";
     foreach ( $items as $key => $value )
     {
-      $output.= "<option value=\"$key\"";
+      $output.= "<option value=\"" . htmlentities($key) . "\"";
       if ( $key==$selected ) {
         $output .=" selected=\"selected\" ";
       }
@@ -92,7 +92,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
   {
     foreach ( $items as $key => $value )
     {
-      $output.= "<input type=\"radio\" name=\"$name\" value=\"$key\"";
+      $output.= "<input type=\"radio\" name=\"$name\" value=\"" . htmlentities($key) . "\"";
       if ( $key==$selected ) {
         $output .=" checked=\"checked\" ";
       }
