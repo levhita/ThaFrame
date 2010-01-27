@@ -252,6 +252,16 @@ class Listing extends Page
     );
     $this->filters[$field] = $aux;
   }
+  
+  public function addHiddenFilter($field, $value, $condition){
+    $aux = array (
+        'type'  => 'hidden',
+        'value' => $value,
+        'condition' => $condition
+    );
+    $this->filters[$field] = $aux;
+  }
+  
   /**
    * Adds a filter option
    * @param $field
@@ -336,21 +346,26 @@ class Listing extends Page
       
       foreach($this->filters AS $field => $filter) {
         $Filter = (object)$filter;
-        //echo "Checking for filter on '$field'\n";
-        if( isset($_GET[$field]) ) {
-          $selected = stripslashes($_GET[$field]);
-        } else {
-          $selected = $this->filters[$field]['default'];
-        }
-        //echo "Selected:$selected\n";
-        foreach($Filter->options AS $option){
-          //echo "Comparing value: {$option['value']}\n";
-          if ( $option['value'] == $selected) {
-              //echo "Match!, condition added '{$option['condition']}'\n\n";
-              $conditions .= "\nAND ";
-              $conditions .= $option['condition'];
-              $this->filters[$field]['selected']= $selected;
+        if($Filter->type=='custom') {
+          //echo "Checking for filter on '$field'\n";
+          if( isset($_GET[$field]) ) {
+            $selected = stripslashes($_GET[$field]);
+          } else {
+            $selected = $this->filters[$field]['default'];
           }
+          //echo "Selected:$selected\n";
+          foreach($Filter->options AS $option){
+            //echo "Comparing value: {$option['value']}\n";
+            if ( $option['value'] == $selected) {
+                //echo "Match!, condition added '{$option['condition']}'\n\n";
+                $conditions .= "\nAND ";
+                $conditions .= $option['condition'];
+                $this->filters[$field]['selected']= $selected;
+            }
+          }
+        } else if($Filter->type=='hidden') {
+          $conditions .= "\nAND ";
+          $conditions .= $Filter->condition;
         }
       }
     }

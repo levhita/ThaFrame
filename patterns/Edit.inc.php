@@ -155,7 +155,7 @@ class Edit extends Page
             $options = array();
             $params  = explode("','", $match[2]);
             $params[0] = substr($params[0], 1); //remove the first quote
-            $params[ count($params)-1 ] = substr($params[count($params)-1], 0, -1);//remove the second quote
+            $params[ count($params)-1 ] = substr($params[count($params)-1], 0, -1);//remove the second quote
             $options=array_combine($params, $params);//creates a createCombox compatible array
           }
           $aux['type'] = 'select';
