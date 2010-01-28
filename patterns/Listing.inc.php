@@ -197,6 +197,14 @@ class Listing extends Page
         'icon'    => $icon,
         'ajax'    => $ajax,
       );
+    if(strpos($value,',')!==false){
+      $single_values = explode(',', $value);
+      $values = array();
+      foreach($single_values AS $single_value){
+        $values[]=trim($single_value);
+      }
+      $aux['value'] = $values;
+    }
     $this->actions[] = $aux;
   }
   

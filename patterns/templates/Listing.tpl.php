@@ -113,7 +113,7 @@
         echo "<th>" . t($field_title) . "</th>";
       }
       if ( count($Data->actions) ) {
-        echo "<th>".t('Actions')."</th>";
+        echo "<th class=\"action\">".t('Actions')."</th>";
       }
       echo "</tr>\n";
       $count=0;
@@ -145,26 +145,56 @@
           
         }
         if ( !empty($Data->actions) ) {
-          echo "<td>";
+          echo "<td class=\"action\">";
           foreach ( $Data->actions as $action)
           {
             $action = (object)$action;
             $action->title = t($action->title);
             if ( !$action->ajax) {
-              if ( strpos($action->action,'?') === FALSE) {
-                echo "<a href=\"$action->action?$action->value={$row[$action->value]}\" title=\"$action->title\">";
+              if( !is_array($action->value) ) {
+                if ( strpos($action->action,'?') === FALSE) {
+                  echo "<a href=\"$action->action?";
+                } else {
+                  echo "<a href=\"$action->action&";
+                }
+                echo "$action->value={$row[$action->value]}\" title=\"$action->title\">";
+                if ( !$action->icon ) {
+                  echo "{$action->title}";
+                } else {
+                  $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                  echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
+                }
               } else {
-                echo "<a href=\"$action->action&$action->value={$row[$action->value]}\" title=\"$action->title\">";
-              }
-              if ( !$action->icon ) {
-                echo "{$action->title}";
-              } else {
-                $action->icon = $Helper->createFrameLink($action->icon, TRUE);
-                echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
+                if ( strpos($action->action,'?') === FALSE) {
+                  echo "<a href=\"$action->action?";
+                } else {
+                  echo "<a href=\"$action->action&";
+                }
+                foreach($action->value as $single_value) {
+                  echo "$single_value={$row[$single_value]}&";
+                }
+                echo "\" title=\"$action->title\">";
+                
+                if ( !$action->icon ) {
+                  echo "{$action->title}";
+                } else {
+                  $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                  echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
+                }
               }
               echo "</a> ";
             } else {
-              echo "<a href=\"javascript:void(xajax_{$action->action}({$row[$action->value]}));\" title=\"$action->title\">";
+              echo "<a href=\"javascript:void(xajax_{$action->action}(";
+              if ( !is_array($action->value) ) {
+                echo "{$row[$action->value]}";
+              } else {
+                $values_array = array();
+                foreach ($action->value AS $single_value) {
+                  $values_array[]=$row[$action->value];
+                }
+                echo $values_string = implode(',',$values_array);
+              }
+              echo "));\" title=\"$action->title\">";
               if ( !$action->icon ) {
                 echo "{$action->title}";
               } else {
