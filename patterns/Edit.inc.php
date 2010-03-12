@@ -97,7 +97,7 @@ class Edit extends Page
     $structure = $Row->getStructure();
     foreach($structure AS $field)
     {
-      $aux=array();
+      $aux = array();
       $name = $field['Field'];
       $aux['label'] = ucwords(str_replace('_', ' ', $name));
       $aux['value'] = (isset($Row->data[$name]))?$Row->data[$name]:$field['Default'];

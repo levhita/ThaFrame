@@ -26,6 +26,9 @@
    */
   function formatAsDate($date, $format='long')
   {
+    if(empty($date)){
+      return "";
+    }
     if ($format == "long") {
       return date('F j, Y, g:i a', strtotime($date));
     }
@@ -265,5 +268,24 @@ function formatAsText($num, $fem = false, $dec = false) {
   function formatTranslate($string)
   {
     return t(ucwords($string));
+  }
+  
+  function formatTrimText($text, $length='80'){
+    $output = $text;
+    if(strlen($text) >= $length){
+      $output = substr($text, 0, $length - 3) . "...";
+    }
+    return $output;
+  }
+  function formatTrimTextShort($text){
+    return formatTrimText($text, 20);  
+  }
+  
+  function formatTrimTextMedium($text){
+    return formatTrimText($text, 40);  
+  }
+  
+  function formatTrimTextLong($text){
+    return formatTrimText($text, 80);
   }
 ?>
