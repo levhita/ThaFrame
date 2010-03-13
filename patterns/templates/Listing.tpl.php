@@ -94,7 +94,7 @@
           foreach($Filter->options AS $option) {
             $options[$option['value']] = $option['label'];
           }
-          $selected = (empty($Filter->selected))? $Filter->default:$Filter->selected;
+          $selected = (!isset($Filter->selected))? $Filter->default:$Filter->selected;
           echo createComboBox($options, $field, $selected);
         }else if($Filter->type=='hidden'){
           ?> <input type='hidden' name='<?php echo $field ?>' value='<?php echo $Filter->value?>'/><?php
