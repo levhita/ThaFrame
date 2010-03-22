@@ -473,7 +473,7 @@ class Edit extends Page
     return false;
   }
   
-  public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='')
+  public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='', $conditions='')
   {
     if ($table_id=='') {
       $table_id = "{$table_name}_id";
@@ -483,8 +483,13 @@ class Edit extends Page
       $name_field = NAME_FIELD;
     }
     
+    if ($conditions=='') {
+      $conditions = '1';
+    }
+    
     $sql = "SELECT $table_id, $name_field
             FROM $table_name
+            WHERE $conditions
             ORDER BY $name_field";
     $options = $DbConnection->getArrayPair($sql);
     $this->setFieldProperty($field, 'type', 'select');
