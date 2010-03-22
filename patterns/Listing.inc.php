@@ -80,7 +80,7 @@ class Listing extends Page
    *
    * @var integer
    */
-  private $page_size = 20;
+  private $page_size = 50;
   
   /**
    * Which page to show
@@ -314,7 +314,7 @@ class Listing extends Page
       
       //Create some basic pattern variables
       $this->page_number = (empty($_GET['__page_number']))?'0':$_GET['__page_number'];
-      $this->page_size = (empty($_GET['__page_size']))?25:$_GET['__page_size'];
+      $this->page_size = (empty($_GET['__page_size']))?$this->page_size:$_GET['__page_size'];
       $this->pages = ceil($total_rows/$this->page_size);
       
       if($this->page_number > $this->pages){
