@@ -1,23 +1,7 @@
 <?php
-/**
- * Holds {@link Listing} class
- * @author Argel Arias <levhita@gmail.com>
- * @package ThaFrame
- * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- */
+require_once THAFRAME . '/patterns/Template.inc.php';
 
-require_once THAFRAME . "/patterns/Page.inc.php";
-
-/**
- * Provides a {@link Page} that shows an item's list.
- *
- * Trough several methods it allows you to add links and actions asociated
- * with each row, as well as formating
- * @package Freimi
- * @todo paging , column re-ordering
- */
-class Listing extends Page
+class Table Extends Template
 {
   /**
    * Holds all the raw data that will be listed
@@ -95,215 +79,17 @@ class Listing extends Page
    */
   private $pages = 0;
   
-  /**
-   * Construct a {@link Listing} page
-   * @param string $page_name the page name to be shown
-   * @param string $template by default it uses Listing.tpl.php
-   * @return Listing
-   */
-  public function __construct($page_name, $template='')
+  public function __construct($template = '')
   {
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . '/patterns/templates/Listing.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/Table.tpl.php', true);
     } else {
       $this->setTemplate($template);
     }
-    $this->assign('page_name', $page_name);
   }
-  
-  /**
-   * Set the raw data that will be show.
-   *
-   * Field names to be used as table headers are extracted and formatted in this
-   * phase, they can of course be overrride using {@link setName}
-   * @param  array $rows the raw data
-   * @return void
-   */
-  public function setRows($rows) {
-    $this->rows = $rows;
-    if ( $rows ) {
-      $fields_names = array_keys($rows[0]);
-      foreach($fields_names AS $field_name)
-      {
-        $this->fields[$field_name] = ucwords(str_replace('_', ' ',$field_name));
-      }
-    }
-  }
-  
-  /**
-   * Names each row with an unique id.
-   *
-   * It's formed with the prefix + the given field's value. Used to provide
-   * named items that can be referred easily with {@link xajax} and javascript
-   * @param string $prefix the prefix
-   * @param string $field the field
-   * @return void
-   */
-  public function setRowId($prefix, $field )
+   
+  public function setQuery($sql, DbConnection $DbConnection, $paginate = false)
   {
-    $this->prefix = $prefix;
-    $this->row_id = $field;
-  }
-  
-  /**
-   * Sets the name of a field as will be show in the table header.
-   *
-   * If not customized this name is created by replacing underscores with espaces
-   * and capitalizing each word in the field name.
-   * @param string $field the field where the name will be changed
-   * @param string $name the new name
-   * @return void
-   */
-  public function setName($field, $name)
-  {
-    if ( isset($this->fields[$field]) ) {
-      $this->fields[$field] = $name;
-    }
-  }
-  
-  /**
-   * Adds an action link embedded into the given field.
-   * @param string $field The field that will have the embedded link (ie name).
-   * @param string $value The field that will serve as the value (ie item_id).
-   * @param string $action The action to be performed (aka URL).
-   * @param string $title An optional title for the link.
-   * @return void
-   */
-  public function addLink($field, $value, $action, $title='' ) {
-    $aux = array (
-        'value'   => $value ,
-        'action'  => $action ,
-        'title'   => $title
-      );
-    $this->links[$field] = $aux;
-  }
-  
-  /**
-   * Adds an action link at the end of the row
-   * @param string $value The field that will serve as the value (ie item_id)
-   * @param string $action The action to be performed, can be xajax or an URL
-   * @param string $title The title of the link
-   * @param string $icon An optional icon, if not provided a regular link is created
-   * @param bool   $ajax Tells if the action is xajax or a regular URL
-   * @return void
-   * @todo create a multiple parameter action creator
-   */
-  public function addAction($value, $action, $title, $icon='', $ajax=false)
-  {
-    $aux = array (
-        'value'   => $value ,
-        'action'  => $action ,
-        'title'   => $title,
-        'icon'    => $icon,
-        'ajax'    => $ajax,
-      );
-    if(strpos($value,',')!==false){
-      $single_values = explode(',', $value);
-      $values = array();
-      foreach($single_values AS $single_value){
-        $values[]=trim($single_value);
-      }
-      $aux['value'] = $values;
-    }
-    $this->actions[] = $aux;
-  }
-  
-  /**
-   * Avoid the given field to be show.
-   *
-   * Commonly used to hide the table id, but still allow its use in
-   * {@link addAction()} or {@link addLink()} as $value.
-   * @param string $field the name of the field to hide
-   * @return void
-   */
-  public function hideField($field) {
-    unset( $this->fields[$field] );
-  }
-  
-  /**
-   * Add an action to the end & start of the Listing, commonly used to add a
-   * "Create new item" link
-   *
-   * @param string $action The action that will be called after clicking (url)
-   * @param string $title The text to show and will be added to the url title as well
-   * @param string $field The field to add into de URL
-   * @param string $value The value that such field should take usally 0 for new elements
-   * @param string $icon  Tn optional icon that could go with the text
-   * @return void
-   */
-  public function addGeneralAction($action, $title, $field='', $value='', $icon='')
-  {
-    $aux = array (
-        'action'  => $action ,
-        'title'   => $title,
-        'field'   => $field ,
-        'value'   => $value ,
-        'icon'    => $icon,
-      );
-    $this->general_actions[] = $aux;
-  }
-  
-  /**
-   * Adds a filter form to the list
-   * @param $field
-   * @param $label
-   * @param $type
-   * @return bool
-   */
-  public function addFilter($field, $label, $type='custom')
-  {
-    $aux = array (
-        'label' => $label,
-        'type'  => $type,
-        'empty' => $empty,
-        'options' => array()
-    );
-    $this->filters[$field] = $aux;
-  }
-  
-  public function addHiddenFilter($field, $value, $condition){
-    $aux = array (
-        'type'  => 'hidden',
-        'value' => $value,
-        'condition' => $condition
-    );
-    $this->filters[$field] = $aux;
-  }
-  
-  /**
-   * Adds a filter option
-   * @param $field
-   * @param $value
-   * @param $label
-   * @param $default
-   * @param $condition
-   * @return bool
-   */
-  public function addFilterOption($field, $value, $label, $default=FALSE, $condition='')
-  {
-    $aux = array (
-        'label' => $label,
-        'value' => $value,
-        'condition' => $condition,
-    );
-    if($default) {
-      $this->filters[$field]['default']= $value;
-    }
-    $this->filters[$field]['options'][] = $aux;
-  }
-  
-  public function addFilterOptions($field, $values, $condition){
-    if (is_array($values) ) {
-      foreach($values as $value=>$label) {
-        $search  = array('{value}', '{label}');
-        $replace = array(mysql_escape_string($value), mysql_escape_string($label));
-        $replaced_condition = str_replace($search, $replace, $condition);
-        $this->addFilterOption($field, $value, $label, FALSE, $replaced_condition);
-      }
-    }
-  }
-  
-  public function setQuery($sql, DbConnection $DbConnection, $paginate = false) {
     if ($paginate) {
       $this->paginate = true;
       
@@ -371,6 +157,37 @@ class Listing extends Page
     $this->setRows($rows);
   }
   
+  /**
+   * Names each row with an unique id.
+   *
+   * It's formed with the prefix + the given field's value. Used to provide
+   * named items that can be referred easily with {@link xajax} and javascript
+   * @param string $prefix the prefix
+   * @param string $field the field
+   * @return void
+   */
+  public function setRowId($prefix, $field )
+  {
+    $this->prefix = $prefix;
+    $this->row_id = $field;
+  }
+  
+  /**
+   * Sets the name of a field as will be show in the table header.
+   *
+   * If not customized this name is created by replacing underscores with espaces
+   * and capitalizing each word in the field name.
+   * @param string $field the field where the name will be changed
+   * @param string $name the new name
+   * @return void
+   */
+  public function setName($field, $name)
+  {
+    if ( isset($this->fields[$field]) ) {
+      $this->fields[$field] = $name;
+    }
+  }
+  
   public function setFormat($field, $function)
   {
     if( function_exists($function) && is_array($this->rows) ) {
@@ -382,10 +199,177 @@ class Listing extends Page
   }
   
   /**
+   * Avoid the given field to be show.
+   *
+   * Commonly used to hide the table id, but still allow its use in
+   * {@link addAction()} or {@link addLink()} as $value.
+   * @param string $field the name of the field to hide
+   * @return void
+   */
+  public function hideField($field)
+  {
+    unset( $this->fields[$field] );
+  }
+  
+  /**
+   * Adds an action link embedded into the given field.
+   * @param string $field The field that will have the embedded link (ie name).
+   * @param string $value The field that will serve as the value (ie item_id).
+   * @param string $action The action to be performed (aka URL).
+   * @param string $title An optional title for the link.
+   * @return void
+   */
+  public function addLink($field, $value, $action, $title='' )
+  {
+    $aux = array (
+        'value'   => $value ,
+        'action'  => $action ,
+        'title'   => $title
+      );
+    $this->links[$field] = $aux;
+  }
+  
+  /**
+   * Adds an action link at the end of the row
+   * @param string $value The field that will serve as the value (ie item_id)
+   * @param string $action The action to be performed, can be xajax or an URL
+   * @param string $title The title of the link
+   * @param string $icon An optional icon, if not provided a regular link is created
+   * @param bool   $ajax Tells if the action is xajax or a regular URL
+   * @return void
+   * @todo create a multiple parameter action creator
+   */
+  public function addAction($value, $action, $title, $icon='', $ajax=false)
+  {
+    $aux = array (
+        'value'   => $value ,
+        'action'  => $action ,
+        'title'   => $title,
+        'icon'    => $icon,
+        'ajax'    => $ajax,
+      );
+    if(strpos($value,',')!==false){
+      $single_values = explode(',', $value);
+      $values = array();
+      foreach($single_values AS $single_value){
+        $values[]=trim($single_value);
+      }
+      $aux['value'] = $values;
+    }
+    $this->actions[] = $aux;
+  }
+  
+  /**
+   * Add an action to the end & start of the Form, commonly used to add a
+   * "Delete" link
+   *
+   * @param string $action The action that will be called after clicking (url)
+   * @param string $title The text to show and will be added to the url title as well
+   * @param string $field The field to add into de URL
+   * @param string $value The value that such field should take usally 0 for new elements
+   * @param string $icon  The optional icon that could go with the text
+   * @return void
+   */
+  public function AddGeneralAction($action, $title, $icon='', $ajax=false)
+  {
+    $aux = array (
+        'action'  => $action,
+        'title'   => $title,
+        'icon'    => $icon,
+        'ajax'    => $ajax,
+      );
+    $this->general_actions[] = $aux;
+  }
+  
+
+  
+  /**
+   * Adds a filter form to the list
+   * @param $field
+   * @param $label
+   * @param $type
+   * @return bool
+   */
+  public function addFilter($field, $label, $type='custom')
+  {
+    $aux = array (
+        'label' => $label,
+        'type'  => $type,
+        'empty' => $empty,
+        'options' => array()
+    );
+    $this->filters[$field] = $aux;
+  }
+  
+  public function addHiddenFilter($field, $value, $condition)
+  {
+    $aux = array (
+        'type'  => 'hidden',
+        'value' => $value,
+        'condition' => $condition
+    );
+    $this->filters[$field] = $aux;
+  }
+  
+  /**
+   * Adds a filter option
+   * @param $field
+   * @param $value
+   * @param $label
+   * @param $default
+   * @param $condition
+   * @return bool
+   */
+  public function addFilterOption($field, $value, $label, $default=FALSE, $condition='')
+  {
+    $aux = array (
+        'label' => $label,
+        'value' => $value,
+        'condition' => $condition,
+    );
+    if($default) {
+      $this->filters[$field]['default']= $value;
+    }
+    $this->filters[$field]['options'][] = $aux;
+  }
+  
+  public function addFilterOptions($field, $values, $condition)
+  {
+    if (is_array($values) ) {
+      foreach($values as $value=>$label) {
+        $search  = array('{value}', '{label}');
+        $replace = array(mysql_escape_string($value), mysql_escape_string($label));
+        $replaced_condition = str_replace($search, $replace, $condition);
+        $this->addFilterOption($field, $value, $label, FALSE, $replaced_condition);
+      }
+    }
+  }
+  
+  /**
+   * Set the raw data that will be show.
+   *
+   * Field names to be used as table headers are extracted and formatted in this
+   * phase, they can of course be overrride using {@link setName}
+   * @param  array $rows the raw data
+   * @return void
+   */
+  private function setRows($rows) {
+    $this->rows = $rows;
+    if ( $rows ) {
+      $fields_names = array_keys($rows[0]);
+      foreach($fields_names AS $field_name)
+      {
+        $this->fields[$field_name] = ucwords(str_replace('_', ' ',$field_name));
+      }
+    }
+  }
+  
+  /**
    * Display the selected template with the given data and customization
    * @return void
    */
-  public function display() {
+  public function getAsString()
+  {
     $this->assign('rows'    , $this->rows);
     $this->assign('fields'  , $this->fields);
     $this->assign('links'   , $this->links);
@@ -395,7 +379,6 @@ class Listing extends Page
     $this->assign('filters' , $this->filters);
     $this->assign('general_actions' , $this->general_actions);
 
-    parent::display();
+    return parent::getAsString();
   }
 }
-?>

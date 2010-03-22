@@ -47,14 +47,19 @@ class Helper {
     }
   }
   
-  public function createFrameLink($filename, $return_string=FALSE)
+  public function createFrameLink($filename, $return_string=FALSE, $absolute_path = false)
   {
     $string = '';
-    if( file_exists(TO_ROOT . "/$filename") ){
-      $string .= TO_ROOT . "/$filename";
+    if ($absolute_path){
+        $string .= SYSTEM_WEB_ROOT . "/$filename";
     } else {
-      $string .= TO_ROOT . "/f/$filename";
+      if( file_exists(TO_ROOT . "/$filename") ){
+        $string .= TO_ROOT . "/$filename";
+      } else {
+        $string .= TO_ROOT . "/f/$filename";
+      }
     }
+    
     if ($return_string){
       return $string;
     }

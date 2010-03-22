@@ -1,11 +1,14 @@
 <?php
-  $Helper->loadSubTemplate('header');
   $Vars = $Data->PatternVariables;
   
+  if($Vars->form_title){
+    echo "<h3>".t($Vars->form_title)."</h3>";
+  }
   if ($Vars->before_text) {
     echo "<p>".t($Vars->before_text)."</p>\n";
   }
-  echo "<form action=\"$Data->target\" id=\"main_form\">\n";
+
+  echo "<form action=\"$Data->target\" id=\"$Data->form_id\">\n";
   echo "<p>\n";
   
   foreach($Data->fields as $field=>$properties){
@@ -108,7 +111,7 @@
       echo "<li>";
       $action = (object)$action;
       $action->title = t($action->title);
-      $action->icon = $Helper->createFrameLink($action->icon, 1);
+      $action->icon = $Helper->createFrameLink($action->icon, 1, 1);
       if ( !$action->ajax) {
         echo "<a href=\"$action->action\" title=\"$action->title\">";
         if ( !$action->icon ) {
@@ -118,7 +121,7 @@
         }
         echo "</a> ";
       } else {
-        echo "<a href=\"javascript:void(xajax_{$action->action}(xajax.getFormValues('main_form')));\" title=\"$action->title\">";
+        echo "<a href=\"javascript:void(xajax_{$action->action}(xajax.getFormValues('$Data->form_id')));\" title=\"$action->title\">";
         if ( !$action->icon ) {
           echo "{$action->title}";
         } else {
@@ -126,16 +129,14 @@
         }
         echo "</a> ";
       }
-      echo "</li>";
+      echo "</li>\n";
     }
-    echo "</ul>";
+    echo "</ul>\n\n";
   }
   ?>
 
 <?php if( count($Data->dependents) ) { ?>
   <script type="text/javascript">
-    updateDependents();
+    updateFormDependents();
   </script>
 <?php } ?>
-
-<?php $Helper->loadSubTemplate('footer'); ?>

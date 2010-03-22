@@ -1,37 +1,18 @@
 <?php
-  $Helper->loadSubTemplate('header');
   $Vars = $Data->PatternVariables;
   
-    if ($Vars->before_text) {
-      echo "<p>".t($Vars->before_text)."</p>\n";
-    }
-    if ( !empty($Data->general_actions) ) {
-      echo "<ul class=\"action\">";
-      foreach ( $Data->general_actions as $action)
-      {
-        $action = (object)$action;
-        $action->title = t($action->title);
-        echo "<li>";
-        if( !empty($action->field) ) {
-          if ( strpos($action->action,'?') === FALSE) {
-            echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
-          } else {
-            echo "<a href=\"$action->action&$action->field={$action->value}\" title=\"$action->title\">";
-          }
-        } else {
-          echo "<a href=\"$action->action\" title=\"$action->title\">";
-        }
-        if ( !$action->icon ) {
-          echo "{$action->title}";
-        } else {
-          $action->icon = $Helper->createFrameLink($action->icon, TRUE);
-          echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/> {$action->title}";
-        }
-        echo "</a></li> ";
-       }
-      echo "</ul>\n";
-    }
-    if ($Vars->paginate && $Data->rows) {
+    
+  foreach($Data->javascripts as $javascript) {
+    echo "<script type=\"text/javascript\">$javascript</script>";
+  }
+  
+  if($Vars->form_title){
+    echo "<h3>".t($Vars->form_title)."</h3>";
+  }
+  if ($Vars->before_text) {
+    echo "<p>".t($Vars->before_text)."</p>\n";
+  }
+  if ($Vars->paginate && $Data->rows) {
       echo "\n\n<div id=\"pagination\">\n";
       $string = '';
       //$string .= t('Page Number').": ";
@@ -161,7 +142,7 @@
                 if ( !$action->icon ) {
                   echo "{$action->title}";
                 } else {
-                  $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                  $action->icon = $Helper->createFrameLink($action->icon, 1, 1);
                   echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
                 }
               } else {
@@ -178,7 +159,7 @@
                 if ( !$action->icon ) {
                   echo "{$action->title}";
                 } else {
-                  $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                  $action->icon = $Helper->createFrameLink($action->icon, 1, 1);
                   echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
                 }
               }
@@ -198,7 +179,7 @@
               if ( !$action->icon ) {
                 echo "{$action->title}";
               } else {
-                $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                $action->icon = $Helper->createFrameLink($action->icon, 1, 1);
                 echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
               }
               echo "</a> ";
@@ -219,4 +200,33 @@
     if ($Vars->after_text) {
       echo "\n<p>$Vars->after_text</p>\n";
     }
-  $Helper->loadSubTemplate('footer');
+    
+    if ( !empty($Data->general_actions) ) {
+    echo "<ul class=\"action\">";
+    foreach ( $Data->general_actions as $action)
+    {
+      echo "<li>";
+      $action = (object)$action;
+      $action->title = t($action->title);
+      $action->icon = $Helper->createFrameLink($action->icon, 1, 1);
+      if ( !$action->ajax) {
+        echo "<a href=\"$action->action\" title=\"$action->title\">";
+        if ( !$action->icon ) {
+          echo "{$action->title}";
+        } else {
+          echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>  {$action->title}";
+        }
+        echo "</a> ";
+      } else {
+        echo "<a href=\"javascript:void(xajax_{$action->action});\" title=\"$action->title\">";
+        if ( !$action->icon ) {
+          echo "{$action->title}";
+        } else {
+          echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/> {$action->title}";
+        }
+        echo "</a> ";
+      }
+      echo "</li>\n";
+    }
+    echo "</ul>\n\n";
+  }

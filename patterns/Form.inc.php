@@ -1,22 +1,8 @@
 <?php
-/**
- * Holds {@link Edit} class
- * @author Argel Arias <levhita@gmail.com>
- * @package ThaFrame
- * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- */
+require_once THAFRAME . '/patterns/Template.inc.php';
 
-require_once THAFRAME . "/patterns/Page.inc.php";
-require_once THAFRAME . "/models/Row.inc.php";
-
-/**
-* Provides a {@link Page} that shows a form to edit a {@link Row}
- *
- * @package ThaFrame
- */
-class Edit extends Page
-{
+class Form Extends Template {
+  
   /**
    * This is the Row to be edited
    * @var Row
@@ -66,19 +52,26 @@ class Edit extends Page
   private $conditions = array();
   
   /**
+   * The id of the form, {@link Edit} forms id are 'main_form' by hardcoded
+   * this one is 'secondary_form'.
+   * @var string
+   */
+  private $form_id = "secondary_form";
+  
+  
+  /**
    * Construct a {@link Edit} page
    * @param string $page_name the page name to be shown
    * @param string $template by default it uses Edit.tpl.php
    * @return Edit
    */
-  public function __construct($page_name, $template='')
+  public function __construct($template='')
   {
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . '/patterns/templates/Edit.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/Form.tpl.php', true);
     } else {
-      $this->setTemplate( $template);
+      $this->setTemplate($template);
     }
-    $this->assign('page_name', $page_name);
   }
   
   /**
@@ -322,19 +315,6 @@ class Edit extends Page
   }
   
   /**
-   * Inserts a separator (with optional content) at the given position.
-   * @param string $target The field after the separator will be created
-   * @param string $content The content that will be inside the separator
-   * @param string $position 'after' or 'before', Default: 'after'
-   * @return bool true on success false otherwise
-   * @deprectated in favor of insertSplitter.
-   */
-  public function insertSeparator($target, $content='', $position='after', $name='')
-  {
-    return $this->insertSplitter($target, $content, $position, $name);
-  }
-  
-  /**
    * Inserts an splitter (with optional content) at the given position.
    * @param string $target The field after the separator will be created
    * @param string $content The content that will be inside the splitter
@@ -447,18 +427,7 @@ class Edit extends Page
   }
   
   /**
-   * Sets a field as dependent
-   *
-   * @param string $field The field that will be set as dependent
-   * @return bool true on success false otherwise
-   *
-  public function setAsDependent($field)
-  {
-    return $this->setFieldProperty($field, 'dependent', true);
-  }*/
-  
-  /**
-   * Deletes a field from the form
+   * Deletes a field from the Form
    *
    * If you only wish to hide a field use {@link hideField}
    * @param string $field the name of the field to be deleted
@@ -511,31 +480,12 @@ class Edit extends Page
   public function AddGeneralAction($action, $title, $icon='', $ajax=false)
   {
     $aux = array (
-        'action'  => $action ,
+        'action'  => $action,
         'title'   => $title,
         'icon'    => $icon,
         'ajax'    => $ajax,
       );
     $this->general_actions[] = $aux;
-  }
-  
-  /**
-   * Display the selected template with the given data and customization
-   * @return void
-   */
-  public function display() {
-    
-    if ( count($this->dependents) ) {
-      $this->addJavascript( $this->createDependentJavascript() );
-    }
-    
-    $this->assign('data'      , $this->Row->data);
-    $this->assign('dependents', $this->dependents);
-    $this->assign('fields'    , $this->fields);
-    $this->assign('links'     , $this->links);
-    $this->assign('general_actions', $this->general_actions);
-   
-    parent::display();
   }
   
   /**
@@ -547,7 +497,7 @@ class Edit extends Page
     $code = false;
     if( count($this->dependents) ) {
       
-      $code .= "\n  function updateDependents()\n  {";
+      $code .= "\n  function updateFormDependents()\n  {";
       
       foreach($this->dependents as $field => $parameters)
       {
@@ -605,5 +555,24 @@ class Edit extends Page
   public function disableField($field)
   {
     return $this->setFieldProperty($field, 'disabled', 'true');
+  }
+  
+  public function setFormId($form_id){
+    $this->form_id = $form_id;
+  }
+
+  /**
+   * Display the selected template with the given data and customization
+   * @return void
+   */
+  public function getAsString() {
+    $this->assign('data'      , $this->Row->data);
+    $this->assign('dependents', $this->dependents);
+    $this->addJavascript($this->createDependentJavascript());
+    $this->assign('fields'    , $this->fields);
+    $this->assign('links'     , $this->links);
+    $this->assign('general_actions', $this->general_actions);
+    $this->assign('form_id', $this->form_id);
+    return parent::getAsString();
   }
 }

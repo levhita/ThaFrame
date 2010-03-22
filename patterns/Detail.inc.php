@@ -1,41 +1,22 @@
 <?php
-/**
- * Holds {@link Edit} class
- * @author Argel Arias <levhita@gmail.com>
- * @package ThaFrame
- * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- */
+require_once THAFRAME . '/patterns/Template.inc.php';
 
-require_once THAFRAME . "/patterns/Page.inc.php";
-require_once THAFRAME . "/models/Row.inc.php";
-
-/**
-* Provides a {@link Page} that shows a form to edit a {@link Row}
- *
- * @package ThaFrame
- */
-class Edit extends Page
+class Detail Extends Template
 {
   /**
-   * This is the Row to be edited
+   * Holds the Row to be used
    * @var Row
    */
-  private $Row    = null;
-   
+  protected $Row = '';
+  
   /**
    * Holds the field's configuration structure
    *
    * fields['name'] {
    *   + label: The label.
-   *   + value: The default value.
    *   + help:  Little text to be show next to the field.
-   *   + error_message: If set this message will be show in red below the field.
-   *   + type: text, hidden, radio, select, textarea, date
    *   + parameters {}: type specific parameter.
-   *   + input_parameters {}: Auto parsed input parameters.
-   *   + validation: Function to be applied as validation, the function must get a
-   *               string and return true for success or false for invalid input.
+   *   + type: text, separator
    * }
    * @var array
    */
@@ -53,42 +34,17 @@ class Edit extends Page
    */
   private $general_actions = array();
   
-  /**
-   * Holds dependents information
-   * @var array
-   */
-  private $dependents = array();
-  
-  /**
-  * Holds conditions information
-   * @var array
-   */
-  private $conditions = array();
-  
-  /**
-   * Construct a {@link Edit} page
-   * @param string $page_name the page name to be shown
-   * @param string $template by default it uses Edit.tpl.php
-   * @return Edit
-   */
-  public function __construct($page_name, $template='')
+  public function __construct($template = '')
   {
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . '/patterns/templates/Edit.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/Detail.tpl.php', true);
     } else {
-      $this->setTemplate( $template);
+      $this->setTemplate($template);
     }
-    $this->assign('page_name', $page_name);
   }
   
-  /**
-   * Set the Row Object to be edited
-   *
-   * @param  Row $Row the Row to be edited
-   * @return void
-   */
-  public function setRow(Row $Row) {
-    $this->Row = $Row;
+  public function setRow(Row $Row){
+      $this->Row = $Row;
     $this->no_fields = 0;
     
     /** Parse table structure into template friendly data **/
@@ -113,61 +69,40 @@ class Edit extends Page
         case 'varchar':
           if ( $match[2] <= 100 ) {
             $aux['type'] = 'text';
-            $aux['input_parameters']['maxlength'] = $match[2];
           } else {
             $aux['type'] = 'textarea';
-            $aux['input_parameters']['cols'] = '60';
-            $aux['input_parameters']['rows'] = '3';
           }
           break;
         case 'char':
           if ( $match[2] <= 100 ) {
             $aux['type'] = 'text';
-            $aux['input_parameters']['maxlength'] = $match[2];
           } else {
             $aux['type'] = 'textarea';
-            $aux['input_parameters']['cols'] = '60';
-            $aux['input_parameters']['rows'] = '3';
           }
           break;
         case 'text':
           $aux['type'] = 'textarea';
-          $aux['input_parameters']['cols'] = '60';
-          $aux['input_parameters']['rows'] = '6';
           break;
         case 'int':
           $aux['type'] = 'text';
-          $aux['input_parameters']['maxlength'] = $match[2];
           break;
         case 'date':
           $aux['type'] = 'date';
-          $aux['parameters']['before'] = '5';
-          $aux['parameters']['after'] = '5';
           break;
         case 'enum':
         case 'set'://Testing
           if ($match[2] == "'0','1'") {
-            $options = array('1'=> t('Yes'), '0'=> t('No') );
+            $aux['type'] = 'yesno';
           } else {
-            /** Retrive and parse Options **/
-            $options = array();
-            $params  = explode("','", $match[2]);
-            $params[0] = substr($params[0], 1); //remove the first quote
-            $params[ count($params)-1 ] = substr($params[count($params)-1], 0, -1);//remove the second quote
-            $options=array_combine($params, $params);//creates a createCombox compatible array
+            $aux['type'] = 'text';
           }
-          $aux['type'] = 'select';
-          if ( count($options)<=3 ) {
-            $aux['type'] = 'radio';
-          }
-          $aux['parameters']['options']= $options;
           break;
       }
       $this->fields[$name] = $aux;
     }
   }
   
-  /**
+ /**
    * Moves the given field to the start of the form
    * @param string $field the field to be moved
    * @return bool true in success and false otherwise
@@ -231,42 +166,7 @@ class Edit extends Page
     return false;
   }
   
-  /**
-   * Set as dependent of certain field condition a set of fields.
-   * @param string $field The field wich they depend.
-   * @param string $condition JavaScript valid condition.
-   * @param string $value The value that must match(javascript).
-   * @param string $dependents Comma separated list of fields that depend on
-   *                           this field value.
-   * @return bool true on success and false otherwise.
-   */
-  public function setFieldDependents($field, $condition, $value, $dependents)
-  {
-    $aux = array();
-    $aux['condition'] = $condition;
-    $aux['value']     = $value;
-    
-    /** Transverse comma separated values into an Array **/
-    $aux['dependents'] = array_reverse( array_map('trim', explode(',', $dependents) ) );
-    
-    /** Locate the dependents after their parent field **/
-    foreach ( $aux['dependents'] AS $dependent )
-    {
-      if( !$this->moveAfter($dependent, $field) ){
-        return false;
-      }
-      $this->setFieldProperty($dependent, 'dependent', true);
-    }
-    
-    $this->setFieldProperty($field, 'parent', true);
-    
-    $this->dependents[$field]['all_fields'] = array_unique(array_merge((array)$this->dependents[$field]['all_fields'] , $aux['dependents']));
-    $this->dependents[$field]['conditions'][] = $aux;
-    
-    return true;
-  }
-  
-  /**
+/**
    * Insert a Field after or before the given target
    * @param string $field_name How will be named the field
    * @param array $field_data a complete field array
@@ -322,19 +222,6 @@ class Edit extends Page
   }
   
   /**
-   * Inserts a separator (with optional content) at the given position.
-   * @param string $target The field after the separator will be created
-   * @param string $content The content that will be inside the separator
-   * @param string $position 'after' or 'before', Default: 'after'
-   * @return bool true on success false otherwise
-   * @deprectated in favor of insertSplitter.
-   */
-  public function insertSeparator($target, $content='', $position='after', $name='')
-  {
-    return $this->insertSplitter($target, $content, $position, $name);
-  }
-  
-  /**
    * Inserts an splitter (with optional content) at the given position.
    * @param string $target The field after the separator will be created
    * @param string $content The content that will be inside the splitter
@@ -363,51 +250,7 @@ class Edit extends Page
     return false;
   }
   
-  /**
-   * Sets the given field's parameter
-   * @param string $field
-   * @param string $parameter
-   * @param mixed $value
-   * @return bool true on success false otherwise
-   */
-  public function setFieldParameter($field, $parameter, $value)
-  {
-    if ( isset($this->fields[$field]) ) {
-      $this->fields[$field]['parameters'][$parameter] = $value;
-      return true;
-    }
-    return false;
-  }
-  
-  /**
-   * Sets the given field's input parameter
-   * @param string $field
-   * @param string $input_parameter
-   * @param mixed $value
-   * @return bool true on success false otherwise
-   */
-  public function setFieldInputParameter($field, $input_parameter, $value)
-  {
-    if ( isset($this->fields[$field]) ) {
-      $this->fields[$field]['input_parameters'][$input_parameter] = $value;
-      return true;
-    }
-    return false;
-  }
-  
-    
-  /**
-   * Unsets the given field's input parameter
-   * @param string $field
-   * @param string $input_parameter
-   * @return void
-   */
-  public function unsetFieldInputParameter($field, $input_parameter)
-  {
-    unset($this->fields[$field]['input_parameters'][$input_parameter]);
-  }
-  
-  /**
+/**
    * Sets the name of a field as will be show in the Label
    *
    * If not customized this name is created by replacing underscores with espaces
@@ -434,31 +277,7 @@ class Edit extends Page
   }
   
   /**
-   * Sets the field as hidden
-   *
-   * Commonly used with the row id.
-   * To really delete the field from the Form use {@link deleteField}.
-   * @param string $field the name of the field to hide
-   * @return bool true on success false otherwise
-   */
-  public function hideField($field)
-  {
-    return $this->setFieldProperty($field, 'type', 'hidden');
-  }
-  
-  /**
-   * Sets a field as dependent
-   *
-   * @param string $field The field that will be set as dependent
-   * @return bool true on success false otherwise
-   *
-  public function setAsDependent($field)
-  {
-    return $this->setFieldProperty($field, 'dependent', true);
-  }*/
-  
-  /**
-   * Deletes a field from the form
+   * Deletes a field from the Form
    *
    * If you only wish to hide a field use {@link hideField}
    * @param string $field the name of the field to be deleted
@@ -473,7 +292,7 @@ class Edit extends Page
     return false;
   }
   
-  public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='')
+public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='')
   {
     if ($table_id=='') {
       $table_id = "{$table_name}_id";
@@ -511,7 +330,7 @@ class Edit extends Page
   public function AddGeneralAction($action, $title, $icon='', $ajax=false)
   {
     $aux = array (
-        'action'  => $action ,
+        'action'  => $action,
         'title'   => $title,
         'icon'    => $icon,
         'ajax'    => $ajax,
@@ -519,91 +338,14 @@ class Edit extends Page
     $this->general_actions[] = $aux;
   }
   
-  /**
-   * Display the selected template with the given data and customization
-   * @return void
-   */
-  public function display() {
-    
-    if ( count($this->dependents) ) {
-      $this->addJavascript( $this->createDependentJavascript() );
-    }
-    
+
+  
+  public function getAsString(){
+    $this->assign('Row', $this->Row);
     $this->assign('data'      , $this->Row->data);
-    $this->assign('dependents', $this->dependents);
     $this->assign('fields'    , $this->fields);
     $this->assign('links'     , $this->links);
     $this->assign('general_actions', $this->general_actions);
-   
-    parent::display();
-  }
-  
-  /**
-   * Creates the javascript that powers the depedent engine
-   * @return string the code that should be added to the template using {@link addJavascript()}
-   */
-  private function createDependentJavascript()
-  {
-    $code = false;
-    if( count($this->dependents) ) {
-      
-      $code .= "\n  function updateDependents()\n  {";
-      
-      foreach($this->dependents as $field => $parameters)
-      {
-        switch( $this->fields[$field]['type'])
-        {
-          case 'select':
-            $get_value_string = "valSelect(document.forms['main_form'].$field)";
-            break;
-          case 'radio':
-            $get_value_string = "valRadioButton(document.forms['main_form'].$field)";
-            break;
-          default:
-            $get_value_string = "document.forms['main_form'].$field.value";
-        }
-        
-        $code .= "\n    field_value = $get_value_string;\n";
-        
-        $first_run = true;
-        
-        foreach ( $parameters['conditions'] AS $condition )
-        {
-          $Condition = (object)$condition;
-          
-          $code .= ($first_run)?'    if':' else if';
-          $code .= " ( field_value $Condition->condition $Condition->value ) {\n";
-          
-          $hide_fields = array_diff($parameters['all_fields'], $Condition->dependents);
-          foreach ( $hide_fields AS $hide)
-          {
-             $code .= "      dependent = document.getElementById('{$hide}_dependent');\n";
-             $code .= "      dependent.style.display = 'none';\n";
-          }
-          foreach ( $Condition->dependents AS $show)
-          {
-             $code .= "      dependent = document.getElementById('{$show}_dependent');\n";
-             $code .= "      dependent.style.display = 'block';\n";
-          }
-          $code .= "    } ";
-          $first_run = false;
-        }
-        
-        $code .= "else {\n";
-        foreach ( $parameters['all_fields'] AS $all)
-        {
-          $code .= "      dependent = document.getElementById('{$all}_dependent');\n";
-          $code .= "      dependent.style.display = 'none';\n";
-        }
-        $code .= "    }\n";
-      }
-      $code .="  }\n";
-    }
-    return $code;
-  }
-  
-  public function disableField($field)
-  {
-    return $this->setFieldProperty($field, 'disabled', 'true');
+    return parent::getAsString();
   }
 }
