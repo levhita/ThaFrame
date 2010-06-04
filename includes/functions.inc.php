@@ -106,7 +106,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
     if ( $date=='' ) {
       $date=date('Y-m-d');
     }
-    list($year, $month, $day) = split('[-]', $date);
+    list($year, $month, $day) = explode('-', $date);
     $current_year = date('Y');
 
     $years = array();

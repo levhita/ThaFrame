@@ -47,7 +47,7 @@ class Helper {
     }
   }
   
-  public function createFrameLink($filename, $return_string=FALSE, $absolute_path = false)
+  public function createFrameLink($filename, $return_string=FALSE, $absolute_path = FALSE)
   {
     $string = '';
     if ($absolute_path){
@@ -85,7 +85,8 @@ class Helper {
     echo $string;
   }
   
-  public function createActionCall($action, $title, $field='', $value='', $icon='', $is_ajax=FALSE , $return_string=FALSE)
+  public function createActionCall($action, $title, $field='', $value='', $icon='',
+  $is_ajax=FALSE , $return_string=FALSE, $absolute_path = FALSE)
   {
     $string = "";
     $title = t($title);
@@ -99,7 +100,7 @@ class Helper {
       }
     }
     if ( !empty($icon) ) {
-      $icon =  $this->createFrameLink($icon, TRUE);
+      $icon =  $this->createFrameLink($icon, TRUE, $absolute_path);
       $string .= "<img src=\"$icon\" alt=\"$title\"/>";
     }
     $string .= "$title</a>";
