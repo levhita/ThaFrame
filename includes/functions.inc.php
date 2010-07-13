@@ -14,7 +14,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
 	 * @todo change to configured message and page.
 	 */
 	function assertLoggedIn($Page) {
-    if ( isset($_SESSION['id_usuario']) ) {
+    if ( isset($_SESSION['user_id']) ) {
       if ( $_SESSION['ip'] != $_SERVER['REMOTE_ADDR'] ) {
         session_destroy();
         session_start();
