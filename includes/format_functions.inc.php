@@ -43,7 +43,7 @@
   
   function formatAsLongDate($date){
     $new_format = date('j-n-Y', strtotime($date));
-    $data       = split('-', $new_format);
+    $data       = explode('-', $new_format);
     $meses = array(
         '1' => 'Enero',
         '2' => 'Febrero',
