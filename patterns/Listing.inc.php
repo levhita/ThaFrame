@@ -88,12 +88,27 @@ class Listing extends Page
    * @var integer
    */
   private $page_number = 0;
+  
   /**
    * Number of pages
    *
    * @var integer
    */
   private $pages = 0;
+  
+  /**
+   * Wich is the final SQL query to be called
+   *
+   * @var string
+   */
+  private $sql = '';
+  
+  /**
+   * The conditions string that is generated after take in account the applied filters
+   *
+   * @var string
+   */
+  private $conditions = '';
   
   /**
    * Construct a {@link Listing} page
@@ -367,6 +382,9 @@ class Listing extends Page
       $sql = str_replace('{conditions}', $conditions, $sql);
     }
     
+    $this->conditions = $conditions;
+    $this->sql        = $sql;
+    
     $rows = $DbConnection->getAllRows($sql);
     $this->setRows($rows);
   }
@@ -396,6 +414,14 @@ class Listing extends Page
     $this->assign('general_actions' , $this->general_actions);
 
     parent::display();
+  }
+  
+  public function getConditions() {
+    return $this->conditions;
+  }
+  
+  public function getQuery(){
+    return $this->sql;
   }
 }
 ?>
