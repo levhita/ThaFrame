@@ -145,7 +145,7 @@
               $tooltip = str_replace("%$tooltip_field%", $row[$tooltip_field], $tooltip ); 
             }  
             $tooltip = htmlspecialchars($tooltip); //tooltip_$field 
-            echo "<td><a class=\"tooltip\" href=\"javascript:void()\" title=\"$tooltip\">".htmlspecialchars($row[$field])."</a></td>";
+            echo "<td><a class=\"tooltip_$field\" title=\"$tooltip\" href=\"javascript:void()\">".htmlspecialchars($row[$field])."</a></td>";
           } else {
             echo "<td>".htmlspecialchars($row[$field])."</td>";
           }

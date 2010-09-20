@@ -248,8 +248,10 @@ class Listing extends Page
     $this->tooltips[$field] = $aux;
     $javascript = <<<EOT
     $(document).ready(function(){
-      $(".tooltip").each(function(i){
+      $(".tooltip_$field").each(function(i){
         $(this).simpletip({
+          position: 'bottom',
+          fixed: true,
           content: $(this).attr('title')
         });
       });
