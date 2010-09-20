@@ -139,6 +139,13 @@
             } else {
               echo "<td><a href=\"$link->action&$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a></td>";
             }
+          }if( isset($Data->tooltips[$field]) ) {
+            $tooltip = $Data->tooltips[$field]['text'];
+            foreach ( $Data->tooltips[$field]['fields'] AS $tooltip_field ) {
+              $tooltip = str_replace("%$tooltip_field%", $row[$tooltip_field], $tooltip ); 
+            }  
+            $tooltip = htmlspecialchars($tooltip); //tooltip_$field 
+            echo "<td><a class=\"tooltip\" href=\"javascript:void()\" title=\"$tooltip\">".htmlspecialchars($row[$field])."</a></td>";
           } else {
             echo "<td>".htmlspecialchars($row[$field])."</td>";
           }

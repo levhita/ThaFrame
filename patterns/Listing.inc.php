@@ -44,6 +44,12 @@ class Listing extends Page
   private $actions = array();
   
   /**
+   * Holds the tooltips that will be attached to the fields.
+   * @var array
+   */
+  private $tooltips = array();
+  
+  /**
    * Holds the prefix that'll be used to create an unique id for every row
    * @var string
    */
@@ -221,6 +227,41 @@ class Listing extends Page
       $aux['value'] = $values;
     }
     $this->actions[] = $aux;
+  }
+  
+  /**
+   * Adds a tooltip to a field
+   * 
+   * @param string $field the field that'll have the tooltip attached
+   * @param string $text Can be someting as "tooltip: %field%", where field can
+   * be any field in the query.
+   * @return void
+   */
+  public function addToolTip($field, $text) {
+    $text = t($text);
+    preg_match_all("/\%([A-Za-z0-9_\-]+)\%/", $text, $matches);
+    $fields = $matches[1];
+    $aux = array (
+      'text' => $text,
+      'fields' => $fields,     
+    );
+    $this->tooltips[$field] = $aux;
+    $javascript = <<<EOT
+    $(document).ready(function(){
+      $(".tooltip").each(function(i){
+        $(this).simpletip({
+          content: $(this).attr('title')
+        });
+      });
+    });
+EOT;
+//{ $("JQUERY SELECTOR").each(function(i){
+ //  $(this).simpletip({ content: arrayData[i] });
+//});
+        //bodyHandler: function() { 
+        //  return $($(this).attr("title")).html(); 
+        //}
+    $this->addJavascript($javascript);
   }
   
   /**
@@ -408,6 +449,7 @@ class Listing extends Page
     $this->assign('fields'  , $this->fields);
     $this->assign('links'   , $this->links);
     $this->assign('actions' , $this->actions);
+    $this->assign('tooltips' , $this->tooltips);
     $this->assign('prefix'  , $this->prefix);
     $this->assign('row_id'  , $this->row_id);
     $this->assign('filters' , $this->filters);
