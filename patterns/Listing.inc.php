@@ -257,9 +257,12 @@ class Listing extends Page
       $(".tooltip_$field").each(function(i){
         $(this).simpletip({
           boundryCheck: true,  
-          fixed: false,
+          fixed: true,
           position: 'left',
-          content: $(this a).attr('title')
+		  showEffect: "", /*slide, fade*/
+		  hideEffect: "",
+          content: $(this).attr('title')
+
         });
       });
     });

@@ -146,7 +146,9 @@
               $tooltip = str_replace("%$tooltip_field%", $row[$tooltip_field], $tooltip ); 
             }  
             $tooltip = htmlspecialchars($tooltip); //tooltip_$field 
-            echo "<span class=\"tooltip_$field\"><a title=\"$tooltip\" href=\"javascript:void()\">".htmlspecialchars($row[$field])."</span>";
+
+            echo "<span title=\"$tooltip\" class=\"tooltip_$field\"><a  href=\"javascript:void()\">".htmlspecialchars($row[$field])."</span>";
+
           } else {
             echo htmlspecialchars($row[$field]);
           }
@@ -227,4 +229,5 @@
     if ($Vars->after_text) {
       echo "\n<p>$Vars->after_text</p>\n";
     }
+	echo "<div class=\"tooltip_last_update_date\" title=\"tooltip\">hola</div>";
   $Helper->loadSubTemplate('footer');
