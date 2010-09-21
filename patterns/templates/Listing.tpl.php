@@ -131,13 +131,14 @@
         $count++;
         foreach($Data->fields as $field => $field_title)
         {
-          
+          $class = (isset($Data->classes[$field]))?" class=\"{$Data->classes[$field]}\"":'';
+          echo "<td$class>";
           if( isset($Data->links[$field]) ) {
             $link = (object)$Data->links[$field];
             if(strpos($link->action,'?') === FALSE) {
-              echo "<td><a href=\"$link->action?$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a></td>";
+              echo "<a href=\"$link->action?$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a>";
             } else {
-              echo "<td><a href=\"$link->action&$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a></td>";
+              echo "<a href=\"$link->action&$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a>";
             }
           }if( isset($Data->tooltips[$field]) ) {
             $tooltip = $Data->tooltips[$field]['text'];
@@ -145,11 +146,11 @@
               $tooltip = str_replace("%$tooltip_field%", $row[$tooltip_field], $tooltip ); 
             }  
             $tooltip = htmlspecialchars($tooltip); //tooltip_$field 
-            echo "<td><a class=\"tooltip_$field\" title=\"$tooltip\" href=\"javascript:void()\">".htmlspecialchars($row[$field])."</a></td>";
+            echo "<span class=\"tooltip_$field\"><a title=\"$tooltip\" href=\"javascript:void()\">".htmlspecialchars($row[$field])."</span>";
           } else {
-            echo "<td>".htmlspecialchars($row[$field])."</td>";
+            echo htmlspecialchars($row[$field]);
           }
-          
+          echo "</td>";
         }
         if ( !empty($Data->actions) ) {
           echo "<td class=\"action\">";

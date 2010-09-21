@@ -75,6 +75,12 @@ class Listing extends Page
   private $filters   = array();
   
   /**
+   * Holds classes to be applied to the columns
+   * @var array
+   */
+  private $classes   = array();
+  
+  /**
    * Stores if the page should be paginated
    *
    * @var boolean
@@ -250,9 +256,10 @@ class Listing extends Page
     $(document).ready(function(){
       $(".tooltip_$field").each(function(i){
         $(this).simpletip({
-          position: 'bottom',
-          fixed: true,
-          content: $(this).attr('title')
+          boundryCheck: true,  
+          fixed: false,
+          position: 'left',
+          content: $(this a).attr('title')
         });
       });
     });
@@ -348,6 +355,10 @@ EOT;
       $this->filters[$field]['default']= $value;
     }
     $this->filters[$field]['options'][] = $aux;
+  }
+  
+  public function setClass($field, $value) {
+    $this->classes[$field] = $value; 
   }
   
   public function addFilterOptions($field, $values, $condition){
@@ -451,6 +462,7 @@ EOT;
     $this->assign('fields'  , $this->fields);
     $this->assign('links'   , $this->links);
     $this->assign('actions' , $this->actions);
+    $this->assign('classes' , $this->classes);
     $this->assign('tooltips' , $this->tooltips);
     $this->assign('prefix'  , $this->prefix);
     $this->assign('row_id'  , $this->row_id);
