@@ -229,5 +229,4 @@
     if ($Vars->after_text) {
       echo "\n<p>$Vars->after_text</p>\n";
     }
-	echo "<div class=\"tooltip_last_update_date\" title=\"tooltip\">hola</div>";
-  $Helper->loadSubTemplate('footer');
+	$Helper->loadSubTemplate('footer');

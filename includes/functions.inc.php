@@ -158,7 +158,7 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
   
   function cleanToDb($value)
   {
-    return mysql_escape_string($value);
+    return mysql_real_escape_string($value);
   }
   
   function selfURL()
