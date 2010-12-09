@@ -87,6 +87,26 @@ class DbConnection {
     return ($count)?$rows:false;
   }
   
+  public function getIndexedRows($sql)
+  {
+    if ( !$results = @mysql_query($sql, $this->db_connection) ) {
+      throw new RunTimeException("Couldn't execute query: ". mysql_error($this->db_connection) );
+    }
+    
+    $count = 0;
+    $rows  = array();
+    while ( $row = mysql_fetch_array($results) ) {
+      $key=$row[0];
+      $no_fields = count($row)/2;
+      for($i=0;$i<$no_fields;$i++) {
+        unset($row[$i]);  
+      }
+      $rows[$key] = $row;
+      $count++;
+    }
+    return ($count)?$rows:false;
+  }
+  
   public function getOneRow($sql)
   {
     if ( !$results = @mysql_query($sql, $this->db_connection) ) {
