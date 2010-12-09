@@ -135,12 +135,10 @@
           echo "<td$class>";
           if( isset($Data->links[$field]) ) {
             $link = (object)$Data->links[$field];
-            if(strpos($link->action,'?') === FALSE) {
-              echo "<a href=\"$link->action?$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a>";
-            } else {
-              echo "<a href=\"$link->action&$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a>";
-            }
-          }if( isset($Data->tooltips[$field]) ) {
+            echo "<a href=\"$link->action";
+            echo (strpos($link->action,'?') === FALSE)?'?':'&';
+            echo "$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a>";
+          } else if( isset($Data->tooltips[$field]) ) {
             $tooltip = $Data->tooltips[$field]['text'];
             foreach ( $Data->tooltips[$field]['fields'] AS $tooltip_field ) {
               $tooltip = str_replace("%$tooltip_field%", $row[$tooltip_field], $tooltip ); 
@@ -148,7 +146,6 @@
             $tooltip = htmlspecialchars($tooltip); //tooltip_$field 
 
             echo "<span title=\"$tooltip\" class=\"tooltip_$field\"><a  href=\"javascript:void()\">".htmlspecialchars($row[$field])."</span>";
-
           } else {
             echo htmlspecialchars($row[$field]);
           }
