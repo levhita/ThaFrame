@@ -41,9 +41,9 @@
             '__page_size' => $Vars->page_size,
           );
         $url = $Helper->createSelfUrl($parameters, TRUE);
-        $string .="<a  class=\"previous\" href=\"".htmlspecialchars($url)."\" title=\"".t('Previous')."\"><span>&lt;&lt; ".t('Previous')."</span></a>\n";
+        $string .="<a  class=\"previous\" href=\"".htmlspecialchars($url)."\" title=\"".t('Previous')."\"><span>&laquo; ".t('Previous')."</span></a>\n";
       }else {
-        $string .="<a  class=\"previous disabled\" href=\"javascript:void();\" title=\"".t('Previous')."\"><span>&lt;&lt; ".t('Previous')."</span></a>\n";
+        $string .="<a  class=\"previous disabled\" href=\"javascript:void();\" title=\"".t('Previous')."\"><span>&laquo; ".t('Previous')."</span></a>\n";
       }
       
       $parameters = array(
@@ -59,9 +59,9 @@
             '__page_size' => $Vars->page_size,
           );
         $url = $Helper->createSelfUrl($parameters, TRUE);
-        $string .="<a class=\"next\" href=\"".htmlspecialchars($url)."\" title=\"".t('Next')."\"><span>".t('Next')." &gt;&gt;</span></a>\n";
+        $string .="<a class=\"next\" href=\"".htmlspecialchars($url)."\" title=\"".t('Next')."\"><span>".t('Next')." &raquo;</span></a>\n";
       } else {
-        $string .="<a class=\"next disabled\" href=\"javascript:void();\" title=\"".t('Next')."\"><span>".t('Next')." &gt;&gt;</span></a>\n";
+        $string .="<a class=\"next disabled\" href=\"javascript:void();\" title=\"".t('Next')."\"><span>".t('Next')." &raquo;</span></a>\n";
       }
       
       $parameters = array(
@@ -84,7 +84,7 @@
     if ( !empty($Data->filters)) {
       //echo "<pre>".htmlentities(print_r($Data->filters,1))."</pre>";
       
-      echo "<form name='filters' method='get' action='' class='list_filters'><div>\n<strong>".t('Filter'). " &gt;&gt;</strong>\n";
+      echo "<form name='filters' method='get' action='' class='list_filters'><div>\n<strong>".t('Filter'). " &raquo;</strong>\n";
       
       foreach($Data->filters AS $field => $filter){
         $Filter = (object)$filter;
@@ -226,4 +226,4 @@
     if ($Vars->after_text) {
       echo "\n<p>$Vars->after_text</p>\n";
     }
-	$Helper->loadSubTemplate('footer');
+  $Helper->loadSubTemplate('footer');
