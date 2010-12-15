@@ -74,6 +74,77 @@ class Form Extends Template {
     }
   }
   
+  public function loadConfig($config_name='default') {
+    global $DbConnection;
+    $prefix = strtolower(get_class($this->Row));
+    $config = parse_ini_file(TO_ROOT."/models/configs/{$prefix}_{$config_name}.ini", true);
+    
+    if( isset($config['__general']['form_id']) ) {
+      $this->setFormId($config['__general']['form_id']); 
+    }
+    unset($config['__general']);
+    
+    if( isset($config['__commands']['delete']) ) {
+      foreach($config['__commands']['delete'] AS $delete) {
+        $this->deleteField($delete);
+      }
+    }
+    
+      if( isset($config['__commands']['add']) ) {
+      foreach($config['__commands']['add'] AS $add) {
+        $this->insertField($add);
+      }
+    }
+   
+    if( isset($config['__commands']['hide']) ) {
+      foreach($config['__commands']['hide'] AS $hide) {
+        $this->hideField($hide);
+      }
+    }
+    if( isset($config['__commands']['disable']) ) {
+      foreach($config['__commands']['disable'] AS $disable) {
+        $this->disableField($disable);
+      }
+    }
+    unset($config['__commands']);
+    
+    foreach($config AS $field => $properties){
+      
+      if ( strpos($field, ':')!==false ) {
+        list($field, $action) = explode(':', $field);
+        
+        if  ($action == 'parameters') {
+          foreach($properties AS $parameter => $value) {
+            $this->setFieldParameter($field, $parameter, $value);
+          }
+        } else if($action == 'input_parameters') {
+            foreach($properties AS $parameter => $value) {
+              $this->setFieldInputParameter($field, $parameter, $value);
+            }
+        } else if($action == 'splitter') {
+          $this->insertSplitter($field, $properties['content'], $properties['position'], $field);
+        } else if($action == 'linked') {
+          $this->setAsLinked($field, $properties['table_name'], $DbConnection, $properties['table_id'], $properties['name_field']);
+        } else if($action == 'dependent') {
+          $this->setFieldDependents($field, $properties['condition'], $properties['value'], $properties['dependants']);
+        } else if($action == 'add') {
+          $data = array(
+              'label' => ucwords(str_replace('_', ' ', $field)),
+              'type' => 'text',
+              'input_parameters'=> array('maxlength' => 45),
+            );
+          $this->insertField($field, $data, $properties['target'], $properties['position']);
+        }
+      }
+       else {
+        foreach($properties AS $property => $value) {
+          $this->setFieldProperty($field, $property, $value);
+        }
+      }
+    
+    }
+  }
+  
   /**
    * Set the Row Object to be edited
    *
@@ -323,13 +394,15 @@ class Form Extends Template {
    */
   public function insertSplitter($target, $content='', $position='after', $name='')
   {
-    $aux= array('type' => 'separator', 'content' => $content);
+    $aux= array('type' => 'splitter', 'content' => $content);
     return $this->insertField("{$name}_splitter", $aux, $target, $position);
   }
   
   /**
    * Sets the given field's property
-   * @param string $field
+   * 
+   * General values which apply for all field types
+   * @param string $field help_text, label, type, etc..
    * @param string $property
    * @param mixed $value
    * @return bool true on success false otherwise
@@ -345,6 +418,8 @@ class Form Extends Template {
   
   /**
    * Sets the given field's parameter
+   * 
+   * Parameters are values specific for the given type of the field
    * @param string $field
    * @param string $parameter
    * @param mixed $value
@@ -361,6 +436,8 @@ class Form Extends Template {
   
   /**
    * Sets the given field's input parameter
+   * 
+   * Input parameters are pasted as is inside the html tag
    * @param string $field
    * @param string $input_parameter
    * @param mixed $value
@@ -492,25 +569,25 @@ class Form Extends Template {
    * Creates the javascript that powers the depedent engine
    * @return string the code that should be added to the template using {@link addJavascript()}
    */
-  private function createDependentJavascript()
+  public function createDependentJavascript($run_update=False)
   {
     $code = false;
     if( count($this->dependents) ) {
       
-      $code .= "\n  function updateFormDependents()\n  {";
+      $code .= "\n  function update".str_replace(' ', '',ucwords(str_replace('_', ' ', $this->form_id)))."Dependents()\n  {";
       
       foreach($this->dependents as $field => $parameters)
       {
         switch( $this->fields[$field]['type'])
         {
           case 'select':
-            $get_value_string = "valSelect(document.forms['main_form'].$field)";
+            $get_value_string = "valSelect(document.forms['{$this->form_id}'].$field)";
             break;
           case 'radio':
-            $get_value_string = "valRadioButton(document.forms['main_form'].$field)";
+            $get_value_string = "valRadioButton(document.forms['{$this->form_id}'].$field)";
             break;
           default:
-            $get_value_string = "document.forms['main_form'].$field.value";
+            $get_value_string = "document.forms['{$this->form_id}'].$field.value";
         }
         
         $code .= "\n    field_value = $get_value_string;\n";
@@ -549,14 +626,21 @@ class Form Extends Template {
       }
       $code .="  }\n";
     }
-    return $code;
+    if($run_update==true) {
+      $code .= "update".str_replace(' ', '',ucwords(str_replace('_', ' ', $this->form_id)))."Dependents();\n";
+    }
+    return $code ;
   }
   
   public function disableField($field)
   {
     return $this->setFieldProperty($field, 'disabled', 'true');
   }
-  
+  /**
+   * Gives an unique id to the html's form markup
+   * @param string $form_id
+   * @return void
+   */
   public function setFormId($form_id){
     $this->form_id = $form_id;
   }
@@ -568,7 +652,7 @@ class Form Extends Template {
   public function getAsString() {
     $this->assign('data'      , $this->Row->data);
     $this->assign('dependents', $this->dependents);
-    $this->addJavascript($this->createDependentJavascript());
+    //$this->addJavascript($this->createDependentJavascript());
     $this->assign('fields'    , $this->fields);
     $this->assign('links'     , $this->links);
     $this->assign('general_actions', $this->general_actions);

@@ -1,13 +1,15 @@
 <?php
   $Vars = $Data->PatternVariables;
-  
+  foreach($Data->javascripts as $javascript) {
+    echo "<script type=\"text/javascript\">$javascript</script>";
+  }
   if($Vars->form_title){
     echo "<h3>".t($Vars->form_title)."</h3>";
   }
   if ($Vars->before_text) {
     echo "<p>".t($Vars->before_text)."</p>\n";
   }
-
+  
   echo "<form action=\"$Data->target\" id=\"$Data->form_id\">\n";
   echo "<p>\n";
   
@@ -24,14 +26,14 @@
       echo "</p>\n\n<div class=\"dependent\" id=\"{$field}_dependent\" style=\"display:none\">\n";
     }
     if ($Properties->parent) {
-      $input_parameters .= " onchange=\"updateDependents();\"";
+      $input_parameters .= " onchange=\"update".str_replace(' ', '',ucwords(str_replace('_', ' ', $Data->form_id)))."Dependents();\"";
     }
     
-    if ($Properties->type == 'separator') {
+    if ($Properties->type == 'splitter') {
       if ( $Properties->dependent ) {
-        echo ($Properties->content=='')?"\n":"  <div class=\"separator\">$Properties->content</div>\n";
+        echo ($Properties->content=='')?"\n":"  <div class=\"splitter\">$Properties->content</div>\n";
       } else {
-        echo ($Properties->content=='')?"\n":"</p>\n\n<div class=\"separator\">$Properties->content</div>\n\n<p>\n";
+        echo ($Properties->content=='')?"\n":"</p>\n\n<div class=\"splitter\">$Properties->content</div>\n\n<p>\n";
       }
     } elseif ($Properties->type != 'hidden') {
       switch($Properties->type){//For PreLabels
@@ -70,7 +72,12 @@
           }
           break;
         case "date":
-          echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
+          if ( !empty($readonly)) {
+            echo $Properties->value;
+            echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlspecialchars($Properties->value)."\" $input_parameters/>";
+          } else {
+            echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
+          }
           break;
         case "textarea":
           echo "<br/>\n<textarea name=\"$field\" id=\"$field\" $input_parameters $readonly>".htmlspecialchars($Properties->value)."</textarea>";
@@ -137,6 +144,6 @@
 
 <?php if( count($Data->dependents) ) { ?>
   <script type="text/javascript">
-    updateFormDependents();
+  <?="update".str_replace(' ', '',ucwords(str_replace('_', ' ', $Data->form_id)))."Dependents();"?>
   </script>
 <?php } ?>
