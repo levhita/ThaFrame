@@ -84,18 +84,24 @@ class Form Extends Template {
     }
     unset($config['__general']);
     
+    
+    if( isset($config['__pattern']) ) {
+      foreach($config['__pattern'] AS $field=>$value) {
+        $this->setPatternVariable($field, $value);
+      }
+    }
+    unset($config['__pattern']);
+    
     if( isset($config['__commands']['delete']) ) {
       foreach($config['__commands']['delete'] AS $delete) {
         $this->deleteField($delete);
       }
     }
-    
-      if( isset($config['__commands']['add']) ) {
+    if( isset($config['__commands']['add']) ) {
       foreach($config['__commands']['add'] AS $add) {
         $this->insertField($add);
       }
     }
-   
     if( isset($config['__commands']['hide']) ) {
       foreach($config['__commands']['hide'] AS $hide) {
         $this->hideField($hide);

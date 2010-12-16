@@ -111,6 +111,10 @@
   }
   echo "</p>\n</form>\n";
   
+  if ($Vars->after_text) {
+    echo "<p>".t($Vars->after_text)."</p>\n";
+  }
+  
   if ( !empty($Data->general_actions) ) {
     echo "<ul class=\"action\">";
     foreach ( $Data->general_actions as $action)
