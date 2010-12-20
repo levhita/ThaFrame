@@ -150,6 +150,26 @@ class Form Extends Template {
     
     }
   }
+  /**
+   * Adds an action link at the end of the field
+   * @param string $value The field that will serve as the value (ie item_id)
+   * @param string $action The action to be performed, can be xajax or an URL
+   * @param string $title The title of the link
+   * @param string $icon An optional icon, if not provided a regular link is created
+   * @param bool   $ajax Tells if the action is xajax or a regular URL
+   * @return void
+   * @todo create a multiple parameter action creator
+   */
+  public function addAction($field, $action, $title, $icon='', $ajax=true)
+  {
+    $aux = array (
+        'action'  => $action ,
+        'title'   => $title,
+        'icon'    => $icon,
+        'ajax'    => $ajax,
+      );
+    $this->fields[$field]['actions'][] = $aux;
+  }
   
   /**
    * Set the Row Object to be edited
@@ -658,11 +678,15 @@ class Form Extends Template {
   public function getAsString() {
     $this->assign('data'      , $this->Row->data);
     $this->assign('dependents', $this->dependents);
-    //$this->addJavascript($this->createDependentJavascript());
+    
     $this->assign('fields'    , $this->fields);
-    $this->assign('links'     , $this->links);
+    $this->assign('actions'     , $this->actions);
+
     $this->assign('general_actions', $this->general_actions);
     $this->assign('form_id', $this->form_id);
+    
+    //$this->assign('links'     , $this->links);    
+    //$this->addJavascript($this->createDependentJavascript());
     return parent::getAsString();
   }
 }

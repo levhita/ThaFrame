@@ -47,7 +47,7 @@ class Helper {
     }
   }
   
-  public function createFrameLink($filename, $return_string=FALSE, $absolute_path = FALSE)
+  public static function createFrameLink($filename, $return_string=FALSE, $absolute_path = FALSE)
   {
     $string = '';
     if ($absolute_path){
@@ -66,7 +66,7 @@ class Helper {
     echo $string;
   }
   
-  public function createSelfUrl($parameters, $return_string=FALSE) {
+  public static function createSelfUrl($parameters, $return_string=FALSE) {
     global $web_root;
     $string .= $web_root. $_SERVER['PHP_SELF'];
     $original_parameters = $_GET;
@@ -85,7 +85,7 @@ class Helper {
     echo $string;
   }
   
-  public function createActionCall($action, $title, $field='', $value='', $icon='',
+  public static function createActionCall($action, $title, $field='', $value='', $icon='',
   $is_ajax=FALSE , $return_string=FALSE, $absolute_path = FALSE)
   {
     $string = "";
@@ -100,7 +100,7 @@ class Helper {
       }
     }
     if ( !empty($icon) ) {
-      $icon =  $this->createFrameLink($icon, TRUE, $absolute_path);
+      $icon =  self::createFrameLink($icon, TRUE, $absolute_path);
       $string .= "<img src=\"$icon\" alt=\"$title\"/>";
     }
     $string .= "$title</a>";

@@ -101,6 +101,17 @@
             echo " <span class=\"input_help\">".t($Properties->help_text).".</span>";
         }
       }
+      if ( count($Properties->actions) ){
+        foreach ( $Properties->actions  AS $action) {
+          $action=(object)$action;
+          $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+          if($action->ajax) {
+            echo " <a href=\"javascript:void(xajax_$action->action(xajax.getFormValues('$Data->form_id')));\" class=\"input_action\" title=\"".t($action->title)."\"><img src=\"$action->icon\" alt=\"".t($action->title)."\"/></a>";
+          } else {
+            echo " <a href=\"$action->action\" class=\"input_action\" title=\"".t($action->title)."\"><img src=\"$action->icon\" alt=\"".t($action->title)."\"/></a>";
+          }
+        }
+      }
       echo "<br/>\n";
     } else {
       echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlspecialchars($Properties->value)."\" $input_parameters/>";
