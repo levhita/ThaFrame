@@ -74,10 +74,18 @@ class Form Extends Template {
     }
   }
   
-  public function loadConfig($config_name='default') {
+  public function loadConfig($config_name='default', $use_class_name = true) {
     global $DbConnection;
-    $prefix = strtolower(get_class($this->Row));
-    $config = parse_ini_file(TO_ROOT."/models/configs/{$prefix}_{$config_name}.ini", true);
+    if($use_class_name) {
+      $prefix = strtolower(get_class($this->Row));
+      $file_name = TO_ROOT."/models/configs/{$prefix}_{$config_name}.ini";
+    } else {
+      $file_name = TO_ROOT."/models/configs/{$config_name}.ini";
+    }
+    if(!file_exists($file_name)){
+      return false;
+    }
+    $config = parse_ini_file($file_name, true);
     
     if( isset($config['__general']['form_id']) ) {
       $this->setFormId($config['__general']['form_id']); 
@@ -149,6 +157,7 @@ class Form Extends Template {
       }
     
     }
+    return true;
   }
   /**
    * Adds an action link at the end of the field
