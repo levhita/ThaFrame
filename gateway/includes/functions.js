@@ -7,7 +7,7 @@ function hideMessage() {
 /** Functions for the overlay **/
 function closeOverlay() {
   document.getElementById('overlay').innerHTML ='';
-  document.getElementById('overlay').className ='hidden';
+  document.getElementById('overlay').className ='hidden permute';
   document.getElementById('overlay_shadow').className ='hidden';
 }
 

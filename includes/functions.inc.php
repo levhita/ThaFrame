@@ -108,7 +108,8 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
     }
     list($year, $month, $day) = explode('-', $date);
     $current_year = date('Y');
-
+	
+    /*
     $years = array();
     for($x = $current_year-$past; $x <= $current_year+$future; $x++)
     {
@@ -138,7 +139,8 @@ require_once(THAFRAME."/includes/format_functions.inc.php");
       $days[$x] = $x;
     }
     $day_combo=createComboBox($days, $prefix.'_day', $day);
-    return  $day_combo . $month_combo . $year_combo ;
+    return  $day_combo . $month_combo . $year_combo ;*/
+    return "<input type='text' class='date' readonly='readonly'' value='".date('Y-m-d')."'>";
   }
   /**
    * loads an Error Page.
