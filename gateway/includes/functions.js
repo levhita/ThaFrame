@@ -11,9 +11,8 @@ function closeOverlay() {
   document.getElementById('overlay_shadow').className ='hidden';
 }
 
-function showOverlay(content) {
+function showOverlay() {
   document.getElementById('overlay').className ='visible';
-  document.getElementById('overlay').innerHTML = content;
   document.getElementById('overlay_shadow').className ='visible';
 }
 

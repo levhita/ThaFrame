@@ -387,11 +387,11 @@ EOT;
       
       //Create some basic pattern variables
       $this->_page_number = (empty($_GET['__page_number']))?'0':$_GET['__page_number'];
-      $this->_page_size = (empty($_GET['__page_size']))?$this->page_size:$_GET['__page_size'];
-      $this->_pages = ceil($total_rows/$this->page_size);
+      $this->_page_size = (empty($_GET['__page_size']))?$this->_page_size:$_GET['__page_size'];
+      $this->_pages = ceil($total_rows/$this->_page_size);
       
-      if($this->_page_number > $this->pages){
-        $this->_page_number = $this->pages-1;
+      if($this->_page_number > $this->_pages){
+        $this->_page_number = $this->_pages-1;
       }
       
       //Reformat the query to use MySQL Limit clause
