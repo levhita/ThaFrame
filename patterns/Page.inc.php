@@ -282,27 +282,43 @@ class Page
     $this->assign('__secondary_menu_template', $this->_secondary_menu_template);
     $this->assign('__on_load', $this->_on_load);
     
-    /** Convert all variables into an object **/
-    $Data = (object)$this->_variables;
-    
-    /** This object actually helps to do a variety of things inside templates
+    /** 
+     * This object actually helps to do a variety of things inside templates
      * @var Helper
      */
     $Helper = new Helper($Data);
     
-    /** Sends the headers **/
+    $_content_ = self::runTemplate($this->_template, $this->_variables);
+    
+    /** Send the headers **/
     foreach($this->_headers AS $header => $value)
     {
       header("$header: $value");
     }
     
-    $_content_ = '';
-    ob_start();
-      include $this->_template;
-      $_content_ = ob_get_contents();
-    ob_end_clean();
+    $Data = (object)$this->_variables; // @todo: Backwards compatibility remove before release
+    extract($this->_variables);
     
     /** Include it in the Layout **/
     include $this->_layout;
+  }
+  
+  /**
+   * Run the Template in the cleanest enviroment posible
+   * @param unknown_type $template
+   * @param unknown_type $data
+   * @return unknown_type
+   */
+  private static function runTemplate($_template_, $_data_) {
+    $Data = (object)$_data_; /// @todo Backwards Compatibility Remove Before Release
+    extract($_data_);
+    $Helper = new Helper($Data);
+    
+    ob_start();
+      include $_template_;
+      $_content_ = ob_get_contents();
+    ob_end_clean();
+    
+    return $_content_;
   }
 }

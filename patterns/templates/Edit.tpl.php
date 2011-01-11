@@ -1,5 +1,4 @@
 <?php
-  $Helper->loadSubTemplate('header');
   $Vars = $Data->PatternVariables;
   
   if ($Vars->before_text) {
@@ -137,5 +136,3 @@
     updateDependents();
   </script>
 <?php } ?>
-
-<?php $Helper->loadSubTemplate('footer'); ?>

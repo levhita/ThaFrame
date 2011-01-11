@@ -23,104 +23,104 @@ class Listing extends Page
    * Holds all the raw data that will be listed
    * @var array
    */
-  private $rows    = array();
+  private $_rows    = array();
    
   /**
    * Holds the field names that will form the table header
    * @var array
    */
-  private $fields  = array();
+  private $_fields  = array();
   
   /**
    * Holds the links that will be embedded into some fields
    * @var array
    */
-  private $links   = array();
+  private $_links   = array();
   
   /**
    * Holds the links that will be added in the last column
    * @var array
    */
-  private $actions = array();
+  private $_actions = array();
   
   /**
    * Holds the tooltips that will be attached to the fields.
    * @var array
    */
-  private $tooltips = array();
+  private $_tooltips = array();
   
   /**
    * Holds the prefix that'll be used to create an unique id for every row
    * @var string
    */
-  private $prefix  = '';
+  private $_prefix  = '';
   
   /**
    * Points to the field that will be used to create the unique id
    * @var string
    */
-  private $row_id  = '';
+  private $_row_id  = '';
   
   /**
    * Holds actions that will be rendered at begining or/and end of the list
    * actions that belong to the paga, and not to a specific row
    * @var array
    */
-  private $general_actions   = array();
+  private $_general_actions   = array();
   
   /**
    * Holds filter options and configuration
    * @var array
    */
-  private $filters   = array();
+  private $_filters   = array();
   
   /**
    * Holds classes to be applied to the columns
    * @var array
    */
-  private $classes   = array();
+  private $_classes   = array();
   
   /**
    * Stores if the page should be paginated
    *
    * @var boolean
    */
-  private $paginate = false;
+  private $_paginate = false;
   
   /**
    * Holds the number of elements for each page
    *
    * @var integer
    */
-  private $page_size = 50;
+  private $_page_size = 50;
   
   /**
    * Which page to show
    *
    * @var integer
    */
-  private $page_number = 0;
+  private $_page_number = 0;
   
   /**
    * Number of pages
    *
    * @var integer
    */
-  private $pages = 0;
+  private $_pages = 0;
   
   /**
    * Wich is the final SQL query to be called
    *
    * @var string
    */
-  private $sql = '';
+  private $_sql = '';
   
   /**
    * The conditions string that is generated after take in account the applied filters
    *
    * @var string
    */
-  private $conditions = '';
+  private $_conditions = '';
   
   /**
    * Construct a {@link Listing} page
@@ -135,7 +135,7 @@ class Listing extends Page
     } else {
       $this->setTemplate($template);
     }
-    $this->assign('page_name', $page_name);
+    $this->assign('__page_name', $page_name);
   }
   
   /**
@@ -147,12 +147,12 @@ class Listing extends Page
    * @return void
    */
   public function setRows($rows) {
-    $this->rows = $rows;
+    $this->_rows = $rows;
     if ( $rows ) {
       $fields_names = array_keys($rows[0]);
       foreach($fields_names AS $field_name)
       {
-        $this->fields[$field_name] = ucwords(str_replace('_', ' ',$field_name));
+        $this->_fields[$field_name] = ucwords(str_replace('_', ' ',$field_name));
       }
     }
   }
@@ -168,8 +168,8 @@ class Listing extends Page
    */
   public function setRowId($prefix, $field )
   {
-    $this->prefix = $prefix;
-    $this->row_id = $field;
+    $this->_prefix = $prefix;
+    $this->_row_id = $field;
   }
   
   /**
@@ -183,8 +183,8 @@ class Listing extends Page
    */
   public function setName($field, $name)
   {
-    if ( isset($this->fields[$field]) ) {
-      $this->fields[$field] = $name;
+    if ( isset($this->_fields[$field]) ) {
+      $this->_fields[$field] = $name;
     }
   }
   
@@ -202,7 +202,7 @@ class Listing extends Page
         'action'  => $action ,
         'title'   => $title
       );
-    $this->links[$field] = $aux;
+    $this->_links[$field] = $aux;
   }
   
   /**
@@ -232,7 +232,7 @@ class Listing extends Page
       }
       $aux['value'] = $values;
     }
-    $this->actions[] = $aux;
+    $this->_actions[] = $aux;
   }
   
   /**
@@ -241,6 +241,7 @@ class Listing extends Page
    * @param string $field the field that'll have the tooltip attached
    * @param string $text Can be someting as "tooltip: %field%", where field can
    * be any field in the query.
+   * @todo Make this work
    * @return void
    */
   public function addToolTip($field, $text) {
@@ -251,7 +252,7 @@ class Listing extends Page
       'text' => $text,
       'fields' => $fields,     
     );
-    $this->tooltips[$field] = $aux;
+    $this->_tooltips[$field] = $aux;
     $javascript = <<<EOT
     $(document).ready(function(){
       $(".tooltip_$field").each(function(i){
@@ -285,7 +286,7 @@ EOT;
    * @return void
    */
   public function hideField($field) {
-    unset( $this->fields[$field] );
+    unset( $this->_fields[$field] );
   }
   
   /**
@@ -308,7 +309,7 @@ EOT;
         'value'   => $value ,
         'icon'    => $icon,
       );
-    $this->general_actions[] = $aux;
+    $this->_general_actions[] = $aux;
   }
   
   /**
@@ -326,7 +327,7 @@ EOT;
         'empty' => $empty,
         'options' => array()
     );
-    $this->filters[$field] = $aux;
+    $this->_filters[$field] = $aux;
   }
   
   public function addHiddenFilter($field, $value, $condition){
@@ -335,7 +336,7 @@ EOT;
         'value' => $value,
         'condition' => $condition
     );
-    $this->filters[$field] = $aux;
+    $this->_filters[$field] = $aux;
   }
   
   /**
@@ -355,13 +356,13 @@ EOT;
         'condition' => $condition,
     );
     if($default) {
-      $this->filters[$field]['default']= $value;
+      $this->_filters[$field]['default']= $value;
     }
-    $this->filters[$field]['options'][] = $aux;
+    $this->_filters[$field]['options'][] = $aux;
   }
   
   public function setClass($field, $value) {
-    $this->classes[$field] = $value; 
+    $this->_classes[$field] = $value; 
   }
   
   public function addFilterOptions($field, $values, $condition){
@@ -377,7 +378,7 @@ EOT;
   
   public function setQuery($sql, DbConnection $DbConnection, $paginate = false) {
     if ($paginate) {
-      $this->paginate = true;
+      $this->_paginate = true;
       
       //Get a Grip of the whole thing
       $sql_without_conditions = str_replace('{conditions}','',$sql);
@@ -385,36 +386,36 @@ EOT;
       $total_rows = $DbConnection->getOneValue($count_sql);
       
       //Create some basic pattern variables
-      $this->page_number = (empty($_GET['__page_number']))?'0':$_GET['__page_number'];
-      $this->page_size = (empty($_GET['__page_size']))?$this->page_size:$_GET['__page_size'];
-      $this->pages = ceil($total_rows/$this->page_size);
+      $this->_page_number = (empty($_GET['__page_number']))?'0':$_GET['__page_number'];
+      $this->_page_size = (empty($_GET['__page_size']))?$this->page_size:$_GET['__page_size'];
+      $this->_pages = ceil($total_rows/$this->page_size);
       
-      if($this->page_number > $this->pages){
-        $this->page_number = $this->pages-1;
+      if($this->_page_number > $this->pages){
+        $this->_page_number = $this->pages-1;
       }
       
       //Reformat the query to use MySQL Limit clause
-      $page_start = $this->page_number * $this->page_size;
+      $page_start = $this->_page_number * $this->_page_size;
       $sql = "$sql
-            LIMIT $page_start, $this->page_size";
+            LIMIT $page_start, $this->_page_size";
       
-      $this->setPatternVariable('paginate', $this->paginate);
-      $this->setPatternVariable('page_number', $this->page_number);
-      $this->setPatternVariable('page_size',$this->page_size);
-      $this->setPatternVariable('pages', $this->pages);
+      $this->setPatternVariable('paginate', $this->_paginate);
+      $this->setPatternVariable('page_number', $this->_page_number);
+      $this->setPatternVariable('page_size',$this->_page_size);
+      $this->setPatternVariable('pages', $this->_pages);
     }
     
     $conditions = '';
-    if ( count($this->filters) ) {
+    if ( count($this->_filters) ) {
       
-      foreach($this->filters AS $field => $filter) {
+      foreach($this->_filters AS $field => $filter) {
         $Filter = (object)$filter;
         if($Filter->type=='custom') {
           //echo "Checking for filter on '$field'\n";
           if( isset($_GET[$field]) ) {
             $selected = stripslashes($_GET[$field]);
           } else {
-            $selected = $this->filters[$field]['default'];
+            $selected = $this->_filters[$field]['default'];
           }
           //echo "Selected:$selected\n";
           foreach($Filter->options AS $option){
@@ -423,7 +424,7 @@ EOT;
                 //echo "Match!, condition added '{$option['condition']}'\n\n";
                 $conditions .= "\nAND ";
                 $conditions .= $option['condition'];
-                $this->filters[$field]['selected']= $selected;
+                $this->_filters[$field]['selected']= $selected;
             }
           }
         } else if($Filter->type=='hidden') {
@@ -439,8 +440,8 @@ EOT;
       $sql = str_replace('{conditions}', $conditions, $sql);
     }
     
-    $this->conditions = $conditions;
-    $this->sql        = $sql;
+    $this->_conditions = $conditions;
+    $this->_sql        = $sql;
     
     $rows = $DbConnection->getAllRows($sql);
     $this->setRows($rows);
@@ -448,10 +449,10 @@ EOT;
   
   public function setFormat($field, $function)
   {
-    if( function_exists($function) && is_array($this->rows) ) {
-      for($i=0; $i<count($this->rows); $i++)
+    if( function_exists($function) && is_array($this->_rows) ) {
+      for($i=0; $i<count($this->_rows); $i++)
       {
-        $this->rows[$i][$field]=$function($this->rows[$i][$field]);
+        $this->_rows[$i][$field]=$function($this->_rows[$i][$field]);
       }
     }
   }
@@ -461,26 +462,26 @@ EOT;
    * @return void
    */
   public function display() {
-    $this->assign('rows'    , $this->rows);
-    $this->assign('fields'  , $this->fields);
-    $this->assign('links'   , $this->links);
-    $this->assign('actions' , $this->actions);
-    $this->assign('classes' , $this->classes);
-    $this->assign('tooltips' , $this->tooltips);
-    $this->assign('prefix'  , $this->prefix);
-    $this->assign('row_id'  , $this->row_id);
-    $this->assign('filters' , $this->filters);
-    $this->assign('general_actions' , $this->general_actions);
+    $this->assign('__rows'    , $this->_rows);
+    $this->assign('__fields'  , $this->_fields);
+    $this->assign('__links'   , $this->_links);
+    $this->assign('__actions' , $this->_actions);
+    $this->assign('__classes' , $this->_classes);
+    $this->assign('__tooltips' , $this->_tooltips);
+    $this->assign('__prefix'  , $this->_prefix);
+    $this->assign('__row_id'  , $this->_row_id);
+    $this->assign('__filters' , $this->_filters);
+    $this->assign('__general_actions' , $this->_general_actions);
 
     parent::display();
   }
   
   public function getConditions() {
-    return $this->conditions;
+    return $this->_conditions;
   }
   
   public function getQuery(){
-    return $this->sql;
+    return $this->_sql;
   }
 }
 ?>

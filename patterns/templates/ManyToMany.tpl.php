@@ -1,5 +1,4 @@
 <?php
-  $Helper->loadSubTemplate('header');
   $Vars = $Data->PatternVariables;
     
     echo "<div id=\"many_to_many_detail\">\n";
@@ -44,4 +43,3 @@
     if ($Vars->after_text) {
       echo "\n<p>$Vars->after_text</p>\n";
     }
-  $Helper->loadSubTemplate('footer');

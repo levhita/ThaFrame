@@ -1,13 +1,12 @@
 <?php
-  $Helper->loadSubTemplate('header');
-  $Vars = $Data->PatternVariables;
+  $Vars = $PatternVariables;
   
     if ($Vars->before_text) {
       echo "<p>".t($Vars->before_text)."</p>\n";
     }
-    if ( !empty($Data->general_actions) ) {
+    if ( !empty($__general_actions) ) {
       echo "<ul class=\"action\">";
-      foreach ( $Data->general_actions as $action)
+      foreach ( $__general_actions as $action)
       {
         $action = (object)$action;
         $action->title = t($action->title);
@@ -31,7 +30,7 @@
        }
       echo "</ul>\n";
     }
-    if ($Vars->paginate && $Data->rows) {
+    if ($Vars->paginate && $__rows) {
       echo "\n\n<div id=\"pagination\">\n";
       $string = '';
       //$string .= t('Page Number').": ";
@@ -40,7 +39,7 @@
             '__page_number' => $Vars->page_number-1,
             '__page_size' => $Vars->page_size,
           );
-        $url = $Helper->createSelfUrl($parameters, TRUE);
+        $url = Helper::createSelfUrl($parameters, TRUE);
         $string .="<a  class=\"previous\" href=\"".htmlspecialchars($url)."\" title=\"".t('Previous')."\"><span>&laquo; ".t('Previous')."</span></a>\n";
       }else {
         $string .="<a  class=\"previous disabled\" href=\"javascript:void();\" title=\"".t('Previous')."\"><span>&laquo; ".t('Previous')."</span></a>\n";
@@ -50,15 +49,15 @@
           '__page_number' => "replace_with_page_number",
           '__page_size' => $Vars->page_size,
         );
-      $url = $Helper->createSelfUrl($parameters, TRUE);
-      $string .= createComboBox(range(1,$Vars->pages), 'page_number', $Vars->page_number,"onchange=\"javascript:change_page(this, '".htmlspecialchars($url)."');\"");
+      $url = Helper::createSelfUrl($parameters, TRUE);
+      $string .= createComboBox(range(1, $Vars->pages), 'page_number', $Vars->page_number,"onchange=\"javascript:change_page(this, '".htmlspecialchars($url)."');\"");
       
       if($Vars->page_number != $Vars->pages - 1) {
         $parameters = array(
             '__page_number' => $Vars->page_number+1,
             '__page_size' => $Vars->page_size,
           );
-        $url = $Helper->createSelfUrl($parameters, TRUE);
+        $url = Helper::createSelfUrl($parameters, TRUE);
         $string .="<a class=\"next\" href=\"".htmlspecialchars($url)."\" title=\"".t('Next')."\"><span>".t('Next')." &raquo;</span></a>\n";
       } else {
         $string .="<a class=\"next disabled\" href=\"javascript:void();\" title=\"".t('Next')."\"><span>".t('Next')." &raquo;</span></a>\n";
@@ -68,7 +67,7 @@
           '__page_number' => $Vars->page_number,
           '__page_size' => 'replace_with_page_size',
         );
-      $url = $Helper->createSelfUrl($parameters, TRUE);
+      $url = Helper::createSelfUrl($parameters, TRUE);
       //$string .= t('Items per Page').": ";
       $page_sizes = array(
           '20' => '20',
@@ -81,12 +80,12 @@
       echo $string;
       echo "</div>\n";
     }
-    if ( !empty($Data->filters)) {
+    if ( !empty($__filters)) {
       //echo "<pre>".htmlentities(print_r($Data->filters,1))."</pre>";
       
       echo "<form name='filters' method='get' action='' class='list_filters'><div>\n<strong>".t('Filter'). " &raquo;</strong>\n";
       
-      foreach($Data->filters AS $field => $filter){
+      foreach($__filters AS $field => $filter){
         $Filter = (object)$filter;
         if($Filter->type=='custom'){
           echo $Filter->label.": ";
@@ -105,19 +104,19 @@
       echo "</div></form>";
       
    }
-    if ( $Data->rows ) {
+    if ( $__rows ) {
       echo "\n<table>\n";
       echo "<tr>";
-      foreach($Data->fields as $field_title)
+      foreach($__fields as $field_title)
       {
         echo "<th>" . t($field_title) . "</th>";
       }
-      if ( count($Data->actions) ) {
+      if ( count($__actions) ) {
         echo "<th class=\"action\">".t('Actions')."</th>";
       }
       echo "</tr>\n";
       $count=0;
-      foreach($Data->rows AS $row)
+      foreach($__rows AS $row)
       {
         if ( ($count % 2) == 1 ){
           $class="odd";
@@ -125,22 +124,22 @@
           $class="even";
         }
         echo "<tr class=\"$class\"";
-        if($Data->prefix)
-          echo " id=\"{$Data->prefix}_{$row[$Data->row_id]}\" ";
+        if($__prefix)
+          echo " id=\"{$__prefix}_{$row[$__row_id]}\" ";
         echo ">";
         $count++;
-        foreach($Data->fields as $field => $field_title)
+        foreach($__fields as $field => $field_title)
         {
-          $class = (isset($Data->classes[$field]))?" class=\"{$Data->classes[$field]}\"":'';
+          $class = (isset($__classes[$field]))?" class=\"{$__classes[$field]}\"":'';
           echo "<td$class>";
-          if( isset($Data->links[$field]) ) {
-            $link = (object)$Data->links[$field];
+          if( isset($__links[$field]) ) {
+            $link = (object)$__links[$field];
             echo "<a href=\"$link->action";
             echo (strpos($link->action,'?') === FALSE)?'?':'&';
             echo "$link->value={$row[$link->value]}\" title=\"$link->title\">".htmlspecialchars($row[$field])."</a>";
           } else if( isset($Data->tooltips[$field]) ) {
-            $tooltip = $Data->tooltips[$field]['text'];
-            foreach ( $Data->tooltips[$field]['fields'] AS $tooltip_field ) {
+            $tooltip = $__tooltips[$field]['text'];
+            foreach ( $__tooltips[$field]['fields'] AS $tooltip_field ) {
               $tooltip = str_replace("%$tooltip_field%", $row[$tooltip_field], $tooltip ); 
             }  
             $tooltip = htmlspecialchars($tooltip); //tooltip_$field 
@@ -151,9 +150,9 @@
           }
           echo "</td>";
         }
-        if ( !empty($Data->actions) ) {
+        if ( !empty($__actions) ) {
           echo "<td class=\"action\">";
-          foreach ( $Data->actions as $action)
+          foreach ( $__actions as $action)
           {
             $action = (object)$action;
             $action->title = t($action->title);
@@ -168,7 +167,7 @@
                 if ( !$action->icon ) {
                   echo "{$action->title}";
                 } else {
-                  $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                  $action->icon = Helper::createFrameLink($action->icon, TRUE);
                   echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
                 }
               } else {
@@ -185,7 +184,7 @@
                 if ( !$action->icon ) {
                   echo "{$action->title}";
                 } else {
-                  $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+                  $action->icon = Helper::createFrameLink($action->icon, TRUE);
                   echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
                 }
               }
@@ -226,4 +225,4 @@
     if ($Vars->after_text) {
       echo "\n<p>$Vars->after_text</p>\n";
     }
-  $Helper->loadSubTemplate('footer');
+

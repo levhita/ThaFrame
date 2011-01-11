@@ -1,6 +1,6 @@
 <?php
   $Vars = $Data->PatternVariables;
-  foreach($Data->javascripts as $javascript) {
+  foreach($Data->_javascripts as $javascript) {
     echo "<script type=\"text/javascript\">$javascript</script>";
   }
   if($Vars->form_title){
