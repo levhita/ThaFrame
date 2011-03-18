@@ -1,0 +1,12 @@
+ThaFrame
+Argel Arias <argel.arias@levhita.net>
+
+ThaFrame is an intranet oriented PHP Framework, altought it can be used in
+another scenarios, it had grown naturally around the necessities of intranets
+because the main author had always made intranets with it and his previous
+frameworks.
+
+The design is centered around Page Patterns (Listings, Edit's, Forms, etc..)
+that can be extended and of course you can make your own patterns.
+
+This first public revision is highly unstable and isn't ready for mainstream use.
