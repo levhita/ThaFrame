@@ -21,17 +21,17 @@ class Config {
    * Constructor is private so it can't be instantiated
    * @return Config
    */
-    protected function __construct( $config_name ) {
-        $this->_config_name = $config_name;
-        $filename = TO_ROOT . "/configs/$config_name.ini";
-        $this->_filename = $filename;
-                
-        if ( !file_exists( $this->_filename ) ) {
-          throw new RuntimeException("Couldn't load configuration file: " . $this->_filename);
-        }
-        
-        $this->_config = parse_ini_file($this->_filename);
-    }
+  protected function __construct( $config_name )
+  {
+    $this->_config_name = $config_name;
+    $filename = TO_ROOT . "/configs/$config_name.ini";
+    $this->_filename = $filename;
+           
+    if ( !file_exists( $this->_filename ) ) {
+      throw new RuntimeException("Couldn't load configuration file: " . $this->_filename);
+    }        
+    $this->_config = parse_ini_file($this->_filename);
+  }
   
   /**
    * Loads the config from an ini file into an array

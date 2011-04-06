@@ -15,21 +15,42 @@
   */
 class DbConnection {
   
-  private $db_connection  = null;
-  private $db_host     = '';
-  private $db_user     = '';
-  private $db_password = '';
-  private $db_name     = '';
-  private $errors      = array();
+  protected static $_instances = array();
+  
+  protected $db_connection  = null;
+  protected $db_host     = '';
+  protected $db_user     = '';
+  protected $db_password = '';
+  protected $db_name     = '';
+  protected $errors      = array();
   
   
   
-  public function __construct($db_host, $db_user, $db_password, $db_name)
+  
+  protected function __construct($db_host, $db_user, $db_password, $db_name)
   {
     $this->db_host     = $db_host;
     $this->db_user     = $db_user;
     $this->db_password = $db_password;
     $this->db_name     = $db_name;
+  }
+  public static function getInstance($db_host='', $db_user='', $db_password='', $db_name='') {
+    
+    if( empty($db_host) ) {
+      $Config       = Config::getInstance();
+      $db_host      = $Config->db_host;
+      $db_user      = $Config->db_user;
+      $db_password  = $Config->db_password;
+      $db_name      = $Config->db_name;
+    }
+    $instance_name = "$db_host $db_user $db_name";
+    if ( !isset(self::$_instances[$instance_name]) ) {
+      $DbConnection = new DbConnection($Config->db_host, $Config->db_user, $Config->db_password, $Config->db_name);
+      $DbConnection->connect();
+      $DbConnection->executeQuery("SET CHARACTER SET 'utf8'");
+      self::$_instances[$instance_name]=$DbConnection;
+    }
+    return self::$_instances[$instance_name];
   }
   
   public function connect()

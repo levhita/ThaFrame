@@ -10,7 +10,7 @@
  * Provides a database abstraction of a Row, simplyfing data access and modification
  * @package ThaFrame
  */
-class Row {
+class RowModel {
   
   protected $table_name   = '';
   protected $id_field     = '';
@@ -27,6 +27,9 @@ class Row {
   protected $full_string    = "<div class=\"{%table_name}\" id=\"{%table_name}{%id}\">\n{%content}\n</div>\n\n";
   
   public function __construct($table_name, $id, $DbConnection) {
+    if ( !isset($DbConnection) ) {
+      $DbConnection = DbConnection::getInstance();
+    }
     if (!is_string($table_name)) {
       throw new InvalidArgumentException("table_name isn't an string");
     }

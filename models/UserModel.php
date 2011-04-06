@@ -1,19 +1,17 @@
 <?php
 /**
- * Holds {@link User} model
+ * Holds {@link UserModel}
  * @package ThaFrame
  * @author Argel Arias <levhita@gmail.com>
  * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once THAFRAME . "/models/Row.inc.php";
-
 /**
  * Provides an user abstraction, basic authentication logic is here too
  * @package ThaFrame
  */
-class User extends Row
+class UserModel extends RowModel
 {
   /**
    * Holds the permission for this user in the name => actions(0=> 'action1', 1=>'action2') format
@@ -23,7 +21,7 @@ class User extends Row
   
   protected $permissions_loaded = FALSE;
   
-  public function __construct($table_name, $id, $DbConnection)
+  public function __construct($table_name, $id)
   {
     $this->assert_message ="User instance isn't loaded";
     parent::__construct($table_name, $id, $DbConnection);
@@ -42,12 +40,26 @@ class User extends Row
   
   public static function assertUniqueName($name)
   {
-    global $DbConnection;
-    $sql= "SELECT * FROM $this->table_name WHERE name='$name' LIMIT 1";
+    $DbConnection = DbConnection::getInstance();
+    $Config = Config::getInstance();
+    $sql= "SELECT * FROM $Config->user_table WHERE name='$name' LIMIT 1";
     if($DbConnection->getOneRow($sql)) {
       return false;
     }
     return true;
+  }
+  
+  public static function getUserByName($name)
+  {
+    $DbConnection = DbConnection::getInstance();
+    $Config = Config::getInstance();
+    $sql= "SELECT $Config->user_table_id FROM $Config->user_table WHERE name='$name' LIMIT 1";
+    if(!$user_id = $DbConnection->getOneRow($sql)) {
+      return false;
+    }
+    $User = new UserModel($Config->user_table,(int)$user_id);
+    $User->load();
+    return  $User;
   }
   
   public function loadPermissions()
