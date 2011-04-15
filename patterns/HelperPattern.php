@@ -111,11 +111,89 @@ class HelperPattern {
     echo $string;
   }
   
-  public function objetizeArray($array){
+  public static function objetizeArray($array){
     $clean_array = array();
     foreach($array AS $key => $value){
       $clean_array[$key] = htmlspecialchars($value);
     }
     return (object)$clean_array;
+  }
+  
+  /**
+   * Creates a ComboBox
+   * @param $items Array in $key=>$value format
+   * @param $name String field name
+   * @param $selected string telling which value is the one selected
+   * @param $extra_parameters string any other extra string to be attached at the end
+   * @return string the combobox in a single string
+   */
+  public static function createComboBox($items, $name, $selected, $extra_parameters='')
+  {
+    $output= "<select name=\"$name\" id=\"$name\" $extra_parameters>\n";
+    foreach ( $items as $key => $value )
+    {
+      $output.= "<option value=\"" . htmlentities($key) . "\"";
+      if ( $key==$selected ) {
+        $output .=" selected=\"selected\" ";
+      }
+      $output.=">".t(ucwords($value))."</option>\n";
+    }
+    $output.="</select>\n";
+    return $output;
+  }
+  
+  public static function createRadioButton($items, $name, $selected, $extra_parameters='')
+  {
+    foreach ( $items as $key => $value )
+    {
+      $output.= "<input type=\"radio\" name=\"$name\" value=\"" . htmlentities($key) . "\"";
+      if ( $key==$selected ) {
+        $output .=" checked=\"checked\" ";
+      }
+      $output.=" $extra_parameters/>".t(ucwords($value))." ";
+    }
+    return $output;
+  }
+  
+  public static function createDateComboBox( $date='', $past = 10, $future = 10, $prefix='date')
+  {
+    if ( $date=='' ) {
+      $date=date('Y-m-d');
+    }
+    list($year, $month, $day) = explode('-', $date);
+    $current_year = date('Y');
+	
+    /*
+    $years = array();
+    for($x = $current_year-$past; $x <= $current_year+$future; $x++)
+    {
+      $years[$x] = $x;
+    }
+    $year_combo=createComboBox($years, $prefix.'_year', $year);
+    
+    $months = array (
+      '01'=>'Enero',
+      '02'=>'Febrero',
+      '03'=>'Marzo',
+      '04'=>'Abril',
+      '05'=>'Mayo',
+      '06'=>'Junio',
+      '07'=>'Julio',
+      '08'=>'Agosto',
+      '09'=>'Septiembre',
+      '10'=>'Octubre',
+      '11'=>'Noviembre',
+      '12'=>'Diciembre',
+      );
+    $month_combo=createComboBox($months, $prefix.'_month', $month);
+    
+    $days = array();
+    for($x = 1; $x <= 31; $x++)
+    {
+      $days[$x] = $x;
+    }
+    $day_combo=createComboBox($days, $prefix.'_day', $day);
+    return  $day_combo . $month_combo . $year_combo ;*/
+    return "<input type='text' class='date' readonly='readonly'' value='".date('Y-m-d')."'>";
   }
 }

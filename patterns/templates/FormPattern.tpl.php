@@ -68,7 +68,7 @@
             echo htmlspecialchars($Properties->parameters['options'][$Properties->value]);
             echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlspecialchars($Properties->value)."\" $input_parameters/>";
           } else {
-            echo createRadioButton($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
+            echo HelperPattern::createRadioButton($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
           }
           break;
         case "date":
@@ -76,7 +76,7 @@
             echo $Properties->value;
             echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlspecialchars($Properties->value)."\" $input_parameters/>";
           } else {
-            echo createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
+            echo HelperPattern::createDateComboBox($Properties->value, $Properties->parameters['before'], $Properties->parameters['after'], $field);
           }
           break;
         case "textarea":

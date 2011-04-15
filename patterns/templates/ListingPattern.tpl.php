@@ -12,13 +12,21 @@
         $action->title = t($action->title);
         echo "<li>";
         if( !empty($action->field) ) {
-          if ( strpos($action->action,'?') === FALSE) {
-            echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
+          if(!$action->ajax) {
+            if ( strpos($action->action,'?') === FALSE) {
+              echo "<a href=\"$action->action?$action->field={$action->value}\" title=\"$action->title\">";
+            } else {
+              echo "<a href=\"$action->action&$action->field={$action->value}\" title=\"$action->title\">";
+            }
           } else {
-            echo "<a href=\"$action->action&$action->field={$action->value}\" title=\"$action->title\">";
+            echo "<a href=\"javascript:void(xajax_$action->action('{$action->value}'));\" title=\"$action->title\">";
           }
         } else {
+          if(!$action->ajax) {
           echo "<a href=\"$action->action\" title=\"$action->title\">";
+          }else{
+            echo "<a href=\"javascript:void(xajax_$action->action());\" title=\"$action->title\">";
+          }
         }
         if ( !$action->icon ) {
           echo "{$action->title}";

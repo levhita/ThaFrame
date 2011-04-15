@@ -1,41 +1,39 @@
 <?php
 /**
- * Holds {@link Listing} class
+ * Holds {@link CatalogPattern} class
  * @author Argel Arias <levhita@gmail.com>
  * @package ThaFrame
  * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once THAFRAME . "/patterns/Page.inc.php";
 
 /**
- * Provides a {@link Page} that shows an item's list.
+ * Provides a {@link PagePattern} that shows an item's list.
  *
  * Trough several methods it allows you to add links and actions asociated
  * with each row, as well as formating
- * @package Freimi
- * @todo paging , column re-ordering
+ * @package ThaFrame
  */
-class Catalog extends Page
+class CatalogPattern extends PagePattern
 {
    /**
-   * Construct a {@link Listing} page
+   * Construct a {@link CatalogPattern} page
    * @param string $page_name the page name to be shown
-   * @param string $template by default it uses Listing.tpl.php 
-   * @return Listing
+   * @param string $template by default it uses CatalogPattern.{$view}.tpl.php 
+   * @return CatalogPattern
    */
-  public function __construct($page_name, $template='')
+  public function __construct($page_name='', $template='')
   {
     $view = ( array_search($GET['_view'] , array('list','detail','edit') ) )?$view:'list';
   	
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . "/patterns/templates/Catalog.$view.tpl.php", true);
+      $this->setTemplate(THAFRAME . "/patterns/templates/CatalogPattern.$view.tpl.php", true);
     } else {
       $this->setTemplate( $template);
     }
     
-    $this->assign('page_name', $page_name);
+    $this->setPageName($page_name);
   }
   
   /**

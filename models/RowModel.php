@@ -26,7 +26,7 @@ class RowModel {
   protected $assert_message = "Class instance isn't loaded";
   protected $full_string    = "<div class=\"{%table_name}\" id=\"{%table_name}{%id}\">\n{%content}\n</div>\n\n";
   
-  public function __construct($table_name, $id, $DbConnection) {
+  public function __construct($table_name, $id, DbConnection $DbConnection=null) {
     if ( !isset($DbConnection) ) {
       $DbConnection = DbConnection::getInstance();
     }
@@ -183,6 +183,11 @@ class RowModel {
       throw new RunTimeException($this->assert_message);
     }
     return true;
+  }
+  
+  public function getData()
+  {
+    return $this->data;
   }
 
 }

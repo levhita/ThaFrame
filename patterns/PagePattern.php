@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Holds {@link Page} class
  * @package ThaFrame
@@ -7,6 +6,12 @@
  * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
+
+define('GOTO_MESSAGE_INFO', 'info');
+define('GOTO_MESSAGE_WARNING', 'warning');
+define('GOTO_MESSAGE_ERROR', 'error');
+define('GOTO_MESSAGE_SUCCESS', 'success');
+
 /**
  * Provide basic template system and http some http functionality
  * @package ThaFrame
@@ -89,7 +94,7 @@ class PagePattern
    * @param string $level might be: info, warning, error, success 
    * @return false
    */
-  public function goToPage($url, $message = '', $level='info') {
+  public static function goToPage($url, $message = '', $level='info') {
     if ( $message ) {
       $_SESSION['__message_text'] = $message;
       $_SESSION['__message_level'] = $level;

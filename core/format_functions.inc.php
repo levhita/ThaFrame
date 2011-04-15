@@ -45,18 +45,18 @@
     $new_format = date('j-n-Y', strtotime($date));
     $data       = explode('-', $new_format);
     $meses = array(
-        '1' => 'Enero',
-        '2' => 'Febrero',
-        '3' => 'Marzo',
-        '4' => 'Abril',
-        '5' => 'Mayo',
-        '6' => 'Junio',
-        '7' => 'Julio',
-        '8' => 'Agosto',
-        '9' => 'Septiembre',
-        '10' => 'Octubre',
-        '11' => 'Noviembre',
-        '12' => 'Diciembre'
+   		'1' => t('January'),
+        '2' => t('February'),
+        '3' => t('March'),
+        '4' => t('April'),
+        '5' => t('May'),
+        '6' => t('June'),
+        '7' => t('July'),
+        '8' => t('August'),
+        '9' => t('September'),
+        '10' => t('October'),
+        '11' => t('November'),
+        '12' => t('December'),
       );
     return "{$data['0']} de " . $meses[$data['1']] . " del {$data['2']}";
   }

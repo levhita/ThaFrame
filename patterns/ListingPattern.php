@@ -1,23 +1,22 @@
 <?php
 /**
- * Holds {@link Listing} class
+ * Holds {@link ListingPattern} class
  * @author Argel Arias <levhita@gmail.com>
  * @package ThaFrame
  * @copyright Copyright (c) 2007, Argel Arias <levhita@gmail.com>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-require_once THAFRAME . "/patterns/Page.inc.php";
 
 /**
- * Provides a {@link Page} that shows an item's list.
+ * Provides a {@link PagePattern} that shows an item's list.
  *
  * Trough several methods it allows you to add links and actions asociated
  * with each row, as well as formating
- * @package Freimi
+ * @package ThaFrame
  * @todo paging , column re-ordering
  */
-class Listing extends Page
+class ListingPattern extends PagePattern
 {
   /**
    * Holds all the raw data that will be listed
@@ -128,14 +127,15 @@ class Listing extends Page
    * @param string $template by default it uses Listing.tpl.php
    * @return Listing
    */
-  public function __construct($page_name, $template='')
+  public function __construct($page_name='', $template='', $layout='')
   {
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . '/patterns/templates/Listing.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/ListingPattern.tpl.php', true);
     } else {
       $this->setTemplate($template);
     }
-    $this->assign('__page_name', $page_name);
+    $this->setPageName($page_name);
+    $this->setLayout($layout);
   }
   
   /**
@@ -300,7 +300,7 @@ EOT;
    * @param string $icon  Tn optional icon that could go with the text
    * @return void
    */
-  public function addGeneralAction($action, $title, $field='', $value='', $icon='')
+  public function addGeneralAction($action, $title, $field='', $value='', $icon='', $ajax=false)
   {
     $aux = array (
         'action'  => $action ,
@@ -308,6 +308,7 @@ EOT;
         'field'   => $field ,
         'value'   => $value ,
         'icon'    => $icon,
+    	'ajax'    => $ajax,
       );
     $this->_general_actions[] = $aux;
   }
@@ -376,7 +377,11 @@ EOT;
     }
   }
   
-  public function setQuery($sql, DbConnection $DbConnection, $paginate = false) {
+  public function setQuery($sql, DbConnection $DbConnection=null, $paginate = false) {
+    if (is_null($DbConnection) ) {
+      $DbConnection = DbConnection::getInstance();
+    }
+    
     if ($paginate) {
       $this->_paginate = true;
       

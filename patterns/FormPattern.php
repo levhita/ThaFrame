@@ -1,11 +1,10 @@
 <?php
-require_once THAFRAME . '/patterns/Template.inc.php';
-
-class Form Extends Template {
+class FormPattern Extends TemplatePattern
+{
   
   /**
    * This is the Row to be edited
-   * @var Row
+   * @var RowModel
    */
   private $Row    = null;
    
@@ -68,7 +67,7 @@ class Form Extends Template {
   public function __construct($template='')
   {
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . '/patterns/templates/Form.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/FormPattern.tpl.php', true);
     } else {
       $this->setTemplate($template);
     }
@@ -186,7 +185,7 @@ class Form Extends Template {
    * @param  Row $Row the Row to be edited
    * @return void
    */
-  public function setRow(Row $Row) {
+  public function setRow(RowModel $Row) {
     $this->Row = $Row;
     $this->no_fields = 0;
     

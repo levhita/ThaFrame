@@ -1,6 +1,4 @@
 <?php
-require_once THAFRAME . '/patterns/Helper.inc.php';
-
 /**
  * Holds {@link Page} class
  * @package ThaFrame
@@ -12,7 +10,7 @@ require_once THAFRAME . '/patterns/Helper.inc.php';
  * Provide basic template system
  * @package ThaFrame
  */
-class Template
+class TemplatePattern
 {
   /**
    * Holds the variables to be passed to the template as $Data object
@@ -111,7 +109,7 @@ class Template
     }
     
     $this->assign('PatternVariables', (object)$this->pattern_variables);
-    $this->assign('javascripts', $this->javascripts);
+    $this->assign('_javascripts', $this->javascripts);
     
     /** Convert all variables into an object **/
     $Data = (object)$this->variables;
@@ -119,7 +117,7 @@ class Template
     /** This object actually helps to do a variety of things inside templates
      * @var Helper
      */
-    $Helper = new Helper($Data);
+    $Helper = new HelperPattern($Data);
     
     ob_start();
       include $this->template;

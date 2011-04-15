@@ -1,5 +1,6 @@
 <?php
  $Config= Config::getInstance();
+ global $xajax;
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
@@ -25,7 +26,9 @@
       echo "onload=\"{$__on_load}\"";
   }
   ?> >
-    <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+    <div id="overlay_shadow" class="hidden"></div>
+    <div id="overlay" class="hidden"></div>
+    
     
     <div id="page">
       <?php if ( isset($__message) ) {

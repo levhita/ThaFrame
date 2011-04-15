@@ -66,6 +66,7 @@ class DbConnection {
   public function getAllRows($sql)
   {
     if ( !$results = @mysql_query($sql, $this->db_connection) ) {
+      echo "$sql";
       throw new RunTimeException("Couldn't execute query: ". mysql_error($this->db_connection) );
     }
     

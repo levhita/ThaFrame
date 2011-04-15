@@ -21,4 +21,116 @@ class Utils {
     }
     return self::$__mobile;
   }
+  
+  public static function validateNotEmpty($field)
+  {
+    if ( isset($_POST[$field]) ) {
+      $field_value = trim($_POST[$field]);
+      if ( !empty($field_value) ) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+  
+  public static function cleanToDbBinary($value, $DbConnection=null)
+  {
+    if ( is_null($DbConnection) ) {
+      global $DbConnection;
+    }
+    return mysql_real_escape_string($value, $DbConnection->getMysqlConnection());
+  }
+  
+  public static function cleanToDb($value)
+  {
+    return mysql_real_escape_string($value);
+  }
+  
+  public static function selfURL()
+  {
+    $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
+    $protocol = strleft(strtolower($_SERVER["SERVER_PROTOCOL"]), "/").$s;
+    $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
+    return $protocol."://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'];
+  }
+  
+  public static function microtime_float()
+  {
+    list($useg, $seg) = explode(" ", microtime());
+    return ((float)$useg + (float)$seg);
+  }
+  
+  /**
+   * Takes the $data from a form with a date on it, creates a date by compositing
+   * the year,month and day fields, into one string, and then cleans the extra
+   * fields
+   * @param $data Array An Array of fields
+   * @param $field String Field name to be cleaned
+   * @return bool True on success FALSE in case of an error
+   */
+  public static function cleanDateFromData(&$data, $field){
+    $date = $data["{$field}_year"] . "-" . $data["{$field}_month"] . "-" .$data["{$field}_day"];
+    unset($data["{$field}_year"], $data["{$field}_month"], $data["{$field}_day"]);
+    $data[$field] = $date;
+    return TRUE;
+  }
+  
+ 
+  /**
+   * An ls style command using regular expresions
+   * 
+   * By fordiman@gmail.com taken from PHP documentation:
+   * http://www.php.net/manual/en/class.dir.php#60562
+   *
+   * @example foreach (preg_ls("/etc/X11", true, "/.*\.conf/i") as $file) echo $file."\n";
+   * @param string $path
+   * @param boolean $recursive if the ls should be recursive
+   * @param string $patttern the pattern in regular expression format
+   * @return Array
+   */ 
+  public static function preg_ls ($path=".", $recursive=false, $pattern="/.*/") {
+    $rec = $recursive;
+    $pat = $pattern;
+    // it's going to be used repeatedly, ensure we compile it for speed.
+    $pat=preg_replace("|(/.*/[^S]*)|s", "\\1S", $pat);
+    //Remove trailing slashes from path
+    while (substr($path,-1,1)=="/") $path=substr($path,0,-1);
+    //also, make sure that $path is a directory and repair any screwups
+    if (!is_dir($path)) $path=dirname($path);
+    //assert either truth or falsehoold of $rec, allow no scalars to mean truth
+    if ($rec!==true) $rec=false;
+    //get a directory handle
+    $d=dir($path);
+    //initialise the output array
+    $ret=Array();
+    //loop, reading until there's no more to read
+    while (false!==($e=$d->read())) {
+        //Ignore parent- and self-links
+        if (($e==".")||($e=="..")) continue;
+        //If we're working recursively and it's a directory, grab and merge
+        if ($rec && is_dir($path."/".$e)) {
+            $ret=array_merge($ret,preg_ls($path."/".$e,$rec,$pat));
+            continue;
+        }
+        //If it don't match, exclude it
+        if (!preg_match($pat,$e)) continue;
+        //In all other cases, add it to the output array
+        $ret[]=$path."/".$e;
+    }
+    //finally, return the array
+    return $ret;
+  }
+  
+  public static function getOptions($table_name, DbConnection $DbConnection=null)
+  {
+    if (is_null($DbConnection) ) {
+      $DbConnection = DbConnection::getInstance();
+    }
+    
+    $sql = "SELECT id_$table_name, nombre
+            FROM $table_name";
+    return $DbConnection->getArrayPair($sql);
+  }
+  
 }

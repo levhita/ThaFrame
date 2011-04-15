@@ -20,13 +20,14 @@ body{
 
 #message {
   position: absolute;
-  width:  300px;
-  left:   225px;
-  top:    60px;
+  top: 80px;
+  left: 50%;
+  width: 300px;
+  padding: 10px;
+  margin-left: -160px;
   border: 1px solid black;
-  background: #FFF;
-  padding:10px;
-  text-align:center;
+  background: white;
+  text-align: center;
 }
 
 #message .cancel_button {
@@ -63,9 +64,26 @@ body{
   #header a:hover {
     color: #c1ff7f;
   }
+  
   #top_menu {
     font-size:small;
+    float:right;
   }
+  #top_menu ul {
+  	position:relative;
+  	display:block;
+  	top:-30px;
+  	margin: 0px;
+  	padding: 0px;
+  	list-style: none;
+  	
+  }
+  
+  #top_menu li{
+  	display:inline;
+  	margin: 5px;
+  	padding: 5px;
+  }	
 
 #sidebar {
   float:left;
@@ -128,9 +146,33 @@ body{
   font-size: x-small;
   margin:5px;
 }
+
+#overlay.hidden, #overlay.hidden {
+	visiblity:hidden; 
+	}
+#overlay.visible {
+	position: 		absolute;
+  	z-index:		100;
+  	top:			60px;
+  	left: 			50%;
+  	width:  		600px;
+	padding: 10px;
+	margin-left: 	-310px;
+	border:			1px solid black;
+	background:		white;
+	}
+#overlay_shadow.visible {
+	position:fixed;
+	width:100%;
+	height:100%;
+	background:#000;
+	z-index:100;
+	opacity:.5;
+	}
 .big_bottom{
   text-align:right;
   width:100%
+  
 }
 /** Action buttons **/
 ul.action{
