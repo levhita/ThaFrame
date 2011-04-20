@@ -1,13 +1,11 @@
 <?php
+define('LOGGER_ERROR', 'error');
+define('LOGGER_WARNING', 'warning');
+define('LOGGER_NOTICE', 'notice');
 /**
- * A simple Logger, to be used by programmers doing some debug.
- *
- * @todo Add report level(kind of php basic report levels, an oportunity to use
- * bit operators!!!).
- * @todo Add File and Line handling
- *
- * @package Garson
+ * @package ThaFrame
  * @author Argel Arias <levhita@gmail.com>
+ * @todo Add File and Line handling
  */
 class Logger {
 
@@ -26,7 +24,7 @@ class Logger {
    * @param string $level Valid values are: notice, warning, error
    * @return null
    */
-  public static function log($name, $details='', $level='notice'){
+  public static function log($name, $details='', $level=LOGGER_NOTICE){
     $Config = Config::getInstance();
     
     /* Creates Log array */
@@ -41,7 +39,7 @@ class Logger {
     self::$logs[] = $log;
     
     if ($Config->log_level == 'both' || $Config->log_level == 'text' ) {
-      $file_pointer = fopen($Config->log_file, 'a');
+      $file_pointer = fopen(TO_ROOT . $Config->log_file, 'a');
       fputcsv($file_pointer, $log);
     }
   }

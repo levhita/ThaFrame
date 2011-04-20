@@ -73,15 +73,24 @@ class FormPattern Extends TemplatePattern
     }
   }
   
+  /**
+   * Loads information from a config file
+   * 
+   * $config_name maps to TO_ROOT/configs/models/{class_name}_{config_name}.ini by default
+   * 
+   * @param string $config_name 
+   * @param boolean $use_class_name selects if the class_name prefix should be added.
+   */
   public function loadConfig($config_name='default', $use_class_name = true) {
     global $DbConnection;
     if($use_class_name) {
       $prefix = strtolower(get_class($this->Row));
-      $file_name = TO_ROOT."/models/configs/{$prefix}_{$config_name}.ini";
+      $file_name = TO_ROOT."/configs/models/{$prefix}_{$config_name}.ini";
     } else {
-      $file_name = TO_ROOT."/models/configs/{$config_name}.ini";
+      $file_name = TO_ROOT."/configs/models/{$config_name}.ini";
     }
     if(!file_exists($file_name)){
+      Logger::log("Couldn't load config file", $file_name, LOGGER_ERROR);
       return false;
     }
     $config = parse_ini_file($file_name, true);

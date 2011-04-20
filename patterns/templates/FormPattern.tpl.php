@@ -104,7 +104,7 @@
       if ( count($Properties->actions) ){
         foreach ( $Properties->actions  AS $action) {
           $action=(object)$action;
-          $action->icon = $Helper->createFrameLink($action->icon, TRUE);
+          $action->icon = $Helper->createFrameLink($action->icon, TRUE, TRUE);
           if($action->ajax) {
             echo " <a href=\"javascript:void(xajax_$action->action(xajax.getFormValues('$Data->form_id')));\" class=\"input_action\" title=\"".t($action->title)."\"><img src=\"$action->icon\" alt=\"".t($action->title)."\"/></a>";
           } else {
@@ -133,7 +133,7 @@
       echo "<li>";
       $action = (object)$action;
       $action->title = t($action->title);
-      $action->icon = $Helper->createFrameLink($action->icon, 1, 1);
+      $action->icon = $Helper->createFrameLink($action->icon, TRUE, TRUE);
       if ( !$action->ajax) {
         echo "<a href=\"$action->action\" title=\"$action->title\">";
         if ( !$action->icon ) {

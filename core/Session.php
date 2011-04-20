@@ -50,15 +50,19 @@ class Session
     session_start();
   }
 
-  public static function getUser( $class='UserModel' ) {
-  	if ( !isset(self::$_User) ) {
+  public static function getUser($class='') {
+  	$Config = Config::getInstance();
+    if ( !isset(self::$_User) ) {
       if ( !empty($_SESSION['user_id']) ){
+        if (empty($class)) {
+          $class = (!isset($Config->user_class))?'UserModel':$Config->user_class;
+        }
         if ( $class =='UserModel' ) { 
-          $Config = Config::getInstance();
           $User = new UserModel( $Config->user_table, (int)$_SESSION['user_id'] );
         } else {
           $User = new $class( (int)$_SESSION['user_id'] );
         }
+        
         if ( !$User->load() ) {
           print_r($_SESSION['user_id']);
           self::$_error = "Couldn't Load User";

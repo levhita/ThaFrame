@@ -66,6 +66,9 @@
       a <a href="http://en.wikipedia.org/wiki/Free_software">Free Software</a>
       development from <a href="http://thasystems.net">ThaSystems</a>.
       <?php /** Of course you are welcome to give it a more apropiated format **/ ?>
+      <?php foreach(Logger::getWebLog() as $log ): ?>
+       <pre><?=print_r($log,1)?></pre>
+      <?php endforeach; ?>
       </div>
     </div> 
   </body>

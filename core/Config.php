@@ -108,6 +108,9 @@ class Config {
     $this->_config[$field] = $value;
   }
   
+  public function __isset($field) {
+    return isset($this->_config[$field]);
+  }
   
   public function getFilename(){
     return $this->_filename;

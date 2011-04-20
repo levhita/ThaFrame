@@ -47,16 +47,21 @@ class HelperPattern {
     }
   }
   
-  public static function createFrameLink($filename, $return_string=FALSE, $absolute_path = FALSE)
+  public static function createFrameLink($filename, $return_string=FALSE, $absolute_path=FALSE)
   {
     $string = '';
     if ($absolute_path){
-        $string .= SYSTEM_WEB_ROOT . "/$filename";
+      
+      if( file_exists(TO_ROOT ." /$filename") ) {
+        $string = SYSTEM_WEB_ROOT . "/$filename";
+      } else {
+        $string = SYSTEM_WEB_ROOT . "/f/$filename";
+      }  
     } else {
       if( file_exists(TO_ROOT . "/$filename") ){
-        $string .= TO_ROOT . "/$filename";
+        $string = TO_ROOT . "/$filename";
       } else {
-        $string .= TO_ROOT . "/f/$filename";
+        $string = TO_ROOT . "/f/$filename";
       }
     }
     
