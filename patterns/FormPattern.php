@@ -82,7 +82,8 @@ class FormPattern Extends TemplatePattern
    * @param boolean $use_class_name selects if the class_name prefix should be added.
    */
   public function loadConfig($config_name='default', $use_class_name = true) {
-    global $DbConnection;
+    $DbConnection = DbConnection::getInstance();
+    
     if($use_class_name) {
       $prefix = strtolower(get_class($this->Row));
       $file_name = TO_ROOT."/configs/models/{$prefix}_{$config_name}.ini";
@@ -146,7 +147,7 @@ class FormPattern Extends TemplatePattern
         } else if($action == 'splitter') {
           $this->insertSplitter($field, $properties['content'], $properties['position'], $field);
         } else if($action == 'linked') {
-          $this->setAsLinked($field, $properties['table_name'], $DbConnection, $properties['table_id'], $properties['name_field']);
+          $this->setAsLinked($field, $properties['table_name'], $DbConnection, $properties['table_id'], $properties['name_field'], $properties['condition']);
         } else if($action == 'dependent') {
           $this->setFieldDependents($field, $properties['condition'], $properties['value'], $properties['dependants']);
         } else if($action == 'add') {
@@ -562,7 +563,7 @@ class FormPattern Extends TemplatePattern
     return false;
   }
   
-  public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='')
+  public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $name_field='', $condition='')
   {
     if ($table_id=='') {
       $table_id = "{$table_name}_id";
@@ -572,8 +573,13 @@ class FormPattern Extends TemplatePattern
       $name_field = NAME_FIELD;
     }
     
+    if($condition=='') {
+      $condition='1';   
+    }
+    
     $sql = "SELECT $table_id, $name_field
             FROM $table_name
+            WHERE $condition
             ORDER BY $name_field";
     $options = $DbConnection->getArrayPair($sql);
     $this->setFieldProperty($field, 'type', 'select');

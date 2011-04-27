@@ -60,7 +60,7 @@
             echo $Properties->parameters['options'][$Properties->value];
             echo "<input type=\"hidden\" name=\"$field\" id=\"$field\" value=\"".htmlspecialchars($Properties->value)."\" $input_parameters/>";
           } else {
-            echo createComboBox($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
+            echo HelperPattern::createComboBox($Properties->parameters['options'], $field, $Properties->value, $input_parameters);
           }
           break;
         case "radio":

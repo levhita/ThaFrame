@@ -175,7 +175,7 @@
                 if ( !$action->icon ) {
                   echo "{$action->title}";
                 } else {
-                  $action->icon = Helper::createFrameLink($action->icon, TRUE);
+                  $action->icon = HelperPattern::createFrameLink($action->icon, TRUE);
                   echo "<img src=\"$action->icon\" alt=\"{$action->title}\"/>";
                 }
               } else {
