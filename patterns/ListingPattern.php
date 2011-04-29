@@ -366,6 +366,14 @@ EOT;
     $this->_classes[$field] = $value; 
   }
   
+  /**
+   * Adds a group of options to a filter
+   * 
+   * @param $field Field where the filter will be applied.
+   * @param $values Array in the form of array(value=>label, value=>label);
+   * @param $condition condition to be applied, {value}s and {label}s in the string will be
+   * replaced with the corresponding value and label. 
+   */
   public function addFilterOptions($field, $values, $condition){
     if (is_array($values) ) {
       foreach($values as $value=>$label) {

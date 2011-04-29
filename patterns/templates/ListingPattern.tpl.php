@@ -102,7 +102,7 @@
             $options[$option['value']] = $option['label'];
           }
           $selected = (!isset($Filter->selected))? $Filter->default:$Filter->selected;
-          echo createComboBox($options, $field, $selected);
+          echo HelperPattern::createComboBox($options, $field, $selected);
         }else if($Filter->type=='hidden'){
           ?> <input type='hidden' name='<?php echo $field ?>' value='<?php echo $Filter->value?>'/><?php
         }

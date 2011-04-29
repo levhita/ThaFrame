@@ -34,8 +34,17 @@ class DbConnection {
     $this->db_password = $db_password;
     $this->db_name     = $db_name;
   }
+  
+  /**
+   * Gets an instance of the the DbConnection
+   * 
+   * @param string $db_host
+   * @param string $db_user
+   * @param string $db_password
+   * @param string $db_name
+   * @return DbConnection
+   */
   public static function getInstance($db_host='', $db_user='', $db_password='', $db_name='') {
-    
     if( empty($db_host) ) {
       $Config       = Config::getInstance();
       $db_host      = $Config->db_host;

@@ -34,17 +34,20 @@ class Utils {
     return false;
   }
   
-  public static function cleanToDbBinary($value, $DbConnection=null)
+  public static function cleanToDbBinary($value, DbConnection $DbConnection = null)
   {
     if ( is_null($DbConnection) ) {
-      global $DbConnection;
+      $DbConnection = DbConnection::getInstance();
     }
     return mysql_real_escape_string($value, $DbConnection->getMysqlConnection());
   }
   
-  public static function cleanToDb($value)
+  public static function cleanToDb($value, DbConnection $DbConnection = null)
   {
-    return mysql_real_escape_string($value);
+    if ( is_null($DbConnection) ) {
+      $DbConnection = DbConnection::getInstance();
+    }
+    return mysql_real_escape_string($value, $DbConnection->getMysqlConnection());
   }
   
   public static function selfURL()

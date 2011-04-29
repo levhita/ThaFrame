@@ -199,6 +199,6 @@ class HelperPattern {
     }
     $day_combo=createComboBox($days, $prefix.'_day', $day);
     return  $day_combo . $month_combo . $year_combo ;*/
-    return "<input type='text' class='date' readonly='readonly'' value='".date('Y-m-d')."'>";
+    return "<input type='date' class='date' name='$prefix' value='$date'>";
   }
 }
