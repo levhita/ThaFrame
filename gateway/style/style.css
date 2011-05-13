@@ -148,7 +148,7 @@ body{
 }
 
 #overlay.hidden, #overlay.hidden {
-	visiblity:hidden; 
+	visibility:hidden; 
 	}
 #overlay.visible {
 	position: 		absolute;

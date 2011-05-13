@@ -68,8 +68,8 @@ class RowModel {
   {
     if ( $this->id != 0 ) {
       $sql = "SELECT *
-              FROM $this->table_name
-              WHERE $this->id_field=$this->id;";
+              FROM `$this->table_name`
+              WHERE `$this->id_field`=$this->id;";
       if ( !$this->data = $this->DbConnection->getOneRow($sql) ) {
         return false;
       }
@@ -83,7 +83,12 @@ class RowModel {
   {
     if ( !$this->id ) {
       $fields = array_keys($this->data);
-      $fields_string = implode(', ', $fields);
+      
+      $escaped_fields = array();
+      foreach($fields AS $field) {
+        $escaped_fields[] = "`$field`";
+      }
+      $fields_string = implode(', ', $escaped_fields);
       
       $values = array_values($this->data);
       $aux = array();
@@ -94,7 +99,7 @@ class RowModel {
       $values = implode(', ', $aux);
       
       $sql = "INSERT INTO
-              {$this->table_name}($fields_string)
+              `{$this->table_name}`($fields_string)
               VALUES($values);";
       if ( !$this->DbConnection->executeQuery($sql) ) {
         return false;
@@ -105,13 +110,13 @@ class RowModel {
       $fields_strings = array();
       foreach($this->data as $field => $value)
       {
-        $fields_strings[] = "$field='" . mysql_escape_string($value) . "'";
+        $fields_strings[] = "`$field`='" . mysql_escape_string($value) . "'";
       }
       $field_string = implode(', ', $fields_strings);
       
-      $sql = "UPDATE $this->table_name
+      $sql = "UPDATE `$this->table_name`
               SET $field_string
-              WHERE $this->id_field=$this->id
+              WHERE `$this->id_field`=$this->id
               LIMIT 1;";
       if ( !$this->DbConnection->executeQuery($sql) ) {
         return false;
@@ -135,8 +140,8 @@ class RowModel {
   
   public function delete()
   {
-    $sql = "DELETE FROM $this->table_name
-            WHERE $this->id_field=$this->id
+    $sql = "DELETE FROM `$this->table_name`
+            WHERE `$this->id_field`=$this->id
             LIMIT 1;";
     if ( !$this->DbConnection->executeQuery($sql) ) {
       return false;
