@@ -111,13 +111,17 @@ class TemplatePattern
     $this->assign('PatternVariables', (object)$this->pattern_variables);
     $this->assign('_javascripts', $this->javascripts);
     
-    /** Convert all variables into an object **/
+    /**
+     * Convert all variables into an object 
+     * @todo Backwards Compatibility Remove Before Release
+     * **/
     $Data = (object)$this->variables;
     
     /** This object actually helps to do a variety of things inside templates
      * @var Helper
+     * @todo remove in favor of Helper::getInstance();
      */
-    $Helper = new HelperPattern($Data);
+    $Helper = new HelperPattern(get_defined_vars());
     
     ob_start();
       include $this->template;

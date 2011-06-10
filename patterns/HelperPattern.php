@@ -21,7 +21,7 @@ class HelperPattern {
   }
   
   /*
-   * Load a subtemplate, selectiong between a custom template or a standard
+   * Load a subtemplate, chosing between a custom template or a standard
    * framework subtemplate
    */
   public function loadSubTemplate($template, $fullpath=FALSE)
@@ -40,6 +40,7 @@ class HelperPattern {
       }
     } else {
       if ( file_exists( $template) ) {
+        $data=(array)$Data;unset($data['template']);extract($data);
         include $template;
       } else {
         throw new Exception("Couldn't find template '$template'");
@@ -200,5 +201,22 @@ class HelperPattern {
     $day_combo=createComboBox($days, $prefix.'_day', $day);
     return  $day_combo . $month_combo . $year_combo ;*/
     return "<input type='date' class='date' name='$prefix' value='$date'>";
+  }
+  
+  public static function getMenus($menu, $selected='') {
+    $filename = TO_ROOT."/configs/menus/$menu.ini";
+    if ( !file_exists($filename) ) {
+      throw new InvalidArgumentException("Filename '$filename' doesn\'t exist.");
+    }
+    if( !$menus = @parse_ini_file($filename, true ) ) {
+      throw new InvalidArgumentException("Filename '$filename' has errors.");
+    }
+    if(file_exists('menu.ini')) {
+      if( !$local = @parse_ini_file('menu.ini', true) ) {
+        throw new InvalidArgumentException("Filename 'menu.ini' has errors.");
+      }
+      $menus = array_merge($menus, $local); 
+    }
+    return $menus;
   }
 }

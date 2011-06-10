@@ -6,18 +6,13 @@ function hideMessage() {
 
 /** Functions for the overlay **/
 function closeOverlay() {
-  /*$("#overlay").toggle($('#overlay').attr("title"));
-  $("#overlay_shadow").toggle($('#overlay_shadow').attr("title"));*/
-  document.getElementById('overlay').innerHTML ='';
-  document.getElementById('overlay').className ='hidden';
-  document.getElementById('overlay_shadow').className ='hidden';
+  $('#overlay').attr('innerHTML','');
+  $('#overlay').dialog('close');
 }
 
 function showOverlay() {
-  /*$("#overlay_shadow").toggle($('#overlay_shadow').attr("title"));
-  $("#overlay").toggle($('#overlay').attr("title"));*/
-  document.getElementById('overlay').className ='visible';
-  document.getElementById('overlay_shadow').className ='visible';  
+  $('#overlay').dialog('open');
+  BasicConfig();
 }
 
 /**

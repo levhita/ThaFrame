@@ -23,32 +23,32 @@ class PagePattern
    * @var array
    */
   protected $_variables = array();
-  
+
   /**
    * Holds the javascripts that should be added at the head section
    * @var array
    */
   protected $_javascripts = array();
-  
+
   /**
    * Holds the relative path to the template
    * @var string
    */
   protected $_template = '';
-  
+
   /**
    * Holds the relative path to the layout
    * @var string
    */
   protected $_layout = '';
-  
+
   /**
    * Script to run on page load
    *
    * @var string
    */
   public $_on_load   = '';
-  
+
   /**
    * Holds the header to be sent on_display
    *
@@ -72,8 +72,8 @@ class PagePattern
    * @var string
    */
   protected $_secondary_menu_template = '';
-  
-  
+
+
   public function __construct($page_name='', $template='', $layout='')
   {
     if( empty($template) ){
@@ -84,14 +84,14 @@ class PagePattern
     $this->setTemplate($template);
     $this->setLayout($layout);
   }
-  
 
-  
+
+
   /**
    * Jumps to the given url, sending a message.
-   * @param string $url 
+   * @param string $url
    * @param string $message
-   * @param string $level might be: info, warning, error, success 
+   * @param string $level might be: info, warning, error, success
    * @return false
    */
   public static function goToPage($url, $message = '', $level='info') {
@@ -102,17 +102,17 @@ class PagePattern
     header("location: $url");
     die();
   }
-  
+
   public function getScriptName(){
     return basename($_SERVER['SCRIPT_FILENAME'], '.php');
   }
 
-  
+
   public function assign($variable, $value)
   {
     $this->_variables[$variable] = $value;
   }
-  
+
   /**
    * Sets the template file to be used.
    *
@@ -130,7 +130,7 @@ class PagePattern
       $this->_template = $template;
     }
   }
-  
+
   /**
    * Sets the layout file to be used.
    *
@@ -148,7 +148,7 @@ class PagePattern
       $this->_layout = $layout;
     }
   }
-  
+
   public function setMainMenu($template, $fullpath = false)
   {
     if ( !empty($template) && !$fullpath) {
@@ -157,7 +157,7 @@ class PagePattern
       $this->_main_menu_template = $template;
     }
   }
-    
+
   public function setSecondaryMenu($template, $fullpath = false)
   {
     if ( !empty($template) && !$fullpath) {
@@ -166,7 +166,7 @@ class PagePattern
       $this->_secondary_menu_template = $template;
     }
   }
-  
+
   /**
    * Sets a pattern specific variable, variables set by this function aren't
    * mandatory, and are only to provide customization to the default template
@@ -178,7 +178,7 @@ class PagePattern
   public function setPatternVariable($variable, $value)  {
     $this->_pattern_variables[$variable] = $value;
   }
-  
+
   /**
    * Sets the page name depending of the layout it might be translated
    * @param string $page_name
@@ -187,16 +187,16 @@ class PagePattern
   public function setPageName($page_name) {
     $this->assign('__page_name', $page_name);
   }
-  
+
   /** Sets the javascript code to be run when the pase finishes loading
-   * 
+   *
    * @param string $code javascript code
    * @return void
-   */   
+   */
   public function setOnLoad($code=''){
     $this->_on_load=$code;
   }
-  
+
   /**
    * Adds a header to be sent just before display();
    *
@@ -206,7 +206,7 @@ class PagePattern
   public function addHeader($header, $value){
     $this->_headers[$header]=$value;
   }
-  
+
   /**
    * Adds a javascript that will be added in the head section
    * @param string $javascript the javascript code
@@ -217,7 +217,7 @@ class PagePattern
     $this->_javascripts[] = $javascript;
   }
 
-  
+
   /**
    * Shows the given template
    *
@@ -233,13 +233,13 @@ class PagePattern
         'level' => $_SESSION['__message_level'] ,
         'text' => $_SESSION['__message_text']
       );
-      
+
       $this->assign('__message', $message);
       unset($_SESSION['__message_text']);
       unset($_SESSION['__message_level']);
       unset($message);
     }
-    
+
     /** Main Menu Cascade Loader **/
     $script_name = $this->getScriptName();
     if ( empty($this->_main_menu_template) ) {
@@ -253,7 +253,7 @@ class PagePattern
         $this->setMainMenu(THAFRAME. '/subtemplates/default_main_menu.tpl.php', TRUE);
       }
     }
-    
+
     /** Secondary Menu Cascade Loader**/
     if ( empty($this->_secondary_menu_template) ) {
       if ( file_exists("templates/" . $this->getScriptName() . "_menu.tpl.php") ) {
@@ -266,7 +266,7 @@ class PagePattern
         $this->setSecondaryMenu(THAFRAME. '/subtemplates/default_secondary_menu.tpl.php', TRUE);
       }
     }
-    
+
     /** Layout Cascade Loader **/
     if ( empty($this->_layout) ) {
       if ( file_exists("templates/" . $this->getScriptName() . "_layout.tpl.php") ) {
@@ -279,34 +279,34 @@ class PagePattern
         $this->setLayout(THAFRAME. '/subtemplates/default_layout.tpl.php', TRUE);
       }
     }
-    
+
     $this->assign('PatternVariables', (object)$this->_pattern_variables);
     $this->assign('__javascripts', $this->_javascripts);
     $this->assign('__main_menu_template', $this->_main_menu_template);
     $this->assign('__secondary_menu_template', $this->_secondary_menu_template);
     $this->assign('__on_load', $this->_on_load);
-    
-    /** 
+
+    /**
      * This object helps to do a variety of things inside templates
      * @var Helper
      */
     $Helper = new HelperPattern($Data);
-    
+
     $_content_ = self::runTemplate($this->_template, $this->_variables);
-    
+
     /** Send the headers **/
     foreach($this->_headers AS $header => $value)
     {
       header("$header: $value");
     }
-    
+
     $Data = (object)$this->_variables; // @todo: Backwards compatibility remove before release
     extract($this->_variables);
-    
+
     /** Include it in the Layout **/
     include $this->_layout;
   }
-  
+
   /**
    * Run the Template in the cleanest enviroment posible
    * @param unknown_type $template
@@ -316,13 +316,13 @@ class PagePattern
   private static function runTemplate($_template_, $_data_) {
     $Data = (object)$_data_; /// @todo Backwards Compatibility Remove Before Release
     extract($_data_);
-    $Helper = new HelperPattern($Data);
-    
+    $Helper = new HelperPattern(get_defined_vars());
+
     ob_start();
       include $_template_;
       $_content_ = ob_get_contents();
     ob_end_clean();
-    
+
     return $_content_;
   }
 }

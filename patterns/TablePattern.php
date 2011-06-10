@@ -1,7 +1,7 @@
 <?php
-require_once THAFRAME . '/patterns/Template.inc.php';
 
-class Table Extends Template
+
+class TablePattern Extends TemplatePattern
 {
   /**
    * Holds all the raw data that will be listed
@@ -82,14 +82,17 @@ class Table Extends Template
   public function __construct($template = '')
   {
     if ( empty($template) ) {
-      $this->setTemplate(THAFRAME . '/patterns/templates/Table.tpl.php', true);
+      $this->setTemplate(THAFRAME . '/patterns/templates/TablePattern.tpl.php', true);
     } else {
       $this->setTemplate($template);
     }
   }
    
-  public function setQuery($sql, DbConnection $DbConnection, $paginate = false)
+  public function setQuery($sql, DbConnection $DbConnection=null, $paginate = false)
   {
+    if ( !isset($DbConnection) ) {
+      $DbConnection = DbConnection::getInstance();
+    }
     if ($paginate) {
       $this->paginate = true;
       
