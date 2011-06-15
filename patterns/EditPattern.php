@@ -480,7 +480,8 @@ class Edit extends Page
     }
     
     if ($name_field=='') {
-      $name_field = NAME_FIELD;
+      $Config = Config::getInstance();
+      $name_field = $Config->name_field;
     }
     
     if ($conditions=='') {

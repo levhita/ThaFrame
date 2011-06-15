@@ -16,7 +16,7 @@ class Config {
   protected $_config = array();
   protected $_filename = '';
   protected $_config_name = '';
-    
+      
   /**
    * Constructor is private so it can't be instantiated
    * @return Config
@@ -114,5 +114,21 @@ class Config {
   
   public function getFilename(){
     return $this->_filename;
+  }
+  
+  public static function getDBConfig($connection) {
+    
+    if ( !file_exists(TO_ROOT . "/configs/databases.ini") ) {
+      throw new RuntimeException("Couldn't load databases.ini");
+    }
+    
+    if ( !$databases = parse_ini_file(TO_ROOT . "/configs/databases.ini", true) ) {
+      throw new RuntimeException("Couldn't interpret databases.ini");
+    }
+    
+    if ( empty($databases[$connection]) ) {
+      throw new RuntimeException("Couldn't find connection '$connection' in databases.ini");
+    }
+    return (object)$databases[$connection];
   }
 }

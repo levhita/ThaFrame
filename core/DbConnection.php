@@ -43,23 +43,17 @@ class DbConnection {
    * @param string $db_password
    * @param string $db_name
    * @return DbConnection
+   * @todo Change to Use config from files.
    */
-  public static function getInstance($db_host='', $db_user='', $db_password='', $db_name='') {
-    if( empty($db_host) ) {
-      $Config       = Config::getInstance();
-      $db_host      = $Config->db_host;
-      $db_user      = $Config->db_user;
-      $db_password  = $Config->db_password;
-      $db_name      = $Config->db_name;
-    }
-    $instance_name = "$db_host $db_user $db_name";
-    if ( !isset(self::$_instances[$instance_name]) ) {
-      $DbConnection = new DbConnection($Config->db_host, $Config->db_user, $Config->db_password, $Config->db_name);
+  public static function getInstance($connection='default') {
+    if ( !isset(self::$_instances[$connection]) ) {
+      $DbConfig = Config::getDbConfig($connection);
+      $DbConnection = new DbConnection($DbConfig->db_host, $DbConfig->db_user, $DbConfig->db_password, $DbConfig->db_name);
       $DbConnection->connect();
       $DbConnection->executeQuery("SET CHARACTER SET 'utf8'");
-      self::$_instances[$instance_name]=$DbConnection;
+      self::$_instances[$connection] = $DbConnection;
     }
-    return self::$_instances[$instance_name];
+    return self::$_instances[$connection];
   }
   
   public function connect()
@@ -175,6 +169,7 @@ class DbConnection {
   {
     return $this->errors;
   }
+  
   public function getErrorsString(){
     $string="";
     foreach($this->errors AS $error){
@@ -182,6 +177,7 @@ class DbConnection {
     }
     return $string;
   }
+  
   public function getLastId()
   {
     return mysql_insert_id($this->db_connection);

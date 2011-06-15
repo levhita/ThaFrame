@@ -299,7 +299,8 @@ public function setAsLinked($field, $table_name, $DbConnection, $table_id='', $n
     }
     
     if ($name_field=='') {
-      $name_field = NAME_FIELD;
+      $Config = Config::getInstance();
+      $name_field = $Config->name_field;
     }
     
     $sql = "SELECT $table_id, $name_field

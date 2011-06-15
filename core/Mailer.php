@@ -1,6 +1,7 @@
 <?php
 /**
  * @package Garson
+ * @todo Use configs instead of constants
  */
 
 require_once THAFRAME . "/vendors/swift/swift_required.php";
