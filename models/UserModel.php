@@ -30,7 +30,6 @@ class UserModel extends RowModel
   public function validatePassword($password)
   {
     $this->assertLoaded();
-    
     if ( sha1($password) !== $this->data['password'] ) {
       return false;
     }
@@ -54,7 +53,7 @@ class UserModel extends RowModel
     $DbConnection = DbConnection::getInstance();
     $Config = Config::getInstance();
     $sql= "SELECT $Config->user_table_id FROM $Config->user_table WHERE name='$name' LIMIT 1";
-    if(!$user_id = $DbConnection->getOneRow($sql)) {
+    if(!$user_id = $DbConnection->getOneValue($sql)) {
       return false;
     }
     $User = new UserModel($Config->user_table,(int)$user_id);
