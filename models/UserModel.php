@@ -64,10 +64,11 @@ class UserModel extends RowModel
   
   public function loadPermissions()
   {
+    $Config = Config::getInstance();
     $this->assertLoaded();
     $sql = "SELECT name, actions
             FROM permission
-            WHERE user_id='$this->id'
+            WHERE $this->id_field='$this->id'
             AND active='1'";
     
     if(!$permissions = $this->DbConnection->getArrayPair($sql)){
