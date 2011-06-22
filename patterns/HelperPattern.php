@@ -50,19 +50,20 @@ class HelperPattern {
   
   public static function createFrameLink($filename, $return_string=FALSE, $absolute_path=FALSE)
   {
+    $Config = Config::getInstance();
     $string = '';
     if ($absolute_path){
       
       if( file_exists(TO_ROOT ." /$filename") ) {
-        $string = SYSTEM_WEB_ROOT . "/$filename";
+        $string = $Config->system_web_root . "/$filename";
       } else {
-        $string = SYSTEM_WEB_ROOT . "/f/$filename";
+        $string = $Config->system_web_root . "/f/$filename";
       }  
     } else {
       if( file_exists(TO_ROOT . "/$filename") ){
-        $string = TO_ROOT . "/$filename";
+        $string = TO_WEB_ROOT. "/$filename";
       } else {
-        $string = TO_ROOT . "/f/$filename";
+        $string = TO_WEB_ROOT . "/f/$filename";
       }
     }
     

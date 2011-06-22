@@ -55,6 +55,13 @@ class PagePattern
    * @var array
    */
   public $_headers = array();
+  
+  /**
+   * Holds the html headers to be included inside <head>
+   *
+   * @var array
+   */
+  public $_html_headers = array();
 
   /**
    * Variables that belongs only to this pattern, used to customize the text and
@@ -143,7 +150,7 @@ class PagePattern
   public function setLayout($layout, $fullpath = false)
   {
     if ( !empty($layout) && !$fullpath){
-      $this->_layout = "templates/$layout.tpl.php";
+      $this->_layout = TO_ROOT . "/subtemplates/{$layout}_layout.tpl.php";
     } else {
       $this->_layout = $layout;
     }
@@ -152,7 +159,7 @@ class PagePattern
   public function setMainMenu($template, $fullpath = false)
   {
     if ( !empty($template) && !$fullpath) {
-      $this->_main_menu_template = "templates/$template.tpl.php";
+      $this->_main_menu_template = TO_ROOT . "/subtemplates/{$template}_main_menu.tpl.php";
     } else {
       $this->_main_menu_template = $template;
     }
@@ -215,6 +222,16 @@ class PagePattern
   public function addJavascript($javascript)
   {
     $this->_javascripts[] = $javascript;
+  }
+  
+  /**
+   * Adds a html header that will be added in the <head> section
+   * @param string $html_header the header code
+   * @return void
+   */
+  public function addHTMLHeader($html_header)
+  {
+    $this->_html_headers[] = $html_header;
   }
 
 
@@ -282,10 +299,14 @@ class PagePattern
 
     $this->assign('PatternVariables', (object)$this->_pattern_variables);
     $this->assign('__javascripts', $this->_javascripts);
+    $this->assign('__html_headers', $this->_html_headers);
     $this->assign('__main_menu_template', $this->_main_menu_template);
     $this->assign('__secondary_menu_template', $this->_secondary_menu_template);
     $this->assign('__on_load', $this->_on_load);
-
+    
+    $Data = (object)$this->_variables; // @todo: Backwards compatibility remove before release
+    extract($this->_variables);
+    
     /**
      * This object helps to do a variety of things inside templates
      * @var Helper
@@ -299,9 +320,6 @@ class PagePattern
     {
       header("$header: $value");
     }
-
-    $Data = (object)$this->_variables; // @todo: Backwards compatibility remove before release
-    extract($this->_variables);
 
     /** Include it in the Layout **/
     include $this->_layout;

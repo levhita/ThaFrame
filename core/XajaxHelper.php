@@ -49,4 +49,22 @@ class XajaxHelper {
     }
     return true;
   }
+  
+  /**
+   * Deletes a generic {@link Row}
+   *
+   * @param integer $id
+   * @param string $table_name
+   * @return True on success, false otherwise
+   */
+  public static function deleteRow($id, $table_name)
+  {
+    $DbConnection = DbConnection::getInstance();
+    
+    $Row = new Row($table_name, (int)$data["id_$table_name"], $DbConnection);
+    if ( $Row->delete() ) {
+      return false;
+    }
+    return true;
+  }
 }

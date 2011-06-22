@@ -8,6 +8,6 @@ if ( isset($_menus_['_main_']['selected_tab']) ) {
 ?>
 <ul>
   <? foreach($_menus_ AS $_selected_ => $_menu_): ?>
-  <li<?=($_selected_==$_selected_tab_)?' class="selected"':'';?>><a href="<?=TO_ROOT . $_menu_['url']?>" title="<?=t($_menu_['title'])?>"><?=t($_menu_['name'])?></a></li>
+  <li<?=($_selected_==$_selected_tab_)?' class="selected"':'';?>><a href="<?=TO_WEB_ROOT . $_menu_['url']?>" title="<?=t($_menu_['title'])?>"><?=t($_menu_['name'])?></a></li>
   <? endforeach; ?>
 </ul>

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="<?php $Helper->createFrameLink('style/print.css');?>" type="text/css" media="print"/>
     
     <link type="text/css" href="<?php $Helper->createFrameLink('vendors/jqueryui/css/redmond/jquery-ui-1.8.13.custom.css');?>" rel="Stylesheet" />	
-	<script type="text/javascript" src="<?php $Helper->createFrameLink('vendors/jqueryui/js/jquery-1.5.1.min.js');?>"></script>
+	<script type="text/javascript" src="<?php $Helper->createFrameLink('vendors/jqueryui/js/jquery-1.5.2.min.js');?>"></script>
 	<script type="text/javascript" src="<?php $Helper->createFrameLink('vendors/jqueryui/js/jquery-ui-1.8.13.custom.min.js');?>"></script>
 	<script type="text/javascript" src="<?php $Helper->createFrameLink('vendors/jqueryui/js/jquery-ui-timepicker-addon.js');?>"></script>
     
@@ -30,6 +30,15 @@
       foreach($__javascripts as $javascript)
       {
         echo "<script type=\"text/javascript\">$javascript</script>";
+      }
+    ?>
+    
+    <?php
+      if ( count($__html_headers) ) {
+        foreach($__html_headers as $html_header)
+        {
+          echo $html_header;
+        }
       }
     ?>
   
