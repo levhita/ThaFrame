@@ -24,15 +24,25 @@ class HelperPattern {
    * Load a subtemplate, chosing between a custom template or a standard
    * framework subtemplate
    */
-  public function loadSubTemplate($template, $fullpath=FALSE)
+  public function loadSubTemplate($template, $fullpath=FALSE, $variables='')
   {
+    $vars=array();
+    if($variables!='') {
+      $raw_vars = explode(',', $variables);
+      foreach($raw_vars AS $raw_var) {
+        list($field, $value) = explode(':', $raw_var);
+        $vars["__sub_$field"] = $value;
+      } 
+    }
     $Data   = $this->Data;
     $Helper = $this;
     if (!$fullpath) {
       if ( file_exists(TO_ROOT . "/subtemplates/$template.tpl.php") ) {
+        $data=(array)$Data;unset($data['template']);extract($data);extract($vars);
         include TO_ROOT . "/subtemplates/$template.tpl.php";
       } else {
         if ( file_exists( THAFRAME . "/subtemplates/$template.tpl.php") ) {
+          $data=(array)$Data;unset($data['template']);extract($data);extract($vars);
           include THAFRAME . "/subtemplates/$template.tpl.php";
         } else {
           throw new Exception("Couldn't find template '$template'");
@@ -40,7 +50,7 @@ class HelperPattern {
       }
     } else {
       if ( file_exists( $template) ) {
-        $data=(array)$Data;unset($data['template']);extract($data);
+        $data=(array)$Data;unset($data['template']);extract($data);extract($vars);
         include $template;
       } else {
         throw new Exception("Couldn't find template '$template'");
