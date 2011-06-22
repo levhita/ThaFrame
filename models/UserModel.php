@@ -65,6 +65,9 @@ class UserModel extends RowModel
   {
     $Config = Config::getInstance();
     $this->assertLoaded();
+    if($Config->user_uses_permissions==false) {
+      return TRUE;
+    }
     $sql = "SELECT name, actions
             FROM permission
             WHERE $this->id_field='$this->id'
